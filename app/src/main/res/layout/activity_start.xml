@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".StartActivity">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="289dp"
-        android:layout_height="196dp"
-        android:layout_marginTop="104dp"
+        android:id="@+id/imageView2"
+        android:layout_width="293dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="324dp"
         android:contentDescription="@string/logo"
-        android:src="@drawable/logo_transparent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

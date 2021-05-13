@@ -7,15 +7,14 @@ import android.os.Bundle;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
+
+import mobile_computing.delifast.others.DelifastConstants;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        int timeout = 2000; // make the activity visible for 4 seconds
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent homepage = new Intent(MainActivity.this, StartActivity.class);
                 startActivity(homepage);
             }
-        }, timeout);
+        }, DelifastConstants.TIMEOUT);
 
     }
 }

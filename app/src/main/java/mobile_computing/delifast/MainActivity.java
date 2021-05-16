@@ -8,6 +8,7 @@ import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mobile_computing.delifast.authentication.AuthenticationActivity;
 import mobile_computing.delifast.others.DelifastConstants;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 finish();
-                Intent homepage = new Intent(MainActivity.this, StartActivity.class);
+                Intent homepage = new Intent(MainActivity.this, AuthenticationActivity.class);
                 startActivity(homepage);
             }
         }, DelifastConstants.TIMEOUT);

@@ -1,5 +1,4 @@
 package mobile_computing.delifast.authentication;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -10,6 +9,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.others.DelifastConstants;
 
 public class AuthenticationActivity extends AppCompatActivity {
 

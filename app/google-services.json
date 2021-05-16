@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "124646913594",
+    "project_id": "delifast-mc21",
+    "storage_bucket": "delifast-mc21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124646913594:android:73bfb74fb6fed97b0d2703",
+        "android_client_info": {
+          "package_name": "mobile_computing.delifast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124646913594-98kr6bdf4bapeninmmr7m3l4dmsogriq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPYcHUhYGWiqEnn69Vnzsr_fRKM_HFlzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124646913594-98kr6bdf4bapeninmmr7m3l4dmsogriq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

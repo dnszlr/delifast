@@ -2,4 +2,6 @@
     <string name="app_name">delifast</string>
     <string name="emailAdressField">Email-Adresse</string>
     <string name="logo">logo</string>
+    <string name="Passwort">passwordField</string>
+    <string name="passwordField">Passwort</string>
 </resources>

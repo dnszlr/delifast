@@ -84,7 +84,6 @@
         android:layout_marginTop="48dp"
         android:text="Registrieren"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layRegPassword" />
 
@@ -92,8 +91,8 @@
         android:id="@+id/btnRegGoogle"
         android:layout_width="63dp"
         android:layout_height="49dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="132dp"
         android:contentDescription="@string/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layRegPassword"
@@ -103,22 +102,12 @@
         android:id="@+id/btnRegFacebook"
         android:layout_width="63dp"
         android:layout_height="49dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="108dp"
         android:contentDescription="@string/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layRegPassword"
         app:srcCompat="@drawable/outline_facebook_black_36" />
 
-    <Button
-        android:id="@+id/btnRegLogin"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="48dp"
-        android:text="Login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layRegPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

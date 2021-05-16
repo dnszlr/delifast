@@ -39,5 +39,5 @@ dependencies {
     // !------ Firebase dependencies only --------!
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-firestore'
 }

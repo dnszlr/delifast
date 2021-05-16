@@ -1,0 +1,26 @@
+package mobile_computing.delifast.entities;
+
+import java.time.LocalDateTime;
+
+public class User {
+
+    private String name;
+    private String email;
+    private String password;
+
+    /**
+     * Empty firebase constructor, don't remove.
+     */
+    public User() {
+    }
+
+    public User(String name , String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+
+
+
+}

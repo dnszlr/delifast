@@ -6,28 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".StartActivity">
 
+
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="242dp"
-        android:layout_height="147dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="48dp"
+        android:id="@+id/imgLogo"
+        android:layout_width="300dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="44dp"
         android:contentDescription="@string/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_transparent" />
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layEmail"
         android:layout_width="350dp"
         android:layout_height="55dp"
-        android:layout_marginTop="288dp"
+        android:layout_marginTop="100dp"
         android:hint="@string/emailAdressField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogo"
         app:startIconDrawable="@drawable/outline_person_24">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +62,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="70dp"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -71,15 +70,25 @@
         app:layout_constraintTop_toBottomOf="@+id/layPassword" />
 
     <ImageView
-        android:id="@+id/btnFacebbok"
+        android:id="@+id/btnGoogle"
         android:layout_width="63dp"
         android:layout_height="49dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="150dp"
         android:contentDescription="@string/logo"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layPassword"
+        app:srcCompat="@drawable/outline_facebook_black_36" />
+
+    <ImageView
+        android:id="@+id/btnFacebook"
+        android:layout_width="63dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="100dp"
+        android:contentDescription="@string/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layPassword"
         app:srcCompat="@drawable/outline_facebook_black_36" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

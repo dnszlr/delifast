@@ -4,4 +4,8 @@
     <string name="logo">logo</string>
     <string name="Passwort">passwordField</string>
     <string name="passwordField">Passwort</string>
+
+    <string name="facebook_app_id">997491474327877</string>
+    <string name="fb_login_protocol_scheme">fb997491474327877</string>
+
 </resources>

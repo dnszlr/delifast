@@ -1,10 +1,13 @@
 package mobile_computing.delifast.entities;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class DelifastEntity {
 
+    @Exclude
     private String id;
     private LocalDateTime lastChanged;
     private String lastChangedBy;

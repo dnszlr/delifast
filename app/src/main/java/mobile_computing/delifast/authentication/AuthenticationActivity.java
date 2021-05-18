@@ -62,7 +62,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AuthenticationViewModel model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
+        model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
         setContentView(R.layout.activity_authentication);
 
         initFragments();

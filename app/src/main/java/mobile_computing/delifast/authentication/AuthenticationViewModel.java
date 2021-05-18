@@ -12,8 +12,8 @@ public class AuthenticationViewModel extends ViewModel {
     private LiveData<User> user;
     private UserRepository userRepository;
 
-    public AuthenticationViewModel(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthenticationViewModel() {
+        this.userRepository = new UserRepository();
     }
 
     public void init(String userId) {

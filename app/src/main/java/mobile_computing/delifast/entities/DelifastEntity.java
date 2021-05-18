@@ -9,7 +9,9 @@ public abstract class DelifastEntity {
 
     @Exclude
     private String id;
+
     private LocalDateTime lastChanged;
+
     private String lastChangedBy;
 
     public DelifastEntity(){

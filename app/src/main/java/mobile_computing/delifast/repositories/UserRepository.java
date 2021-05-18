@@ -31,7 +31,7 @@ public class UserRepository {
         this.dbCollection = db.collection(collection);
     }
 
-    public boolean save(User user) {
+    public void save(User user) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         dbCollection
                 .add(user)
@@ -48,7 +48,6 @@ public class UserRepository {
                 Log.w("saved", "Error adding document", e);
             }
         });
-        return result.getValue();
     }
 
     public boolean update(User user) {

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -36,6 +37,7 @@ import com.facebook.appevents.AppEventsLogger;
 import java.util.concurrent.Executor;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.entities.User;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -55,6 +57,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     private FirebaseAuth.AuthStateListener authStateListener;
 
     private AccessTokenTracker accessTokenTracker;
+    private AuthenticationViewModel model;
 
 
     @Nullable
@@ -62,7 +65,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View registerView =  inflater.inflate(R.layout.register_fragment, container);
 
-
+        model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
         FacebookSdk.sdkInitialize(getApplicationContext());
         mAuth = FirebaseAuth.getInstance();
 
@@ -113,6 +116,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
 
 
         mAuth.createUserWithEmailAndPassword(eMailAdressStr, passwordStr);
+        User user = new User();
+        user.setEmail(eMailAdressStr);
+        user.setName(userNameStr);
+        model.save(user);
     }
 
     private void handleFacebookToken(AccessToken accessToken) {

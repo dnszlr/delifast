@@ -25,9 +25,9 @@ public class UserRepository {
     private String collection;
     private CollectionReference dbCollection;
 
-    public UserRepository(FirebaseFirestore db, String collection) {
-        this.db = db;
-        this.collection = collection;
+    public UserRepository() {
+        this.db = FirebaseFirestore.getInstance();
+        this.collection = "users";
         this.dbCollection = db.collection(collection);
     }
 

@@ -3,6 +3,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.AccessToken;
@@ -39,6 +40,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import mobile_computing.delifast.MainActivity;
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.others.DelifastConstants;
 
 public class AuthenticationActivity extends AppCompatActivity {
@@ -54,10 +56,13 @@ public class AuthenticationActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
 
     private AccessTokenTracker accessTokenTracker;
+    private AuthenticationViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AuthenticationViewModel model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
         setContentView(R.layout.activity_authentication);
 
         initFragments();
@@ -121,6 +126,10 @@ public class AuthenticationActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            User persistUser = new User();
+                            persistUser.setEmail(user.getEmail());
+                            persistUser.setName(user.getDisplayName());
+                            model.save(persistUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

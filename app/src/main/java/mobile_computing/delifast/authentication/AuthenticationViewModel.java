@@ -23,6 +23,12 @@ public class AuthenticationViewModel extends ViewModel {
         user = userRepository.findById(userId);
     }
 
+    public void save(User user) {
+        if(user != null) {
+            userRepository.save(user);
+        }
+    }
+
     public LiveData<User> getUser() {
         return this.user;
     }

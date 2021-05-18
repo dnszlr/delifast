@@ -1,10 +1,11 @@
 package mobile_computing.delifast.entities;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class User {
+public class User extends DelifastEntity {
 
-    private String name;
+    private String username;
     private String email;
     private String password;
 
@@ -12,20 +13,22 @@ public class User {
      * Empty firebase constructor, don't remove.
      */
     public User() {
+        super();
     }
 
     public User(String name , String email, String password) {
-        this.name = name;
+        super();
+        this.username = name;
         this.email = email;
         this.password = password;
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public String getEmail() {
@@ -45,22 +48,7 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(name, user.name) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, email, password);
-    }
-
-    @Override
     public String toString() {
-        return this.name;
+        return this.username;
     }
 }

@@ -1,5 +1,6 @@
 package mobile_computing.delifast.authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -12,17 +13,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.interaction.DelifastActivity;
 
 public class LoginFragment extends Fragment {
 
@@ -75,7 +74,10 @@ public class LoginFragment extends Fragment {
                         if(task.isSuccessful()){
                             Toast.makeText(getActivity(), "Login erfolgreich", Toast.LENGTH_SHORT).show();
 
-                            //TODO: start next activity
+
+                            Intent homepage = new Intent(getActivity(), DelifastActivity.class);
+                            startActivity(homepage);
+                            getActivity().finish();
                         }
                         else {
                             Toast.makeText(getActivity(), "Falsche Login-Daten", Toast.LENGTH_SHORT).show();

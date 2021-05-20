@@ -9,21 +9,20 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
         app:menu="@menu/bottom_navigation_menu"
-        android:background="#D8F781"/>
+        android:background="#D8F781" />
 
     <Button
         android:id="@+id/btnLogout"
-        android:layout_width="125dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="251dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="17dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="145dp"
+        android:layout_marginTop="650dp"
         android:text="Logout" />
 
 </RelativeLayout>

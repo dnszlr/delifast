@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.facebook.appevents.AppEventsLogger;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Executor;
 
 import mobile_computing.delifast.R;
@@ -41,122 +42,96 @@ import mobile_computing.delifast.entities.User;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class RegisterFragment extends Fragment implements View.OnClickListener{
+public class RegisterFragment extends Fragment implements View.OnClickListener {
 
-    FragmentActivity activity;
-
-    private EditText userName, eMailAdress, password;
+    private EditText tfUsername;
+    private EditText tfEmail;
+    private EditText tfPassword;
     private TextView btnRegister;
-
-    private TextInputLayout username, email;
-    private LoginButton btnFbLogin;
-    private CallbackManager callbackManager;
-    private static final String TAG = "FacebookAuthentification";
-
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-
-    private AccessTokenTracker accessTokenTracker;
     private AuthenticationViewModel model;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View registerView =  inflater.inflate(R.layout.register_fragment, container);
-
+        View registerView = inflater.inflate(R.layout.register_fragment, container);
         model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        mAuth = FirebaseAuth.getInstance();
+        model.getFirebaseUser().observe(getViewLifecycleOwner(), firebaseUser -> {
+            if (firebaseUser != null) {
+                Log.d("FirebaseUser: ", firebaseUser.getDisplayName());
+                User user = new User();
+                user.setName(tfUsername.toString().trim());
+                user.setEmail(tfEmail.toString().trim());
+                model.save(user);
+            }
+        });
 
-        btnRegister = registerView.findViewById(R.id.btnRegRegister);
-        btnRegister.setOnClickListener((View.OnClickListener) this);
 
-        userName = registerView.findViewById(R.id.tfRegName);
-        eMailAdress = registerView.findViewById(R.id.tfRegEmail);
-        password = registerView.findViewById(R.id.tfRegPassword);
-
-
-
+        initView(registerView);
         return registerView;
     }
 
-    public EditText getUserName() {
-        return userName;
+    /**
+     * Initializes all view components
+     *
+     * @param registerView
+     */
+    public void initView(View registerView) {
+        btnRegister = registerView.findViewById(R.id.btnRegRegister);
+        btnRegister.setOnClickListener((View.OnClickListener) this);
+        tfUsername = registerView.findViewById(R.id.tfRegName);
+        tfEmail = registerView.findViewById(R.id.tfRegEmail);
+        tfPassword = registerView.findViewById(R.id.tfRegPassword);
     }
 
-    private void registerUser(){
-        String userNameStr = userName.getText().toString().trim();
-        String eMailAdressStr = eMailAdress.getText().toString().trim();
-        String passwordStr = password.getText().toString().trim();
+    /**
+     * Triggers viewmodels registration process
+     */
+    private void registerUser() {
+        String username = tfUsername.getText().toString().trim();
+        String email = tfEmail.getText().toString().trim();
+        String password = tfPassword.getText().toString().trim();
 
-        if(userNameStr.isEmpty()){
-            userName.setError("Name erfordelich");
-            userName.requestFocus();
+        if (!areCredentailsValid(username, email, password)) {
             return;
         }
-
-        if(eMailAdressStr.isEmpty()){
-            eMailAdress.setError("Email-Adresse erfordelich");
-            eMailAdress.requestFocus();
-            return;
-        }
-
-        if(!Patterns.EMAIL_ADDRESS.matcher(eMailAdressStr).matches()){
-            eMailAdress.setError("Email ungültig");
-            eMailAdress.requestFocus();
-            return;
-        }
-
-        if(passwordStr.length() < 8){
-            password.setError("Passwort muss min. 8 Zeichen haben");
-            password.requestFocus();
-            return;
-        }
-
-
-        mAuth.createUserWithEmailAndPassword(eMailAdressStr, passwordStr);
-        User user = new User();
-        user.setEmail(eMailAdressStr);
-        user.setName(userNameStr);
-        model.save(user);
-    }
-
-    private void handleFacebookToken(AccessToken accessToken) {
-        Log.d(TAG, "handleFacebookToken" + accessToken);
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        mAuth.signInWithCredential(credential).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "Sign in With Credential: successful");
-                    FirebaseUser user = mAuth.getCurrentUser();
-
-                    updateUI(user);
-                }
-                else {
-                    Log.d(TAG, "Sign in With Credential: failure");
-                    Toast.makeText(getActivity(), "Authentification Failed", Toast.LENGTH_SHORT).show();
-                    updateUI(null);
-                }
-            }
-        });
-    }
-
-
-    private void updateUI(FirebaseUser user) {
-        if(user != null){
-            System.out.println("Jaaa");
-            username.getEditText().setText(user.getDisplayName());
-
-        }
-        else {
-            username.getEditText().setText("KEIN USER");
-        }
+        model.registration(email, password);
     }
 
     @Override
     public void onClick(View v) {
         registerUser();
+    }
+
+    /**
+     * Validates the credentials passed by the user.
+     *
+     * @param username
+     * @param email
+     * @param password
+     * @return true if the credentials are valid, false if not.
+     */
+    private boolean areCredentailsValid(String username, String email, String password) {
+        if (username.isEmpty()) {
+            tfUsername.setError("Name erfordelich");
+            tfUsername.requestFocus();
+            return false;
+        }
+        if (email.isEmpty()) {
+            tfEmail.setError("Email-Adresse erfordelich");
+            tfEmail.requestFocus();
+            return false;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tfEmail.setError("Email ungültig");
+            tfEmail.requestFocus();
+            return false;
+        }
+        if (password.length() < 8) {
+            tfPassword.setError("Passwort muss min. 8 Zeichen haben");
+            tfPassword.requestFocus();
+            return false;
+        }
+        return true;
     }
 }

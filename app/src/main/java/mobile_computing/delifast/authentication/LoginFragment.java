@@ -40,18 +40,6 @@ public class LoginFragment extends Fragment {
         model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
 
         initView(loginView);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = tfEmail.getText().toString().trim();
-                String password = tfPassword.getText().toString().trim();
-                if (!areCredentailsValid(email, password)) {
-                    return;
-                }
-                progressBarLogin.setVisibility(View.VISIBLE);
-                model.loginWithEmail(email, password);
-            }
-        });
         return loginView;
     }
 
@@ -65,6 +53,25 @@ public class LoginFragment extends Fragment {
         tfPassword = loginView.findViewById(R.id.tfPassword);
         progressBarLogin = loginView.findViewById(R.id.progressBarLogin);
         btnLogin = loginView.findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser();
+            }
+        });
+    }
+
+    /**
+     * Triggers viewmodels login process
+     */
+    private void loginUser() {
+        String email = tfEmail.getText().toString().trim();
+        String password = tfPassword.getText().toString().trim();
+        if (!areCredentailsValid(email, password)) {
+            return;
+        }
+        progressBarLogin.setVisibility(View.VISIBLE);
+        model.loginWithEmail(email, password);
     }
 
     /**

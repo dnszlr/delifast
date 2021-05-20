@@ -64,7 +64,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
         model.getFirebaseUser().observe(this, firebaseUser -> {
             if (firebaseUser != null) {
-                Log.d("Something happend: ", firebaseUser.getDisplayName());
+                Log.d("FirebaseUser: ", firebaseUser.getDisplayName());
                 User user = new User();
                 user.setName(firebaseUser.getDisplayName());
                 user.setEmail(firebaseUser.getEmail());
@@ -76,43 +76,8 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_authentication);
         initFragments();
-
-        // Facebook signIn
-        mCallbackManager = CallbackManager.Factory.create();
-        btnFbLogin = findViewById(R.id.btnFbLogin);
-        btnFbLogin.setReadPermissions("email", "public_profile");
-        btnFbLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                model.loginWithFacebook(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-            }
-        });
-
-        // Google signIn
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
-        btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        initFacebookSignIn();
+        initGoogleSignIn();
     }
 
 
@@ -164,6 +129,54 @@ public class AuthenticationActivity extends AppCompatActivity {
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(authTable, authViewpager, new TabConfigurationStrategy());
         tabLayoutMediator.attach();
     }
+
+    /**
+     * Sets up facebooks SignIn
+     */
+    private void initFacebookSignIn() {
+        // Facebook signIn
+        mCallbackManager = CallbackManager.Factory.create();
+        btnFbLogin = findViewById(R.id.btnFbLogin);
+        btnFbLogin.setReadPermissions("email", "public_profile");
+        btnFbLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                model.loginWithFacebook(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+            }
+        });
+    }
+
+    /**
+     * Sets up googles sign in
+     */
+    private void initGoogleSignIn() {
+        // Google signIn
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
+        btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+    }
+
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

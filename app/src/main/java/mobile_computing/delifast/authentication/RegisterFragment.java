@@ -1,5 +1,6 @@
 package mobile_computing.delifast.authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -39,10 +40,11 @@ import java.util.concurrent.Executor;
 
 import mobile_computing.delifast.R;
 import mobile_computing.delifast.entities.User;
+import mobile_computing.delifast.interaction.DelifastActivity;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class RegisterFragment extends Fragment implements View.OnClickListener {
+public class RegisterFragment extends Fragment {
 
     private EditText tfUsername;
     private EditText tfEmail;
@@ -63,10 +65,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 user.setName(tfUsername.toString().trim());
                 user.setEmail(tfEmail.toString().trim());
                 model.save(user);
+                Intent homepage = new Intent(getActivity(), DelifastActivity.class);
+                startActivity(homepage);
             }
         });
-
-
         initView(registerView);
         return registerView;
     }
@@ -78,7 +80,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      */
     public void initView(View registerView) {
         btnRegister = registerView.findViewById(R.id.btnRegRegister);
-        btnRegister.setOnClickListener((View.OnClickListener) this);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerUser();
+            }
+        });
         tfUsername = registerView.findViewById(R.id.tfRegName);
         tfEmail = registerView.findViewById(R.id.tfRegEmail);
         tfPassword = registerView.findViewById(R.id.tfRegPassword);
@@ -98,10 +105,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         model.registration(email, password);
     }
 
-    @Override
-    public void onClick(View v) {
-        registerUser();
-    }
 
     /**
      * Validates the credentials passed by the user.

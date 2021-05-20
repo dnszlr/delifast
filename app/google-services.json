@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "124646913594",
+    "firebase_url": "https://delifast-mc21-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "delifast-mc21",
     "storage_bucket": "delifast-mc21.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "124646913594-u3gkuehggpqnv62k9mmofa941357eig5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mobile_computing.delifast",
+            "certificate_hash": "1889360741482f3b6c5ae9151f9858430ab555d3"
+          }
+        },
         {
           "client_id": "124646913594-98kr6bdf4bapeninmmr7m3l4dmsogriq.apps.googleusercontent.com",
           "client_type": 3

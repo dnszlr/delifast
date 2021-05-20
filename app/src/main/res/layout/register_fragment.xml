@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="300dp"
-        android:layout_height="220dp"
-        android:layout_marginStart="44dp"
+        android:layout_width="259dp"
+        android:layout_height="161dp"
+        android:layout_marginStart="64dp"
         android:contentDescription="@string/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -81,36 +81,11 @@
         android:id="@+id/btnRegRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="30dp"
         android:text="Registrieren"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layRegPassword" />
-
-
-    <ImageView
-        android:id="@+id/btnRegGoogle"
-        android:layout_width="63dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="204dp"
-        android:contentDescription="@string/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layRegPassword"
-        app:srcCompat="@drawable/outline_facebook_black_36" />
-
-    <ImageView
-        android:id="@+id/btnRegFacebook"
-        android:layout_width="63dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="204dp"
-        android:layout_marginEnd="112dp"
-        android:contentDescription="@string/logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layRegPassword"
-        app:srcCompat="@drawable/outline_facebook_black_36" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

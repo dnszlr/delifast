@@ -96,7 +96,10 @@ public class AuthenticationActivity extends AppCompatActivity {
         if (currentUser != null) {
             //User already loggedIn, no need to login again.
             Log.w(TAG, "User" + currentUser.getDisplayName() + " loggedIn");
-            // TODO route to next Activity
+
+            Intent homepage = new Intent(AuthenticationActivity.this, DelifastActivity.class);
+            startActivity(homepage);
+
         } else {
             // No user logged in, continue with AuthenticationActivity.
             Log.w(TAG, "No user loggedIn");

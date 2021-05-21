@@ -26,7 +26,7 @@ public class AuthenticationViewModel extends ViewModel {
     }
 
     /**
-     * @return Returns the MuteableLiveData Object from the Repository
+     * @return Returns the MutableLiveData Object from the Repository
      */
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
         return firebaseUser;

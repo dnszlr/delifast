@@ -28,10 +28,11 @@ public class FirebaseAuthRepository {
 
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
 
-        return  this.firebaseUser;
+        return this.firebaseUser;
     }
 
     public FirebaseUser getCurrentUser() {
+
         return firebaseAuth.getCurrentUser();
     }
 

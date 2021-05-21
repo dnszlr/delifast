@@ -9,40 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.facebook.appevents.AppEventsLogger;
-
-import java.time.LocalDateTime;
-import java.util.concurrent.Executor;
 
 import mobile_computing.delifast.R;
 import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.interaction.DelifastActivity;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
+import mobile_computing.delifast.others.DelifastConstants;
 
 public class RegisterFragment extends Fragment {
 
@@ -57,7 +33,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View registerView = inflater.inflate(R.layout.register_fragment, container);
-        model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
+        model = new ViewModelProvider(getActivity()).get(AuthenticationViewModel.class);
         model.getFirebaseUser().observe(getViewLifecycleOwner(), firebaseUser -> {
             if (firebaseUser != null) {
                 Log.d("FirebaseUser: ", firebaseUser.getDisplayName());
@@ -116,22 +92,22 @@ public class RegisterFragment extends Fragment {
      */
     private boolean areCredentailsValid(String username, String email, String password) {
         if (username.isEmpty()) {
-            tfUsername.setError("Name erfordelich");
+            tfUsername.setError(DelifastConstants.MISSINGUSERNAME);
             tfUsername.requestFocus();
             return false;
         }
         if (email.isEmpty()) {
-            tfEmail.setError("Email-Adresse erfordelich");
+            tfEmail.setError(DelifastConstants.MISSINGEMAIL);
             tfEmail.requestFocus();
             return false;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            tfEmail.setError("Email ungültig");
+            tfEmail.setError(DelifastConstants.INVALIDEMAIL);
             tfEmail.requestFocus();
             return false;
         }
         if (password.length() < 8) {
-            tfPassword.setError("Passwort muss min. 8 Zeichen haben");
+            tfPassword.setError(DelifastConstants.INVALIDPASSWORD);
             tfPassword.requestFocus();
             return false;
         }

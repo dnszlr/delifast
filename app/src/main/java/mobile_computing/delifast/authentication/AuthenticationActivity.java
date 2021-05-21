@@ -1,19 +1,14 @@
 package mobile_computing.delifast.authentication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,21 +22,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.time.LocalDateTime;
 
 import mobile_computing.delifast.R;
-import mobile_computing.delifast.entities.DelifastEntity;
 import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.interaction.DelifastActivity;
 
@@ -73,7 +59,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                 startActivity(homepage);
             }
         });
-
         setContentView(R.layout.activity_authentication);
         initFragments();
         initFacebookSignIn();
@@ -115,7 +100,6 @@ public class AuthenticationActivity extends AppCompatActivity {
         } else {
             // No user logged in, continue with AuthenticationActivity.
             Log.w(TAG, "No user loggedIn");
-
         }
     }
 

@@ -1,6 +1,5 @@
 package mobile_computing.delifast.authentication;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -8,22 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 import mobile_computing.delifast.R;
-import mobile_computing.delifast.entities.User;
-import mobile_computing.delifast.interaction.DelifastActivity;
+import mobile_computing.delifast.others.DelifastConstants;
 
 public class LoginFragment extends Fragment {
 
@@ -37,7 +30,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View loginView = inflater.inflate(R.layout.login_fragment, container);
-        model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
+        model = new ViewModelProvider(getActivity()).get(AuthenticationViewModel.class);
 
         initView(loginView);
         return loginView;
@@ -83,19 +76,19 @@ public class LoginFragment extends Fragment {
      */
     private boolean areCredentailsValid(String email, String password) {
         if (email.isEmpty()) {
-            tfEmail.setError("Please enter email address");
+            tfEmail.setError(DelifastConstants.MISSINGEMAIL);
             tfEmail.requestFocus();
             return false;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            tfEmail.setError("Not a valid email address");
+            tfEmail.setError(DelifastConstants.INVALIDEMAIL);
             tfEmail.requestFocus();
             return false;
         }
 
         if (password.length() < 8) {
-            tfPassword.setError("Password must have alteast 8 characters");
+            tfPassword.setError(DelifastConstants.INVALIDPASSWORD);
             tfPassword.requestFocus();
             return false;
         }

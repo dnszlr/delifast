@@ -22,13 +22,13 @@ public class FirebaseAuthRepository {
 
     public FirebaseAuthRepository() {
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        this.firebaseAuth = FirebaseAuth.getInstance();
         this.firebaseUser = new MutableLiveData<>();
     }
 
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
 
-        return firebaseUser;
+        return  this.firebaseUser;
     }
 
     public FirebaseUser getCurrentUser() {

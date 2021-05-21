@@ -2,24 +2,18 @@ package mobile_computing.delifast.authentication;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.facebook.AccessToken;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
-
-import mobile_computing.delifast.R;
 import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.repositories.FirebaseAuthRepository;
 import mobile_computing.delifast.repositories.UserRepository;
 
 public class AuthenticationViewModel extends ViewModel {
 
-    private MutableLiveData<User> user;
     private UserRepository userRepository;
     private FirebaseAuthRepository firebaseAuthRepository;
     private MutableLiveData<FirebaseUser> firebaseUser;

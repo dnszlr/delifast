@@ -21,8 +21,6 @@ public class User extends DelifastEntity {
         this.email = email;
     }
 
-    
-    
     public String getName() {
         return username;
     }

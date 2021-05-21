@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,76 +22,84 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.interaction.DelifastActivity;
 
 public class LoginFragment extends Fragment {
 
-    private EditText email, password;
+    private EditText tfEmail;
+    private EditText tfPassword;
     private LinearProgressIndicator progressBarLogin;
-    private FirebaseAuth mAuth;
     private Button btnLogin;
+    private AuthenticationViewModel model;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View loginView =  inflater.inflate(R.layout.login_fragment, container);
+        View loginView = inflater.inflate(R.layout.login_fragment, container);
+        model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
 
-        email = loginView.findViewById(R.id.tfEmail);
-        password = loginView.findViewById(R.id.tfPassword);
+        initView(loginView);
+        return loginView;
+    }
+
+    /**
+     * Initializes all view components
+     *
+     * @param loginView
+     */
+    public void initView(View loginView) {
+        tfEmail = loginView.findViewById(R.id.tfEmail);
+        tfPassword = loginView.findViewById(R.id.tfPassword);
         progressBarLogin = loginView.findViewById(R.id.progressBarLogin);
         btnLogin = loginView.findViewById(R.id.btnLogin);
-        mAuth = FirebaseAuth.getInstance();
-
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                String eMailAdressStr = email.getText().toString().trim();
-                String passwordStr = password.getText().toString().trim();
-
-                if(eMailAdressStr.isEmpty()){
-                    email.setError("Email-Adresse erfordelich");
-                    email.requestFocus();
-                    return;
-                }
-
-                if(!Patterns.EMAIL_ADDRESS.matcher(eMailAdressStr).matches()){
-                    email.setError("Email ungültig");
-                    email.requestFocus();
-                    return;
-                }
-
-                if(passwordStr.length() < 8){
-                    password.setError("Passwort muss min. 8 Zeichen haben");
-                    password.requestFocus();
-                    return;
-                }
-
-                progressBarLogin.setVisibility(View.VISIBLE);
-
-                mAuth.signInWithEmailAndPassword(eMailAdressStr, passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(getActivity(), "Login erfolgreich", Toast.LENGTH_SHORT).show();
-
-
-                            Intent homepage = new Intent(getActivity(), DelifastActivity.class);
-                            startActivity(homepage);
-                            getActivity().finish();
-                        }
-                        else {
-                            Toast.makeText(getActivity(), "Falsche Login-Daten", Toast.LENGTH_SHORT).show();
-                            progressBarLogin.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
-
+                loginUser();
             }
         });
+    }
 
+    /**
+     * Triggers viewmodels login process
+     */
+    private void loginUser() {
+        String email = tfEmail.getText().toString().trim();
+        String password = tfPassword.getText().toString().trim();
+        if (!areCredentailsValid(email, password)) {
+            return;
+        }
+        progressBarLogin.setVisibility(View.VISIBLE);
+        model.loginWithEmail(email, password);
+    }
 
+    /**
+     * Validates the passed user credentials for correct form.
+     *
+     * @param email
+     * @param password
+     * @return true if credentails are valid, false if not.
+     */
+    private boolean areCredentailsValid(String email, String password) {
+        if (email.isEmpty()) {
+            tfEmail.setError("Please enter email address");
+            tfEmail.requestFocus();
+            return false;
+        }
 
-        return loginView;
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tfEmail.setError("Not a valid email address");
+            tfEmail.requestFocus();
+            return false;
+        }
+
+        if (password.length() < 8) {
+            tfPassword.setError("Password must have alteast 8 characters");
+            tfPassword.requestFocus();
+            return false;
+        }
+
+        return true;
     }
 }

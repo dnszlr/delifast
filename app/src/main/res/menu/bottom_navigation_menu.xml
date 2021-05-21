@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/order"
+    <item
+        android:id="@+id/page_1"
+        android:enabled="true"
         android:icon="@drawable/outline_shopping_bag_24"
-        android:title="Bestellung"/>
-
-    <item android:id="@+id/delivery"
+        android:title="@string/Bestellung"/>
+    <item
+        android:id="@+id/page_2"
+        android:enabled="true"
         android:icon="@drawable/outline_directions_bike_24"
-        android:title="Lieferung"/>
-
-    <item android:id="@+id/notifications"
-        android:icon="@drawable/outline_notifications_24"
-        android:title="Benachrichtigungen"/>
-
-    <item android:id="@+id/profil"
+        android:title="@string/Lieferung"/>
+    <item
+        android:id="@+id/page_3"
+        android:enabled="true"
+        android:icon="@drawable/outline_chat_24"
+        android:title="@string/Nachrichten"/>
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
         android:icon="@drawable/outline_person_24"
-        android:title="Profil"/>
-
+        android:title="@string/Profil"/>
 </menu>

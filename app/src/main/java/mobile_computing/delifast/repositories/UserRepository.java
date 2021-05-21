@@ -1,9 +1,11 @@
 package mobile_computing.delifast.repositories;
 
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -14,8 +16,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import mobile_computing.delifast.entities.User;
 
 public class UserRepository {
@@ -31,7 +35,7 @@ public class UserRepository {
         this.dbCollection = db.collection(collection);
     }
 
-    public void save(User user) {
+    public MutableLiveData<Boolean> save(User user) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         dbCollection
                 .add(user)
@@ -48,9 +52,10 @@ public class UserRepository {
                 Log.w("saved", "Error adding document", e);
             }
         });
+        return result;
     }
 
-    public boolean update(User user) {
+    public MutableLiveData<Boolean> update(User user) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         DocumentReference entityToUpdate = dbCollection.document(user.getId());
 
@@ -70,7 +75,7 @@ public class UserRepository {
                         Log.w("TAG", "Error updating document", e);
                     }
                 });
-        return result.getValue();
+        return result;
     }
 
     public boolean delete(User user) {
@@ -130,9 +135,4 @@ public class UserRepository {
         });
         return entities;
     }
-
-
-
-
-
 }

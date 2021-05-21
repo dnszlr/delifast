@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import mobile_computing.delifast.others.DelifastTags;
+
 public class FirebaseAuthRepository {
 
     private FirebaseAuth firebaseAuth;
@@ -42,12 +44,12 @@ public class FirebaseAuthRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("Account created", "createUserWithEmail:success");
+                    Log.d(DelifastTags.AUTHCREATEACCOUNT, "createUserWithEmail:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     firebaseUser.postValue(user);
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Account not created", "createUserWithEmail:failure", task.getException());
+                    Log.w(DelifastTags.AUTHCREATEACCOUNT, "createUserWithEmail:failure", task.getException());
                     // TODO create a toast to notify user that account creation was not successful.
                 }
             }
@@ -61,12 +63,12 @@ public class FirebaseAuthRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("LoggedIn", "signInWithEmail:success");
+                    Log.d(DelifastTags.AUTHLOGINEMAIL, "signInWithEmail:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     firebaseUser.postValue(user);
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Login failed", "signInWithEmail:failure", task.getException());
+                    Log.w(DelifastTags.AUTHLOGINEMAIL, "signInWithEmail:failure", task.getException());
                     // TODO create a toast to notify user that login was not successful;
                 }
             }
@@ -85,12 +87,12 @@ public class FirebaseAuthRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("LoggedIn", "signInWithCredential:success");
+                    Log.d(DelifastTags.AUTHLOGINGOOGLE, "signInWithCredential:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     firebaseUser.postValue(user);
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Login failed", "signInWithCredential:failure", task.getException());
+                    Log.w(DelifastTags.AUTHLOGINGOOGLE, "signInWithCredential:failure", task.getException());
                     // TODO create a toast to notify user that login was not successful;
                 }
             }
@@ -111,12 +113,12 @@ public class FirebaseAuthRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("LoggedIn", "signInWithCredential:success");
+                    Log.d(DelifastTags.AUTHLOGINFB, "signInWithCredential:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     firebaseUser.postValue(user);
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Login failed", "signInWithCredential:failure", task.getException());
+                    Log.w(DelifastTags.AUTHLOGINFB, "signInWithCredential:failure", task.getException());
                     // TODO create a toast to notify user that login was not successful;
                 }
             }

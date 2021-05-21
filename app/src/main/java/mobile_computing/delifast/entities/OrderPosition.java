@@ -1,6 +1,6 @@
 package mobile_computing.delifast.entities;
 
-public class CartPosition extends DelifastEntity{
+public class OrderPosition {
 
     private Product product;
     private int amount;
@@ -8,11 +8,11 @@ public class CartPosition extends DelifastEntity{
     /**
      * Empty firebase constructor, don't remove.
      */
-    public CartPosition() {
+    public OrderPosition() {
 
     }
 
-    public CartPosition(Product product, int amount) {
+    public OrderPosition(Product product, int amount) {
         this.product = product;
         this.amount = amount;
     }
@@ -32,4 +32,9 @@ public class CartPosition extends DelifastEntity{
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public double getPrice() {
+        return product.getPrice() * amount;
+    }
 }
+

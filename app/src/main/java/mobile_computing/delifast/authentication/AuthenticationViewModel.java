@@ -22,13 +22,16 @@ public class AuthenticationViewModel extends ViewModel {
 
         this.userRepository = new UserRepository();
         this.firebaseAuthRepository = new FirebaseAuthRepository();
-        this.firebaseUser = firebaseAuthRepository.getFirebaseUser();
+        this.firebaseUser = new MutableLiveData<>();
     }
 
     /**
      * @return Returns the MutableLiveData Object from the Repository
      */
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
+        if (this.firebaseUser == null) {
+            this.firebaseUser = firebaseAuthRepository.getFirebaseUser();
+        }
         return firebaseUser;
     }
 

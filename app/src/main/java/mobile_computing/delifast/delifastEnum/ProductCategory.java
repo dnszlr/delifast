@@ -12,7 +12,7 @@ public enum ProductCategory {
     DRINK("Getränk"),
     SWEETS("Süßwaren"),
     SEASONING("Gewürz"),
-    OTHER("Sonstige");
+    OTHERS("Sonstige");
 
 
     private String productCategory;

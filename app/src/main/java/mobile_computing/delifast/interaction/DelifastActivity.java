@@ -41,13 +41,13 @@ public class DelifastActivity extends AppCompatActivity {
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener naviListener = new BottomNavigationView.OnNavigationItemSelectedListener(){
+    private BottomNavigationView.OnNavigationItemSelectedListener naviListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
 
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.page_1:
                     selectedFragment = new OrderFragment();
                     break;

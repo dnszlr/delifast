@@ -21,18 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mobile_computing.delifast.entities.User;
+import mobile_computing.delifast.others.DelifastConstants;
 
 public class UserRepository {
 
-    // Get a firestore instance for this class
-    private FirebaseFirestore db;
     private String collection;
     private CollectionReference dbCollection;
 
     public UserRepository() {
-        this.db = FirebaseFirestore.getInstance();
-        this.collection = "users";
-        this.dbCollection = db.collection(collection);
+        this.collection = DelifastConstants.USERS;
+        this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 
     public MutableLiveData<Boolean> save(User user) {
@@ -78,7 +76,7 @@ public class UserRepository {
         return result;
     }
 
-    public boolean delete(User user) {
+    public MutableLiveData<Boolean> delete(User user) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         dbCollection.document(user.getId())
                 .delete()
@@ -96,10 +94,10 @@ public class UserRepository {
                         Log.w("TAG", "Error deleting document", e);
                     }
                 });
-        return result.getValue();
+        return result;
     }
 
-    public LiveData<User> findById(String id) {
+    public MutableLiveData<User> findById(String id) {
         final MutableLiveData<User> entity = new MutableLiveData<>();
         dbCollection.document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -116,7 +114,7 @@ public class UserRepository {
         return entity;
     }
 
-    public LiveData<List<User>> getAll() {
+    public MutableLiveData<List<User>> getAll() {
         final MutableLiveData<List<User>> entities = new MutableLiveData<>();
         dbCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

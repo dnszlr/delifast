@@ -4,7 +4,6 @@ public class DelifastConstants {
 
     public final static int TIMEOUT = 1500;
 
-
     // Authentication
     public final static String MISSINGUSERNAME = "Benutzername erforderlich";
     public final static String MISSINGEMAIL = "Email-Adresse erforderlich";

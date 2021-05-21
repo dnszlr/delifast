@@ -37,6 +37,8 @@ public class OrderFragment extends Fragment {
         //TODO: Add all Products of the DB in the array
 
 
+
+
         ProductAdapter adapter = new ProductAdapter(getActivity(), R.layout.fragment_order_adapter, products);
         productsList.setAdapter(adapter);
 

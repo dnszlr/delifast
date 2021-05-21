@@ -18,61 +18,68 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile_computing.delifast.entities.Order;
 import mobile_computing.delifast.entities.Product;
-import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.others.DelifastConstants;
 import mobile_computing.delifast.others.DelifastTags;
 
-public class OrderRepository {
+public class ProductRepository {
 
     private String collection;
     private CollectionReference dbCollection;
 
-    public OrderRepository() {
-        this.collection = DelifastConstants.ORDERS;
+    public ProductRepository() {
+        this.collection = DelifastConstants.PRODUCTS;
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 
-    public MutableLiveData<Boolean> save(Order order) {
+    /**
+     * Adds a new Products to the database
+     *
+     * @param product
+     * @return true if save was successful, false if not
+     */
+    public MutableLiveData<Boolean> save(Product product) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         dbCollection
-                .add(order)
+                .add(product)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         result.setValue(true);
-                        Log.d(DelifastTags.ORDERSAVE, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Log.d(DelifastTags.PRODUCTSAVE, "DocumentSnapshot written with ID: " + documentReference.getId());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 result.setValue(false);
-                Log.w(DelifastTags.ORDERSAVE, "Error adding document", e);
+                Log.w(DelifastTags.PRODUCTSAVE, "Error adding document", e);
             }
         });
         return result;
     }
 
-    public MutableLiveData<List<Order>> getAll() {
-        final MutableLiveData<List<Order>> orders = new MutableLiveData<>();
+    /**
+     * Returns all stored Products from the database
+     *
+     * @return Products as MutableLiveData
+     */
+    public MutableLiveData<ArrayList<Product>> getAll() {
+        final MutableLiveData<ArrayList<Product>> products = new MutableLiveData<>();
         dbCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Order> resultList = new ArrayList<>();
+                ArrayList<Product> resultList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(DelifastTags.ORDERGETALL, document.getId() + " => " + document.getData());
-                        resultList.add(document.toObject(Order.class));
+                        Log.d(DelifastTags.PRODUCTGETALL, document.getId() + " => " + document.getData());
+                        resultList.add(document.toObject(Product.class));
                     }
-                    orders.setValue(resultList);
+                    products.setValue(resultList);
                 } else {
-                    Log.d(DelifastTags.ORDERGETALL, "Error getting documents: ", task.getException());
+                    Log.d(DelifastTags.PRODUCTGETALL, "Error getting documents: ", task.getException());
                 }
             }
         });
-        return orders;
+        return products;
     }
-
-
 }

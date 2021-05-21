@@ -3,6 +3,8 @@ package mobile_computing.delifast.entities;
 import com.google.firebase.firestore.ServerTimestamp;
 import com.google.type.DateTime;
 
+import java.util.List;
+
 import mobile_computing.delifast.delifastEnum.OrderStatus;
 
 
@@ -15,7 +17,7 @@ public class Order extends DelifastEntity {
     private OrderStatus orderStatus;
     private float deliveryPrice;
     private float serviceFee;
-    private ShoppingCart shoppingCart;
+    private List<OrderPosition> orderPositions;
 
     /**
      * Empty firebase constructor, don't remove.
@@ -24,14 +26,14 @@ public class Order extends DelifastEntity {
 
     }
 
-    public Order(long orderID, DateTime orderTime, DateTime deadline, OrderStatus orderStatus, float deliveryPrice, float serviceFee, ShoppingCart shoppingCart) {
+    public Order(long orderID, DateTime orderTime, DateTime deadline, OrderStatus orderStatus, float deliveryPrice, float serviceFee, List<OrderPosition> orderPositions) {
         this.orderID = orderID;
         this.orderTime = orderTime;
         this.deadline = deadline;
         this.orderStatus = orderStatus;
         this.deliveryPrice = deliveryPrice;
         this.serviceFee = serviceFee;
-        this.shoppingCart = shoppingCart;
+        this.orderPositions = orderPositions;
     }
 
     public long getOrderID() {
@@ -82,11 +84,11 @@ public class Order extends DelifastEntity {
         this.serviceFee = serviceFee;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
+    public List<OrderPosition> getOrderPositions() {
+        return orderPositions;
     }
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
+    public void setOrderPositions(List<OrderPosition> orderPositions) {
+        this.orderPositions = orderPositions;
     }
 }

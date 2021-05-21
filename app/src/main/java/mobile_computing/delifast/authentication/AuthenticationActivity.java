@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import mobile_computing.delifast.R;
 import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.interaction.DelifastActivity;
+import mobile_computing.delifast.others.DelifastTags;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
@@ -38,7 +39,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     private LoginButton btnFbLogin;
     private SignInButton btnGoogleSignIn;
     private CallbackManager mCallbackManager;
-    private static final String TAG = "FacebookAuthentification";
     private AuthenticationViewModel model;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
@@ -76,11 +76,11 @@ public class AuthenticationActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                Log.d(DelifastTags.GOOGLE, "firebaseAuthWithGoogle:" + account.getId());
                 model.loginWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(DelifastTags.GOOGLE, "Google sign in failed", e);
                 Toast.makeText(this, "Error Google Auth", Toast.LENGTH_SHORT).show();
             }
         }
@@ -95,14 +95,14 @@ public class AuthenticationActivity extends AppCompatActivity {
         FirebaseUser currentUser = model.getCurrentUser();
         if (currentUser != null) {
             //User already loggedIn, no need to login again.
-            Log.w(TAG, "User" + currentUser.getDisplayName() + " loggedIn");
+            Log.w(DelifastTags.MAILLOGIN, "User" + currentUser.getDisplayName() + " loggedIn");
 
             Intent homepage = new Intent(AuthenticationActivity.this, DelifastActivity.class);
             startActivity(homepage);
 
         } else {
             // No user logged in, continue with AuthenticationActivity.
-            Log.w(TAG, "No user loggedIn");
+            Log.w(DelifastTags.MAILLOGIN, "No user loggedIn");
         }
     }
 
@@ -128,18 +128,18 @@ public class AuthenticationActivity extends AppCompatActivity {
         btnFbLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                Log.d(DelifastTags.FB, "facebook:onSuccess:" + loginResult);
                 model.loginWithFacebook(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
+                Log.d(DelifastTags.FB, "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
+                Log.d(DelifastTags.FB, "facebook:onError", error);
             }
         });
     }

@@ -6,7 +6,7 @@ public class Product extends DelifastEntity {
 
     private String name;
     private ProductCategory category;
-    private float price;
+    private double price;
 
     /**
      * Empty firebase constructor, don't remove.
@@ -15,7 +15,7 @@ public class Product extends DelifastEntity {
 
     }
 
-    public Product(String name, ProductCategory category, float price) {
+    public Product(String name, ProductCategory category, double price) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -37,11 +37,11 @@ public class Product extends DelifastEntity {
         this.category = category;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

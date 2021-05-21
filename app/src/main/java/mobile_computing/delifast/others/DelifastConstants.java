@@ -9,4 +9,10 @@ public class DelifastConstants {
     public final static String MISSINGEMAIL = "Email-Adresse erforderlich";
     public final static String INVALIDEMAIL = "Ungültige Email-Adresse";
     public final static String INVALIDPASSWORD = "Passwort muss min. 8 Zeichen haben";
+
+
+    // Collections
+    public final static String USERS = "users";
+    public final static String PRODUCTS = "products";
+    public final static String ORDERS = "orders";
 }

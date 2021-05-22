@@ -35,14 +35,24 @@ public class OrderFragment extends Fragment {
 
         initView(orderView);
         model = new ViewModelProvider(this).get(OrderViewModel.class);
-        model.getAllPositions().observe(getViewLifecycleOwner(), dbOrderPositions -> {
+        model.getAll().observe(getViewLifecycleOwner(), dbPositions -> {
+            if (dbPositions != null) {
+                Log.d("Observer", "im observing this amount of products: " + dbPositions.size());
+                model.updateOrderPositionList(dbPositions);
+            }
+        });
 
-            if (dbOrderPositions != null) {
-                Log.d("Observer", "im observing this amount of products: " + dbOrderPositions.size());
-                OrderPositionAdapter orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, dbOrderPositions, this);
+        model.getOrderPositionList().observe(getViewLifecycleOwner(), orderPositions -> {
+            if (orderPositions != null) {
+                for (OrderPosition op : orderPositions) {
+                    Log.d("Observer", "Received: " + op.getAmount());
+                }
+                OrderPositionAdapter orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
                 productsList.setAdapter(orderPositionAdapter);
             }
         });
+
+
         // Inflate the layout for this fragment
         return orderView;
     }
@@ -51,9 +61,8 @@ public class OrderFragment extends Fragment {
         productsList = orderView.findViewById(R.id.listViewOrder);
     }
 
-    public void editOrderPositionsInViewModel(int orderPosition){
+    public void editOrderPositionsInViewModel(int orderPosition) {
         model.changeCountOfOrderPosition(orderPosition);
-
     }
 
 }

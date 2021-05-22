@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile_computing.delifast.delifastEnum.ProductCategory;
+import mobile_computing.delifast.entities.Order;
 import mobile_computing.delifast.entities.OrderPosition;
 import mobile_computing.delifast.entities.Product;
 import mobile_computing.delifast.repositories.OrderRepository;
@@ -16,7 +18,6 @@ import mobile_computing.delifast.repositories.ProductRepository;
 public class OrderViewModel extends ViewModel {
 
     private ProductRepository productRepository;
-    private OrderRepository orderRepository;
     private MutableLiveData<ArrayList<Product>> productList;
     private MutableLiveData<Boolean> result;
     private MutableLiveData<ArrayList<OrderPosition>> orderPositionList;
@@ -25,7 +26,7 @@ public class OrderViewModel extends ViewModel {
         this.productRepository = new ProductRepository();
         this.productList = productRepository.getAll();
         this.result = new MutableLiveData<>();
-        this.orderPositionList = getAllPositions();
+        this.orderPositionList = new MutableLiveData<>();
     }
 
     /**
@@ -37,27 +38,34 @@ public class OrderViewModel extends ViewModel {
         return productRepository.getAll();
     }
 
-    public MutableLiveData<ArrayList<OrderPosition>> getAllPositions() {
-        MutableLiveData<ArrayList<OrderPosition>> orderPositions = new MutableLiveData<>();
-        MutableLiveData<ArrayList<Product>> products = productRepository.getAll();
-        Log.d("Fucking Method:", "Product list length" + products.getValue().size());
+    public void updateOrderPositionList(ArrayList<Product> products) {
+        ArrayList<OrderPosition> op = new ArrayList<>();
+        if (orderPositionList.getValue() != null) {
+            op = orderPositionList.getValue();
+        }
+        for (Product product : products) {
 
-        for (Product product : products.getValue()) {
-            OrderPosition foundOp = orderPositions.getValue().stream().filter(position ->
+            OrderPosition foundOp = op.stream().filter(position ->
                     position.getProduct().equals(product)).findFirst().orElse(null);
 
             if (foundOp == null) {
                 OrderPosition newOrderPosition = new OrderPosition(product, 0);
-                orderPositions.getValue().add(newOrderPosition);
+                op.add(newOrderPosition);
             }
         }
+        orderPositionList.setValue(op);
+    }
 
-
-        return orderPositions;
+    public MutableLiveData<ArrayList<OrderPosition>> getOrderPositionList() {
+        return this.orderPositionList;
     }
 
     public void changeCountOfOrderPosition(int orderPosition) {
-        OrderPosition op = this.orderPositionList.getValue().get(orderPosition);
+        Log.d("asd", "im opposition: " + orderPosition);
+        ArrayList<OrderPosition> opList = this.orderPositionList.getValue();
+        OrderPosition op = opList.get(orderPosition);
+        Log.d("asd", "im op: " + op.getProduct().getName());
         op.setAmount(op.getAmount() + 1);
+        this.orderPositionList.setValue(opList);
     }
 }

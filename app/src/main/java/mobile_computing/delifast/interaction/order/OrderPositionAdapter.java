@@ -59,7 +59,7 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         tvProductCount = convertView.findViewById(R.id.tvProductCount);
         btnPlus = convertView.findViewById(R.id.btnPlus);
 
-        tvProductCount.setText(orderPosition.getAmount());
+        tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
 
         // TODO: implement the onClick method for the plus and minus bttons
         btnPlus.setOnClickListener(new View.OnClickListener() {

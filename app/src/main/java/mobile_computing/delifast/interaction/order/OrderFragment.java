@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -23,6 +28,8 @@ public class OrderFragment extends Fragment {
 
     private OrderViewModel model;
     private ListView productsList;
+    private TextInputEditText filter;
+    private OrderPositionAdapter orderPositionAdapter;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -44,7 +51,7 @@ public class OrderFragment extends Fragment {
 
         model.getOrderPositionList().observe(getViewLifecycleOwner(), orderPositions -> {
             if (orderPositions != null) {
-                OrderPositionAdapter orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
+                orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
                 productsList.setAdapter(orderPositionAdapter);
             }
         });
@@ -54,7 +61,25 @@ public class OrderFragment extends Fragment {
 
     private void initView(View orderView) {
         productsList = orderView.findViewById(R.id.listViewOrder);
+        filter = orderView.findViewById(R.id.etFilter);
+        filter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                orderPositionAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
+
 
     public void editOrderPositionsInViewModel(OrderPosition orderPosition) {
         model.changeCountOfOrderPosition(orderPosition);

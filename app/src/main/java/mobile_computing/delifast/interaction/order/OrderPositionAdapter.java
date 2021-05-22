@@ -50,6 +50,7 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
 
         initView(convertView);
         tvProductName.setText(orderPosition.getProduct().getName());
+        tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
         imgProduct.setImageResource(getIcon(orderPosition.getProduct().getCategory()));
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +81,6 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
      */
     private void initView(View convertView) {
         tvProductName = convertView.findViewById(R.id.tvProductName);
-
         imgProduct = convertView.findViewById(R.id.imgProduct);
         tvProductCount = convertView.findViewById(R.id.tvProductCount);
         btnPlus = convertView.findViewById(R.id.btnPlus);

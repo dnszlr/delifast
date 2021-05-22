@@ -19,6 +19,7 @@ import mobile_computing.delifast.authentication.AuthenticationActivity;
 import mobile_computing.delifast.interaction.delivery.DeliveryFragment;
 import mobile_computing.delifast.interaction.notification.NotificationFragment;
 import mobile_computing.delifast.interaction.order.OrderFragment;
+import mobile_computing.delifast.interaction.order.ParentOrderFragment;
 import mobile_computing.delifast.interaction.profile.ProfileFragment;
 
 public class DelifastActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class DelifastActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delifast);
 
         initView();
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener naviListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,7 +44,7 @@ public class DelifastActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.page_1:
-                    selectedFragment = new OrderFragment();
+                    selectedFragment = new ParentOrderFragment();
                     break;
 
                 case R.id.page_2:
@@ -70,7 +72,10 @@ public class DelifastActivity extends AppCompatActivity {
     public void initView() {
         btmNavi = findViewById(R.id.bottomNavigationView);
         btmNavi.setOnNavigationItemSelectedListener(naviListener);
+
         naviListener.onNavigationItemSelected(btmNavi.getMenu().getItem(0));
+
+
     }
 
 

@@ -58,14 +58,27 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         imgProduct = convertView.findViewById(R.id.imgProduct);
         tvProductCount = convertView.findViewById(R.id.tvProductCount);
         btnPlus = convertView.findViewById(R.id.btnPlus);
+        btnMinus = convertView.findViewById(R.id.btnMinus);
 
         tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
 
-        // TODO: implement the onClick method for the plus and minus bttons
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment.editOrderPositionsInViewModel(position);
+                int amount = orderPosition.getAmount() + 1;
+                orderPosition.setAmount(amount);
+                fragment.editOrderPositionsInViewModel(orderPosition);
+            }
+        });
+        btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int amount = orderPosition.getAmount() - 1;
+                if (amount >= 0) {
+                    orderPosition.setAmount(amount);
+                    fragment.editOrderPositionsInViewModel(orderPosition);
+                }
             }
         });
 

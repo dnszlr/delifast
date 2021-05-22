@@ -22,7 +22,6 @@ import mobile_computing.delifast.entities.Product;
 public class OrderFragment extends Fragment {
 
     private OrderViewModel model;
-    private ArrayList<Product> products;
     private ListView productsList;
 
     public OrderFragment() {
@@ -57,7 +56,7 @@ public class OrderFragment extends Fragment {
         productsList = orderView.findViewById(R.id.listViewOrder);
     }
 
-    public void editOrderPositionsInViewModel(int orderPosition) {
+    public void editOrderPositionsInViewModel(OrderPosition orderPosition) {
         model.changeCountOfOrderPosition(orderPosition);
     }
 

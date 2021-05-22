@@ -70,6 +70,7 @@ public class DelifastActivity extends AppCompatActivity {
     public void initView() {
         btmNavi = findViewById(R.id.bottomNavigationView);
         btmNavi.setOnNavigationItemSelectedListener(naviListener);
+        naviListener.onNavigationItemSelected(btmNavi.getMenu().getItem(0));
     }
 
 

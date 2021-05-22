@@ -67,12 +67,9 @@ public class OrderViewModel extends ViewModel {
         return this.orderPositionList;
     }
 
-    public void changeCountOfOrderPosition(int orderPosition) {
-        Log.d("asd", "im opposition: " + orderPosition);
+    public void changeCountOfOrderPosition(OrderPosition orderPosition) {
         ArrayList<OrderPosition> opList = this.orderPositionList.getValue();
-        OrderPosition op = opList.get(orderPosition);
-        Log.d("asd", "im op: " + op.getProduct().getName());
-        op.setAmount(op.getAmount() + 1);
+        opList.add(orderPosition);
         this.orderPositionList.setValue(opList);
     }
 }

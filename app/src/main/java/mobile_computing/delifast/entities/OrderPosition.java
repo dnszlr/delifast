@@ -34,6 +34,7 @@ public class OrderPosition {
     }
 
     public double getPrice() {
+
         return product.getPrice() * amount;
     }
 }

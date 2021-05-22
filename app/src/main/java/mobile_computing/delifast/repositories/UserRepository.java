@@ -3,7 +3,6 @@ package mobile_computing.delifast.repositories;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,7 +28,7 @@ public class UserRepository {
     private CollectionReference dbCollection;
 
     public UserRepository() {
-        this.collection = DelifastConstants.USERS;
+        this.collection = DelifastConstants.USERCOLLECTION;
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 

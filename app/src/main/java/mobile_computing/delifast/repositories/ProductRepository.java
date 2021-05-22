@@ -16,7 +16,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import mobile_computing.delifast.entities.Product;
 import mobile_computing.delifast.others.DelifastConstants;
@@ -28,7 +27,7 @@ public class ProductRepository {
     private CollectionReference dbCollection;
 
     public ProductRepository() {
-        this.collection = DelifastConstants.PRODUCTS;
+        this.collection = DelifastConstants.PRODUCTCOLLECTION;
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 

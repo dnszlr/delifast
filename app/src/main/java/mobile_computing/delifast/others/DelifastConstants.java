@@ -12,7 +12,7 @@ public class DelifastConstants {
 
 
     // Collections
-    public final static String USERS = "users";
-    public final static String PRODUCTS = "products";
-    public final static String ORDERS = "orders";
+    public final static String USERCOLLECTION = "users";
+    public final static String PRODUCTCOLLECTION = "products";
+    public final static String ORDERCOLLECTION = "orders";
 }

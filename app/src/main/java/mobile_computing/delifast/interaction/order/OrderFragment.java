@@ -26,7 +26,6 @@ import mobile_computing.delifast.entities.Product;
 public class OrderFragment extends Fragment {
 
     private OrderViewModel model;
-    private ArrayList<Product> products;
     private ListView productsList;
 
     public OrderFragment() {
@@ -42,11 +41,12 @@ public class OrderFragment extends Fragment {
         model = new ViewModelProvider(this).get(OrderViewModel.class);
         model.getAll().observe(getViewLifecycleOwner(), dbProducts -> {
             if (dbProducts != null) {
-                Log.d("Observer", "im observing this amount of products: " + dbProducts.size());
+                Log.d("Observer", "Observing this amount of products: " + dbProducts.size());
                 ProductAdapter productAdapter = new ProductAdapter(getActivity(), R.layout.fragment_order_adapter, dbProducts);
                 productsList.setAdapter(productAdapter);
             }
         });
+
 
 
         // Inflate the layout for this fragment

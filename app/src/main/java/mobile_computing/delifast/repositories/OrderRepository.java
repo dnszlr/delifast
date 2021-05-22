@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mobile_computing.delifast.entities.Order;
-import mobile_computing.delifast.entities.Product;
-import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.others.DelifastConstants;
 import mobile_computing.delifast.others.DelifastTags;
 
@@ -30,7 +28,7 @@ public class OrderRepository {
     private CollectionReference dbCollection;
 
     public OrderRepository() {
-        this.collection = DelifastConstants.ORDERS;
+        this.collection = DelifastConstants.ORDERCOLLECTION;
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 

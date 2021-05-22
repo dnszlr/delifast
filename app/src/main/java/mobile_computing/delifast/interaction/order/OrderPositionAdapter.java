@@ -87,6 +87,13 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         btnMinus = convertView.findViewById(R.id.btnMinus);
     }
 
+    /**
+     *
+     * function, that selects automaticly which img to display depending
+     * on category the  of the item in the database
+     *
+     */
+
 
     private int getIcon(ProductCategory productCategory) {
         int image = 0;

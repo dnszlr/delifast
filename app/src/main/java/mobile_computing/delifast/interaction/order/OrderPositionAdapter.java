@@ -1,7 +1,6 @@
 package mobile_computing.delifast.interaction.order;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import java.util.ArrayList;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.delifastEnum.ProductCategory;
 import mobile_computing.delifast.entities.OrderPosition;
-import mobile_computing.delifast.entities.Product;
 
 public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
 
@@ -61,7 +57,7 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         btnMinus = convertView.findViewById(R.id.btnMinus);
 
         tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
-
+        imgProduct.setImageResource(getIcon(orderPosition.getProduct().getCategory()));
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +77,46 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
                 }
             }
         });
-
         return convertView;
     }
 
+    private int getIcon(ProductCategory productCategory) {
+        int image = 0;
+        switch (productCategory) {
+            case MEAT:
+                image = R.drawable.meat;
+                break;
+            case BREAD:
+                image = R.drawable.bread;
+                break;
+            case DRINK:
+                image = R.drawable.drink;
+                break;
+            case FRUIT:
+                image = R.drawable.fruit;
+                break;
+            case MILKPRODUCT:
+                image = R.drawable.milkproduct;
+                break;
+            case OIL:
+                image = R.drawable.oil;
+                break;
+            case OTHERS:
+                image = R.drawable.others;
+                break;
+            case PASTA:
+                image = R.drawable.pasta;
+                break;
+            case SEASONING:
+                image = R.drawable.seasoning;
+                break;
+            case SWEETS:
+                image = R.drawable.sweets;
+                break;
+            case VEGETABLES:
+                image = R.drawable.vegetable;
+                break;
+        }
+        return image;
+    }
 }

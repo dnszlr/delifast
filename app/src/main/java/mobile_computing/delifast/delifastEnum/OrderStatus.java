@@ -15,7 +15,6 @@ public enum OrderStatus {
         this.orderType = orderType;
     }
 
-
     public String getOrderType() {
         return this.orderType;
     }

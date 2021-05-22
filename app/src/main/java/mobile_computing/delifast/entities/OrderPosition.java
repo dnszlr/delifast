@@ -33,6 +33,9 @@ public class OrderPosition {
         this.amount = amount;
     }
 
+    /**
+     * @return Multiplies the product price with the amount
+     */
     public double getPrice() {
 
         return product.getPrice() * amount;

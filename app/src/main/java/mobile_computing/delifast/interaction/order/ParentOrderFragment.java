@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.others.DelifastConstants;
 
 
 public class ParentOrderFragment extends Fragment {
@@ -56,12 +57,12 @@ public class ParentOrderFragment extends Fragment {
 
     private void initViewPager(ViewPager viewPagerParentOrder) {
         ParentOrderAdapter adapter = new ParentOrderAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrderFragment(), "Produkte");
-        adapter.addFragment(new OrderFragment(), "Warenkorb");
+        adapter.addFragment(new OrderFragment(), DelifastConstants.PRODUCTS);
+        adapter.addFragment(new CartFragment(), DelifastConstants.CART);
         viewPagerParentOrder.setAdapter(adapter);
     }
 
-    static class ParentOrderAdapter extends FragmentPagerAdapter{
+    static class ParentOrderAdapter extends FragmentPagerAdapter {
 
         private final List<Fragment> orderFragmentsList = new ArrayList<>();
         private final List<String> orderFragmentsTitles = new ArrayList<>();
@@ -81,7 +82,7 @@ public class ParentOrderFragment extends Fragment {
             return orderFragmentsList.size();
         }
 
-        public void addFragment(Fragment fragment, String title){
+        public void addFragment(Fragment fragment, String title) {
             orderFragmentsList.add(fragment);
             orderFragmentsTitles.add(title);
         }

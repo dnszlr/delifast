@@ -164,7 +164,9 @@ public class AuthenticationActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Initialize Google SignIn Method
+     */
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);

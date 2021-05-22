@@ -47,15 +47,25 @@ public class OrderViewModel extends ViewModel {
         return productRepository.getAll();
     }
 
+    /**
+     * Updates MutableLiveData List for OrderPositions to trigger Livedata changes on the UI
+     *
+     * @param products All the products received by the ProductsRepository
+     */
     public void updateOrderPositionList(ArrayList<Product> products) {
         ArrayList<OrderPosition> op = new ArrayList<>();
+        // If orderPosition already owns a ArrayList of OrderProjects, we have to use it.
         if (orderPositionList.getValue() != null) {
             op = orderPositionList.getValue();
         }
+        // Search through all given products
         for (Product product : products) {
+            // Search through all orderProducts if the current product already exists
             OrderPosition foundOp = op.stream().filter(position ->
                     position.getProduct().equals(product)).findFirst().orElse(null);
+            // If the product doesn't exist in the OrderPosition list
             if (foundOp == null) {
+                // create a new one to update the UI with the new OrderPosition Object.
                 OrderPosition newOrderPosition = new OrderPosition(product, 0);
                 op.add(newOrderPosition);
             }
@@ -67,9 +77,18 @@ public class OrderViewModel extends ViewModel {
         return this.orderPositionList;
     }
 
+    /**
+     * Gets called by the Fragment to in- or decrease the amount of a OrderPosition.
+     *
+     * @param orderPosition
+     */
     public void changeCountOfOrderPosition(OrderPosition orderPosition) {
         ArrayList<OrderPosition> opList = this.orderPositionList.getValue();
-        opList.add(orderPosition);
+        OrderPosition oldItem = opList.stream().filter(op ->
+                op.getProduct().equals(orderPosition.getProduct())).findFirst().orElse(null);
+        if (oldItem != null) {
+            opList.set(opList.indexOf(oldItem), orderPosition);
+        }
         this.orderPositionList.setValue(opList);
     }
 }

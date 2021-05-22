@@ -59,6 +59,11 @@ public class OrderFragment extends Fragment {
         return orderView;
     }
 
+    /**
+     * Initializes all view components
+     *
+     * @param orderView
+     */
     private void initView(View orderView) {
         productsList = orderView.findViewById(R.id.listViewOrder);
         filter = orderView.findViewById(R.id.etFilter);
@@ -80,7 +85,11 @@ public class OrderFragment extends Fragment {
         });
     }
 
-
+    /**
+     * Calls ViewModel method to de or increase the amount value of the OrderPosition
+     *
+     * @param orderPosition the changed OrderPosition
+     */
     public void editOrderPositionsInViewModel(OrderPosition orderPosition) {
         model.changeCountOfOrderPosition(orderPosition);
     }

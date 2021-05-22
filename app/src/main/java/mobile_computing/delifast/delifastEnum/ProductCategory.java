@@ -14,7 +14,6 @@ public enum ProductCategory {
     SEASONING("Gewürz"),
     OTHERS("Sonstige");
 
-
     private String productCategory;
 
     private ProductCategory(String productCategory) {

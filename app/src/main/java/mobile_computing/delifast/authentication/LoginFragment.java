@@ -80,19 +80,16 @@ public class LoginFragment extends Fragment {
             tfEmail.requestFocus();
             return false;
         }
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             tfEmail.setError(DelifastConstants.INVALIDEMAIL);
             tfEmail.requestFocus();
             return false;
         }
-
         if (password.length() < 8) {
             tfPassword.setError(DelifastConstants.INVALIDPASSWORD);
             tfPassword.requestFocus();
             return false;
         }
-
         return true;
     }
 }

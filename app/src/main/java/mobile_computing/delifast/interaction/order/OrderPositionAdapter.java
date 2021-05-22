@@ -48,15 +48,8 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
 
-        tvProductName = convertView.findViewById(R.id.tvProductName);
+        initView(convertView);
         tvProductName.setText(orderPosition.getProduct().getName());
-
-        imgProduct = convertView.findViewById(R.id.imgProduct);
-        tvProductCount = convertView.findViewById(R.id.tvProductCount);
-        btnPlus = convertView.findViewById(R.id.btnPlus);
-        btnMinus = convertView.findViewById(R.id.btnMinus);
-
-        tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
         imgProduct.setImageResource(getIcon(orderPosition.getProduct().getCategory()));
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +72,21 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         });
         return convertView;
     }
+
+    /**
+     * Initializes all view components
+     *
+     * @param convertView
+     */
+    private void initView(View convertView) {
+        tvProductName = convertView.findViewById(R.id.tvProductName);
+
+        imgProduct = convertView.findViewById(R.id.imgProduct);
+        tvProductCount = convertView.findViewById(R.id.tvProductCount);
+        btnPlus = convertView.findViewById(R.id.btnPlus);
+        btnMinus = convertView.findViewById(R.id.btnMinus);
+    }
+
 
     private int getIcon(ProductCategory productCategory) {
         int image = 0;

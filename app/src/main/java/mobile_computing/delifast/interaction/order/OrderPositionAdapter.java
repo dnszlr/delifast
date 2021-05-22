@@ -88,13 +88,9 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
     }
 
     /**
-     *
      * function, that selects automaticly which img to display depending
      * on category the  of the item in the database
-     *
      */
-
-
     private int getIcon(ProductCategory productCategory) {
         int image = 0;
         switch (productCategory) {

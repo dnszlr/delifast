@@ -9,23 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import mobile_computing.delifast.R;
-import mobile_computing.delifast.delifastEnum.ProductCategory;
-import mobile_computing.delifast.entities.Order;
-import mobile_computing.delifast.entities.Product;
-import mobile_computing.delifast.authentication.AuthenticationViewModel;
+import mobile_computing.delifast.entities.OrderPosition;
 import mobile_computing.delifast.entities.Product;
 
 
 public class OrderFragment extends Fragment {
 
     private OrderViewModel model;
+    private ArrayList<Product> products;
     private ListView productsList;
 
     public OrderFragment() {
@@ -39,16 +35,14 @@ public class OrderFragment extends Fragment {
 
         initView(orderView);
         model = new ViewModelProvider(this).get(OrderViewModel.class);
-        model.getAll().observe(getViewLifecycleOwner(), dbProducts -> {
-            if (dbProducts != null) {
-                Log.d("Observer", "Observing this amount of products: " + dbProducts.size());
-                ProductAdapter productAdapter = new ProductAdapter(getActivity(), R.layout.fragment_order_adapter, dbProducts);
-                productsList.setAdapter(productAdapter);
+        model.getAllPositions().observe(getViewLifecycleOwner(), dbOrderPositions -> {
+
+            if (dbOrderPositions != null) {
+                Log.d("Observer", "im observing this amount of products: " + dbOrderPositions.size());
+                OrderPositionAdapter orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, dbOrderPositions, this);
+                productsList.setAdapter(orderPositionAdapter);
             }
         });
-
-
-
         // Inflate the layout for this fragment
         return orderView;
     }
@@ -56,4 +50,10 @@ public class OrderFragment extends Fragment {
     private void initView(View orderView) {
         productsList = orderView.findViewById(R.id.listViewOrder);
     }
+
+    public void editOrderPositionsInViewModel(int orderPosition){
+        model.changeCountOfOrderPosition(orderPosition);
+
+    }
+
 }

@@ -37,5 +37,12 @@ public class OrderPosition {
 
         return product.getPrice() * amount;
     }
+
+    @Override
+    public String toString() {
+        return product.getName();
+    }
 }
+
+
 

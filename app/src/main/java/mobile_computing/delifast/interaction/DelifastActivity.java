@@ -32,13 +32,6 @@ public class DelifastActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delifast);
 
         initView();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentLayout, new OrderFragment())
-                .commit();
-
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener naviListener = new BottomNavigationView.OnNavigationItemSelectedListener() {

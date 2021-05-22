@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,25 +35,20 @@ public class OrderFragment extends Fragment {
         View orderView = inflater.inflate(R.layout.fragment_order, container, false);
 
         initView(orderView);
-        model = new ViewModelProvider(this).get(OrderViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(OrderViewModel.class);
         model.getAll().observe(getViewLifecycleOwner(), dbPositions -> {
             if (dbPositions != null) {
-                Log.d("Observer", "im observing this amount of products: " + dbPositions.size());
+                Log.d("Observer", "I'm observing this amount of products: " + dbPositions.size());
                 model.updateOrderPositionList(dbPositions);
             }
         });
 
         model.getOrderPositionList().observe(getViewLifecycleOwner(), orderPositions -> {
             if (orderPositions != null) {
-                for (OrderPosition op : orderPositions) {
-                    Log.d("Observer", "Received: " + op.getAmount());
-                }
                 OrderPositionAdapter orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
                 productsList.setAdapter(orderPositionAdapter);
             }
         });
-
-
         // Inflate the layout for this fragment
         return orderView;
     }

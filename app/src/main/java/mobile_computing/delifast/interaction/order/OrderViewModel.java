@@ -1,17 +1,26 @@
 package mobile_computing.delifast.interaction.order;
 
 import android.util.Log;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile_computing.delifast.R;
 import mobile_computing.delifast.delifastEnum.ProductCategory;
 import mobile_computing.delifast.entities.Order;
 import mobile_computing.delifast.entities.OrderPosition;
 import mobile_computing.delifast.entities.Product;
+import mobile_computing.delifast.interaction.delivery.DeliveryFragment;
+import mobile_computing.delifast.interaction.notification.NotificationFragment;
+import mobile_computing.delifast.interaction.profile.ProfileFragment;
 import mobile_computing.delifast.repositories.OrderRepository;
 import mobile_computing.delifast.repositories.ProductRepository;
 
@@ -44,10 +53,8 @@ public class OrderViewModel extends ViewModel {
             op = orderPositionList.getValue();
         }
         for (Product product : products) {
-
             OrderPosition foundOp = op.stream().filter(position ->
                     position.getProduct().equals(product)).findFirst().orElse(null);
-
             if (foundOp == null) {
                 OrderPosition newOrderPosition = new OrderPosition(product, 0);
                 op.add(newOrderPosition);

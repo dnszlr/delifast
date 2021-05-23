@@ -18,4 +18,7 @@ public class DelifastConstants {
     // Order
     public final static String PRODUCTS = "Produkte";
     public static final String CART = "Warenkorb";
+
+    //Google API key
+    public final static String APIKEY = "AIzaSyCiFrXdvgEz5REWj3jWC8cptl72kQ59gl0";
 }

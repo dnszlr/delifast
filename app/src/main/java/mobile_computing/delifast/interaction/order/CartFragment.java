@@ -54,7 +54,7 @@ import mobile_computing.delifast.others.DelifastConstants;
 
 public class CartFragment extends Fragment {
 
-    private TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etAdress;
+    private TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etAdress, etDateTime;
     private TextView test_adress;
     private CartPositionAdapter cartPositionAdapter;
     private OrderViewModel model;

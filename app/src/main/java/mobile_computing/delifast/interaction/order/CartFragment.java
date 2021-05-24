@@ -17,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -56,12 +58,9 @@ public class CartFragment extends Fragment {
 
     private TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etAdress, etDateTime;
     private TextView test_adress;
-    private CartPositionAdapter cartPositionAdapter;
     private OrderViewModel model;
-    private ListView orderPositionList;
-    TextInputLayout ilAdress;
-
-
+    private TextInputLayout ilAdress;
+    private LinearLayout lvContentLayout;
     private CarmenFeature home;
     private CarmenFeature work;
 
@@ -85,7 +84,6 @@ public class CartFragment extends Fragment {
 
         initView(cartView);
 
-
         etDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,14 +91,19 @@ public class CartFragment extends Fragment {
             }
         });
 
-
         addUserLocations();
         model = new ViewModelProvider(requireActivity()).get(OrderViewModel.class);
 
         model.getOrder().observe(getViewLifecycleOwner(), order -> {
             if (order != null) {
-                cartPositionAdapter = new CartPositionAdapter(getActivity(), R.layout.fragment_cart_adapter, order.getOrderPositions(), this);
-                orderPositionList.setAdapter(cartPositionAdapter);
+                 for (int i = 0; i < order.getOrderPositions().size(); i++) {
+                    LinearLayout li = new LinearLayout(getContext());
+                    li.setOrientation(LinearLayout.HORIZONTAL);
+                    TextView tv = new TextView(getContext());
+                    tv.setText(order.getOrderPositions().get(i).getProduct().getName());
+                    li.addView(tv);
+                    lvContentLayout.addView(li);
+                }
             }
         });
 
@@ -139,8 +142,7 @@ public class CartFragment extends Fragment {
             Log.d("Test_Adress", "ToString: " + feature.toString() + ", PlaceName: " + feature.placeName());
             Log.d("Test_Adress", "BBox: " + feature.bbox() + ", Adress: " + feature.address());
             Log.d("Test_Adress", "ID: " + feature.id() + ", Text: " + feature.text());
-        }
-        else if (resultCode == AutocompleteActivity.RESULT_ERROR){
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getActivity().getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -148,14 +150,14 @@ public class CartFragment extends Fragment {
 
 
     private void initView(View cartView) {
-        orderPositionList = cartView.findViewById(R.id.listViewCart);
+        lvContentLayout = cartView.findViewById(R.id.contentLayout);
         etCartSum = cartView.findViewById(R.id.etCartSum);
         etDateTime = cartView.findViewById(R.id.etDateTime);
         etDateTime.setInputType(InputType.TYPE_NULL);
         etSupplyPrice = cartView.findViewById(R.id.etSupplyPrice);
         etServiceFee = cartView.findViewById(R.id.etServiceFee);
         etAdress = cartView.findViewById(R.id.etAdress);
-        ilAdress =cartView.findViewById(R.id.ilAdress);
+        ilAdress = cartView.findViewById(R.id.ilAdress);
         test_adress = cartView.findViewById(R.id.test_adress);
     }
 

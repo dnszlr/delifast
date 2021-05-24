@@ -22,7 +22,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:focusableInTouchMode="true"
+                android:focusable="true">
 
                 <!-- Title, secondary and supporting text -->
                 <TextView
@@ -46,27 +48,36 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="0"
+                        android:maxLines="1"
+                        android:inputType="numberDecimal"
                         android:drawableRight="@drawable/ic_baseline_euro_24"
+
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ilSupplyPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:clickable="false"
                     android:hint="Lieferung"
-                    app:boxBackgroundColor="@color/white">
+                    android:focusable="false"
+                    app:boxBackgroundMode="none"
+                    app:boxBackgroundColor="@color/white"
+                    android:background="@android:color/transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etSupplyPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
                         android:editable="false"
+                        android:focusable="false"
                         android:text="0"
                         android:drawableRight="@drawable/ic_baseline_euro_24"
+
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -77,16 +88,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="Service:"
+                    app:boxBackgroundMode="none"
+                    android:clickable="false"
                     app:boxBackgroundColor="@color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etServiceFee"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
                         android:editable="false"
                         android:text="0"
                         android:drawableRight="@drawable/ic_baseline_euro_24"
 
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ilDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Gewünschte Lieferzeit:"
+                    android:focusable="false"
+                    android:clickable="true"
+                    app:boxBackgroundColor="@color/white">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_baseline_access_time_24"
+                        android:focusable="false"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -97,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="Adresse:"
+                    android:clickable="true"
                     app:boxBackgroundColor="@color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -104,6 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/ic_baseline_location_on_24"
+                        android:focusable="false"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

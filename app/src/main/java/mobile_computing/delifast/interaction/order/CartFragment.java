@@ -1,17 +1,23 @@
 package mobile_computing.delifast.interaction.order;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -27,8 +33,16 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonObject;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.net.ssl.SSLEngineResult;
@@ -38,9 +52,15 @@ import mobile_computing.delifast.others.DelifastConstants;
 
 public class CartFragment extends Fragment {
 
-    TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etAdress;
+    TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etDateTime, etAdress;
+    TextInputLayout ilAdress;
+
+
+    private CarmenFeature home;
+    private CarmenFeature work;
 
     TextView test_adress;
+    private static final String MAPBOX_ACCESS_TOKEN = "sk.eyJ1IjoibWthbGFzaCIsImEiOiJja3AyYWVsNm0xMjltMndsZ3FqZXhnZG11In0.G0zqmJ50IGR31LpPx82LNg";
 
 
     public CartFragment() {
@@ -60,19 +80,30 @@ public class CartFragment extends Fragment {
 
         initView(cartView);
 
-        //Initialize places
-        Places.initialize(getActivity().getApplicationContext(), DelifastConstants.APIKEY);
+
+        etDateTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimeDialog(etDateTime);
+            }
+        });
+
+
+        addUserLocations();
 
         etAdress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(getActivity());
-
+                Intent intent = new PlaceAutocomplete.IntentBuilder()
+                        .accessToken(MAPBOX_ACCESS_TOKEN)
+                        .placeOptions(PlaceOptions.builder()
+                                .backgroundColor(Color.parseColor("#EEEEEE"))
+                                .limit(10)
+                                .addInjectedFeature(home)
+                                .addInjectedFeature(work)
+                                .build(PlaceOptions.MODE_CARDS))
+                        .build(getActivity());
                 startActivityForResult(intent, 100);
-
-
             }
         });
 
@@ -82,13 +113,14 @@ public class CartFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100 && resultCode == AutocompleteActivity.RESULT_OK){
-            Place place = Autocomplete.getPlaceFromIntent(data);
+        if (resultCode == AutocompleteActivity.RESULT_OK && requestCode == 100) {
+            CarmenFeature feature = PlaceAutocomplete.getPlace(data);
+            etAdress.setText(feature.placeName());
 
-            etAdress.setText(place.getAddress());
-
-            test_adress.setText(String.format("Location: %s", place.getName()));
-
+            Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
+            Log.d("Test_Adress", "ToString: " + feature.toString() + ", PlaceName: " + feature.placeName());
+            Log.d("Test_Adress", "BBox: " + feature.bbox() + ", Adress: " + feature.address());
+            Log.d("Test_Adress", "ID: " + feature.id() + ", Text: " + feature.text());
         }
         else if (resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
@@ -100,9 +132,65 @@ public class CartFragment extends Fragment {
         etCartSum = view.findViewById(R.id.etCartSum);
         etSupplyPrice = view.findViewById(R.id.etSupplyPrice);
         etServiceFee = view.findViewById(R.id.etServiceFee);
+        etDateTime = view.findViewById(R.id.etDateTime);
         etAdress = view.findViewById(R.id.etAdress);
+        ilAdress =view.findViewById(R.id.ilAdress);
+
+        etDateTime.setInputType(InputType.TYPE_NULL);
+
 
         test_adress = view.findViewById(R.id.test_adress);
+    }
+
+
+    private void showDateTimeDialog(TextInputEditText etDateTime) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+
+                        etDateTime.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                };
+
+                new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
+
+            }
+        };
+
+        new DatePickerDialog(getActivity(),
+                dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+
+    private void addUserLocations() {
+        home = CarmenFeature.builder().text("Mapbox SF Office")
+                .geometry(Point.fromLngLat(-122.3964485, 37.7912561))
+                .placeName("50 Beale St, San Francisco, CA")
+                .id("mapbox-sf")
+                .properties(new JsonObject())
+                .build();
+
+        work = CarmenFeature.builder().text("Mapbox DC Office")
+                .placeName("740 15th Street NW, Washington DC")
+                .geometry(Point.fromLngLat(-77.0338348, 38.899750))
+                .id("mapbox-dc")
+                .properties(new JsonObject())
+                .build();
     }
 
 }

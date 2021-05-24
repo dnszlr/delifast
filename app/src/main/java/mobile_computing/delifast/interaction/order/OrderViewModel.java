@@ -17,14 +17,12 @@ public class OrderViewModel extends ViewModel {
 
     private ProductRepository productRepository;
     private MutableLiveData<ArrayList<Product>> productList;
-    private MutableLiveData<Boolean> result;
     private MutableLiveData<ArrayList<OrderPosition>> orderPositionList;
     private MutableLiveData<Order> order;
 
     public OrderViewModel() {
         this.productRepository = new ProductRepository();
         this.productList = productRepository.getAll();
-        this.result = new MutableLiveData<>();
         init();
     }
 
@@ -97,6 +95,7 @@ public class OrderViewModel extends ViewModel {
 
     /**
      * Updates the order entity
+     *
      * @param orderPosition
      * @param oldItem
      */

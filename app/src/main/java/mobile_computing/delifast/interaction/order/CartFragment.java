@@ -96,7 +96,7 @@ public class CartFragment extends Fragment {
 
         model.getOrder().observe(getViewLifecycleOwner(), order -> {
             if (order != null) {
-                 for (int i = 0; i < order.getOrderPositions().size(); i++) {
+                for (int i = 0; i < order.getOrderPositions().size(); i++) {
                     LinearLayout li = new LinearLayout(getContext());
                     li.setOrientation(LinearLayout.HORIZONTAL);
                     TextView tv = new TextView(getContext());
@@ -123,8 +123,6 @@ public class CartFragment extends Fragment {
                                 .build(PlaceOptions.MODE_CARDS))
                         .build(getActivity());
                 startActivityForResult(intent, 100);
-
-
             }
         });
 

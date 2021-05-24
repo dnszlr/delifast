@@ -96,6 +96,7 @@ public class CartFragment extends Fragment {
 
         model.getOrder().observe(getViewLifecycleOwner(), order -> {
             if (order != null) {
+                lvContentLayout.removeAllViewsInLayout();
                  for (int i = 0; i < order.getOrderPositions().size(); i++) {
                     LinearLayout li = new LinearLayout(getContext());
                     li.setOrientation(LinearLayout.HORIZONTAL);

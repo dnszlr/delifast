@@ -9,6 +9,7 @@ public class DelifastConstants {
     public final static String MISSINGEMAIL = "Email-Adresse erforderlich";
     public final static String INVALIDEMAIL = "Ungültige Email-Adresse";
     public final static String INVALIDPASSWORD = "Passwort muss min. 8 Zeichen haben";
+    public final static int RC_SIGN_IN = 123;
 
     // Collections
     public final static String USERCOLLECTION = "users";

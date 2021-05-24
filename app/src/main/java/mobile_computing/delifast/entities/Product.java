@@ -1,5 +1,7 @@
 package mobile_computing.delifast.entities;
 
+import java.util.Objects;
+
 import mobile_computing.delifast.delifastEnum.ProductCategory;
 
 public class Product extends DelifastEntity {
@@ -43,5 +45,16 @@ public class Product extends DelifastEntity {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        if (!super.equals(o)) return false;
+        Product product = (Product) o;
+        return Double.compare(product.price, price) == 0 &&
+                Objects.equals(name, product.name) &&
+                category == product.category;
     }
 }

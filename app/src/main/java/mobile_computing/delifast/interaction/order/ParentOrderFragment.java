@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -36,8 +38,8 @@ public class ParentOrderFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -47,11 +49,8 @@ public class ParentOrderFragment extends Fragment {
 
         viewPagerParentOrder = parentOrderView.findViewById(R.id.viewPagerParentOrder);
         initViewPager(viewPagerParentOrder);
-
         tabParentOrder = parentOrderView.findViewById(R.id.tabParentOrder);
         tabParentOrder.setupWithViewPager(viewPagerParentOrder);
-
-
         return parentOrderView;
     }
 

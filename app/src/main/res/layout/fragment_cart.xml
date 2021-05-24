@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".interaction.order.CartFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -29,8 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bestellungsdetails"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    />
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -45,9 +44,8 @@
                         android:id="@+id/etCartSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
                         android:drawableRight="@drawable/ic_baseline_euro_24"
-                        />
+                        android:text="0" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,10 +62,9 @@
                         android:id="@+id/etSupplyPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:text="0"
                         android:drawableRight="@drawable/ic_baseline_euro_24"
-                        />
+                        android:editable="false"
+                        android:text="0" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,9 +80,9 @@
                         android:id="@+id/etServiceFee"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_baseline_euro_24"
                         android:editable="false"
                         android:text="0"
-                        android:drawableRight="@drawable/ic_baseline_euro_24"
 
                         />
 
@@ -103,12 +100,9 @@
                         android:id="@+id/etAdress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_baseline_location_on_24"
-                        />
+                        android:drawableRight="@drawable/ic_baseline_location_on_24" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-
 
                 <TextView
                     android:id="@+id/test_adress"
@@ -117,10 +111,19 @@
                     android:layout_marginTop="16dp"
                     android:text="Nothing"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+                    android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
+
+            <!-- SelectedItemList -->
+            <ListView
+                android:id="@+id/listViewCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="58dp" />
 
             <!-- Buttons -->
             <LinearLayout
@@ -128,19 +131,19 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:orientation="horizontal">
+
                 <com.google.android.material.button.MaterialButton
+                    style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Nothing"
-                    style="?attr/borderlessButtonStyle"
-                    />
+                    android:text="Nothing" />
+
                 <com.google.android.material.button.MaterialButton
+                    style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nothing"
-                    style="?attr/borderlessButtonStyle"
-                    />
+                    android:text="Nothing" />
             </LinearLayout>
 
         </LinearLayout>

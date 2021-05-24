@@ -4,6 +4,7 @@ import androidx.annotation.FractionRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import mobile_computing.delifast.authentication.AuthenticationActivity;
 import mobile_computing.delifast.interaction.delivery.DeliveryFragment;
 import mobile_computing.delifast.interaction.notification.NotificationFragment;
 import mobile_computing.delifast.interaction.order.OrderFragment;
+import mobile_computing.delifast.interaction.order.OrderViewModel;
 import mobile_computing.delifast.interaction.order.ParentOrderFragment;
 import mobile_computing.delifast.interaction.profile.ProfileFragment;
 
@@ -31,9 +33,7 @@ public class DelifastActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delifast);
-
         initView();
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener naviListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,10 +72,7 @@ public class DelifastActivity extends AppCompatActivity {
     public void initView() {
         btmNavi = findViewById(R.id.bottomNavigationView);
         btmNavi.setOnNavigationItemSelectedListener(naviListener);
-
         naviListener.onNavigationItemSelected(btmNavi.getMenu().getItem(0));
-
-
     }
 
 

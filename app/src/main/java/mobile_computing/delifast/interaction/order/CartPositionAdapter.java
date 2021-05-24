@@ -1,7 +1,6 @@
 package mobile_computing.delifast.interaction.order;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +15,24 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import mobile_computing.delifast.R;
-import mobile_computing.delifast.delifastEnum.ProductCategory;
 import mobile_computing.delifast.entities.OrderPosition;
 import mobile_computing.delifast.others.IconHelper;
 
-public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
+public class CartPositionAdapter extends ArrayAdapter<OrderPosition> {
 
     private Context context;
     private int resource;
     private ArrayList<OrderPosition> orderPositions;
+    private CartFragment fragment;
     // Declaration of the elements in a one row of the list
     private ImageView imgProduct;
     private TextView tvProductName;
     private TextView tvProductCount;
-    private Button btnPlus;
-    private Button btnMinus;
-    private OrderFragment fragment;
+    private Button btnCancel;
 
 
-    public OrderPositionAdapter(@NonNull Context context, int resource, @NonNull ArrayList<OrderPosition> objects, OrderFragment fragment) {
+    public CartPositionAdapter(@NonNull Context context, int resource, @NonNull ArrayList<OrderPosition> objects, CartFragment fragment) {
         super(context, resource, objects);
-        Log.d("", "objects size: " + objects.size());
         this.context = context;
         this.resource = resource;
         this.orderPositions = objects;
@@ -46,34 +42,15 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        OrderPosition orderPosition = getItem(position);
+        OrderPosition selectedPosition = getItem(position);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
         initView(convertView);
-        
-        tvProductName.setText(orderPosition.getProduct().getName());
-        tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
-        imgProduct.setImageResource(IconHelper.getIcon(orderPosition.getProduct().getCategory()));
-        btnPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int amount = orderPosition.getAmount() + 1;
-                orderPosition.setAmount(amount);
-                fragment.editOrderPositionsInViewModel(orderPosition);
-            }
-        });
-        btnMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                int amount = orderPosition.getAmount() - 1;
-                if (amount >= 0) {
-                    orderPosition.setAmount(amount);
-                    fragment.editOrderPositionsInViewModel(orderPosition);
-                }
-            }
-        });
+        tvProductName.setText(selectedPosition.getProduct().getName());
+        tvProductCount.setText(String.valueOf(selectedPosition.getAmount()));
+        imgProduct.setImageResource(IconHelper.getIcon(selectedPosition.getProduct().getCategory()));
         return convertView;
     }
 
@@ -86,7 +63,8 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         tvProductName = convertView.findViewById(R.id.tvProductName);
         imgProduct = convertView.findViewById(R.id.imgProduct);
         tvProductCount = convertView.findViewById(R.id.tvProductCount);
-        btnPlus = convertView.findViewById(R.id.btnPlus);
-        btnMinus = convertView.findViewById(R.id.btnMinus);
+        btnCancel = convertView.findViewById(R.id.btnCancel);
     }
+
+
 }

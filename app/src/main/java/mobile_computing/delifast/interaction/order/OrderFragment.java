@@ -1,5 +1,6 @@
 package mobile_computing.delifast.interaction.order;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -51,10 +52,12 @@ public class OrderFragment extends Fragment {
 
         model.getOrderPositionList().observe(getViewLifecycleOwner(), orderPositions -> {
             if (orderPositions != null) {
+                Log.d("Observer", "I'm observing this amount of orderPositions: " + orderPositions.size());
                 orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
                 productsList.setAdapter(orderPositionAdapter);
             }
         });
+        setUpFilter(orderView);
         // Inflate the layout for this fragment
         return orderView;
     }
@@ -66,6 +69,9 @@ public class OrderFragment extends Fragment {
      */
     private void initView(View orderView) {
         productsList = orderView.findViewById(R.id.listViewOrder);
+    }
+
+    private void setUpFilter(View orderView) {
         filter = orderView.findViewById(R.id.etFilter);
         filter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,7 +81,9 @@ public class OrderFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                orderPositionAdapter.getFilter().filter(s);
+                if(orderPositionAdapter != null) {
+                    orderPositionAdapter.getFilter().filter(s);
+                }
             }
 
             @Override

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.InputType;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,14 +54,17 @@ import mobile_computing.delifast.others.DelifastConstants;
 
 public class CartFragment extends Fragment {
 
-    TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etDateTime, etAdress;
+    private TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etAdress;
+    private TextView test_adress;
+    private CartPositionAdapter cartPositionAdapter;
+    private OrderViewModel model;
+    private ListView orderPositionList;
     TextInputLayout ilAdress;
 
 
     private CarmenFeature home;
     private CarmenFeature work;
 
-    TextView test_adress;
     private static final String MAPBOX_ACCESS_TOKEN = "sk.eyJ1IjoibWthbGFzaCIsImEiOiJja3AyYWVsNm0xMjltMndsZ3FqZXhnZG11In0.G0zqmJ50IGR31LpPx82LNg";
 
 
@@ -90,6 +95,17 @@ public class CartFragment extends Fragment {
 
 
         addUserLocations();
+        model = new ViewModelProvider(requireActivity()).get(OrderViewModel.class);
+
+        model.getOrder().observe(getViewLifecycleOwner(), order -> {
+            if (order != null) {
+                cartPositionAdapter = new CartPositionAdapter(getActivity(), R.layout.fragment_cart_adapter, order.getOrderPositions(), this);
+                orderPositionList.setAdapter(cartPositionAdapter);
+            }
+        });
+
+        //Initialize places
+        Places.initialize(getActivity().getApplicationContext(), DelifastConstants.APIKEY);
 
         etAdress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +120,8 @@ public class CartFragment extends Fragment {
                                 .build(PlaceOptions.MODE_CARDS))
                         .build(getActivity());
                 startActivityForResult(intent, 100);
+
+
             }
         });
 
@@ -128,18 +146,17 @@ public class CartFragment extends Fragment {
         }
     }
 
-    private void initView(View view) {
-        etCartSum = view.findViewById(R.id.etCartSum);
-        etSupplyPrice = view.findViewById(R.id.etSupplyPrice);
-        etServiceFee = view.findViewById(R.id.etServiceFee);
-        etDateTime = view.findViewById(R.id.etDateTime);
-        etAdress = view.findViewById(R.id.etAdress);
-        ilAdress =view.findViewById(R.id.ilAdress);
 
+    private void initView(View cartView) {
+        orderPositionList = cartView.findViewById(R.id.listViewCart);
+        etCartSum = cartView.findViewById(R.id.etCartSum);
+        etDateTime = cartView.findViewById(R.id.etDateTime);
         etDateTime.setInputType(InputType.TYPE_NULL);
-
-
-        test_adress = view.findViewById(R.id.test_adress);
+        etSupplyPrice = cartView.findViewById(R.id.etSupplyPrice);
+        etServiceFee = cartView.findViewById(R.id.etServiceFee);
+        etAdress = cartView.findViewById(R.id.etAdress);
+        ilAdress =cartView.findViewById(R.id.ilAdress);
+        test_adress = cartView.findViewById(R.id.test_adress);
     }
 
 

@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import mobile_computing.delifast.R;
 import mobile_computing.delifast.entities.User;
 import mobile_computing.delifast.interaction.DelifastActivity;
+import mobile_computing.delifast.others.DelifastConstants;
 import mobile_computing.delifast.others.DelifastTags;
 
 public class AuthenticationActivity extends AppCompatActivity {
@@ -41,7 +42,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private AuthenticationViewModel model;
     private GoogleSignInClient mGoogleSignInClient;
-    private final static int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == DelifastConstants.RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -169,6 +169,6 @@ public class AuthenticationActivity extends AppCompatActivity {
      */
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, DelifastConstants.RC_SIGN_IN);
     }
 }

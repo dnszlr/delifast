@@ -30,6 +30,7 @@ public class ParentOrderFragment extends Fragment {
 
     private ViewPager viewPagerParentOrder;
     private TabLayout tabParentOrder;
+    private OrderViewModel model;
 
     public ParentOrderFragment() {
         // Required empty public constructor
@@ -51,6 +52,9 @@ public class ParentOrderFragment extends Fragment {
         initViewPager(viewPagerParentOrder);
         tabParentOrder = parentOrderView.findViewById(R.id.tabParentOrder);
         tabParentOrder.setupWithViewPager(viewPagerParentOrder);
+
+        setupBadge();
+
         return parentOrderView;
     }
 
@@ -90,5 +94,9 @@ public class ParentOrderFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return orderFragmentsTitles.get(position);
         }
+    }
+
+    private void setupBadge() {
+
     }
 }

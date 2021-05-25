@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -144,12 +146,35 @@ public class CartFragment extends Fragment {
     private void updateUI(Order order) {
         ArrayList<OrderPosition> orderPositions = order.getOrderPositions();
         for (int i = 0; i < orderPositions.size(); i++) {
+            OrderPosition currentOrderPosition = orderPositions.get(i);
+            final View positionCarfView = getLayoutInflater().inflate(R.layout.order_position_in_cart, null, false);
+
+            TextView productNameInCart = positionCarfView.findViewById(R.id.tvOrderPositionNameInCart);
+            TextView amountInCart = positionCarfView.findViewById(R.id.tvOrderPositionCountInCart);
+            MaterialButton btnDeletePosition = positionCarfView.findViewById(R.id.btnOrderPositionInCart);
+
+            productNameInCart.setText(orderPositions.get(i).getProduct().getName());
+            amountInCart.setText(Integer.toString(orderPositions.get(i).getAmount()));
+
+            btnDeletePosition.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteOrderPositionInViewModel(currentOrderPosition);
+                }
+            });
+
+
+            lvContentLayout.addView(positionCarfView);
+
+            /*
             LinearLayout li = new LinearLayout(getContext());
             li.setOrientation(LinearLayout.HORIZONTAL);
             MaterialTextView tv = new MaterialTextView(getContext());
             tv.setText(orderPositions.get(i).getProduct().getName());
             li.addView(tv);
             lvContentLayout.addView(li);
+            */
+
         }
         etServiceFee.setText(String.valueOf(order.getServiceFee()));
         etUserDeposit.setText(String.valueOf(order.getUserDeposit()));
@@ -241,5 +266,15 @@ public class CartFragment extends Fragment {
                 .id("mapbox-ber")
                 .properties(new JsonObject())
                 .build();
+    }
+
+
+    /**
+     * Delete the order position from the order in view model
+     *
+     * @param orderPosition
+     */
+    public void deleteOrderPositionInViewModel(OrderPosition orderPosition){
+        model.deleteOrderPositionFromOrder(orderPosition);
     }
 }

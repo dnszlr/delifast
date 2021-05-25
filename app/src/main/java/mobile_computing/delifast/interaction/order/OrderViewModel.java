@@ -117,6 +117,20 @@ public class OrderViewModel extends ViewModel {
     }
 
     /**
+     * Gets called by the Fragment to delete the order position from the order.
+     *
+     * @param orderPosition: the order position to be deleted.
+     */
+    public void deleteOrderPositionFromOrder(OrderPosition orderPosition) {
+        Log.d("DeleteMethod:", "Objekt: " + orderPosition.getProduct().getName() + ", Contains: " +  this.orderPositionList.getValue().contains(orderPosition));
+        Order currentOrder = this.order.getValue();
+        currentOrder.getOrderPositions().remove(orderPosition);
+        calculateCosts(currentOrder);
+        this.order.setValue(currentOrder);
+
+    }
+
+    /**
      * Updates the order entity
      *
      * @param orderPosition

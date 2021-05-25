@@ -6,71 +6,60 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.JsonObject;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import org.json.JSONException;
 
-import javax.net.ssl.SSLEngineResult;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import mobile_computing.delifast.R;
+import mobile_computing.delifast.entities.Address;
+import mobile_computing.delifast.entities.Order;
+import mobile_computing.delifast.entities.OrderPosition;
 import mobile_computing.delifast.others.DelifastConstants;
 
 public class CartFragment extends Fragment {
 
-    private TextInputEditText etCartSum, etSupplyPrice, etServiceFee, etAdress, etDateTime;
-    private TextView test_adress;
+    private TextInputEditText etUserDeposit, etSupplyPrice, etServiceFee, etAddress, etDeadline;
+    private MaterialButton btnPay;
     private OrderViewModel model;
-    private TextInputLayout ilAdress;
     private LinearLayout lvContentLayout;
-    private CarmenFeature home;
-    private CarmenFeature work;
-
-    private static final String MAPBOX_ACCESS_TOKEN = "sk.eyJ1IjoibWthbGFzaCIsImEiOiJja3AyYWVsNm0xMjltMndsZ3FqZXhnZG11In0.G0zqmJ50IGR31LpPx82LNg";
-
+    private CarmenFeature reutlingen;
+    private CarmenFeature berlin;
+    private SimpleDateFormat simpleDateFormat;
 
     public CartFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,89 +70,134 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View cartView = inflater.inflate(R.layout.fragment_cart, container, false);
-
+        //Initialize places
+        Places.initialize(getActivity().getApplicationContext(), DelifastConstants.APIKEY);
         initView(cartView);
-
-        etDateTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDateTimeDialog(etDateTime);
-            }
-        });
-
+        initListeners();
         addUserLocations();
+        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT);
         model = new ViewModelProvider(requireActivity()).get(OrderViewModel.class);
-
         model.getOrder().observe(getViewLifecycleOwner(), order -> {
             if (order != null) {
                 lvContentLayout.removeAllViewsInLayout();
-                 for (int i = 0; i < order.getOrderPositions().size(); i++) {
-                    LinearLayout li = new LinearLayout(getContext());
-                    li.setOrientation(LinearLayout.HORIZONTAL);
-                    TextView tv = new TextView(getContext());
-                    tv.setText(order.getOrderPositions().get(i).getProduct().getName());
-                    li.addView(tv);
-                    lvContentLayout.addView(li);
-                }
+                updateUI(order);
             }
         });
+        return cartView;
+    }
 
-        //Initialize places
-        Places.initialize(getActivity().getApplicationContext(), DelifastConstants.APIKEY);
-
-        etAdress.setOnClickListener(new View.OnClickListener() {
+    private void initListeners() {
+        etAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new PlaceAutocomplete.IntentBuilder()
-                        .accessToken(MAPBOX_ACCESS_TOKEN)
+                        .accessToken(DelifastConstants.MAPBOX_ACCESS_TOKEN)
                         .placeOptions(PlaceOptions.builder()
                                 .backgroundColor(Color.parseColor("#EEEEEE"))
                                 .limit(10)
-                                .addInjectedFeature(home)
-                                .addInjectedFeature(work)
+                                .addInjectedFeature(reutlingen)
+                                .addInjectedFeature(berlin)
                                 .build(PlaceOptions.MODE_CARDS))
                         .build(getActivity());
                 startActivityForResult(intent, 100);
+            }
+        });
+        etDeadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimeDialog();
+            }
+        });
+        etUserDeposit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    model.setUserDeposit(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
 
-        return cartView;
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.saveOrder();
+
+            }
+        });
     }
+
+    /**
+     * Displays the passed order to the UI.
+     *
+     * @param order
+     */
+    private void updateUI(Order order) {
+        ArrayList<OrderPosition> orderPositions = order.getOrderPositions();
+        for (int i = 0; i < orderPositions.size(); i++) {
+            LinearLayout li = new LinearLayout(getContext());
+            li.setOrientation(LinearLayout.HORIZONTAL);
+            MaterialTextView tv = new MaterialTextView(getContext());
+            tv.setText(orderPositions.get(i).getProduct().getName());
+            li.addView(tv);
+            lvContentLayout.addView(li);
+        }
+        etServiceFee.setText(String.valueOf(order.getServiceFee()));
+        etUserDeposit.setText(String.valueOf(order.getUserDeposit()));
+        if (order.getDeadline() != null) {
+            etDeadline.setText(simpleDateFormat.format(order.getDeadline()));
+        }
+        if (order.getCustomerAddress() != null) {
+            etAddress.setText(order.getCustomerAddress().getAddressString());
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == AutocompleteActivity.RESULT_OK && requestCode == 100) {
             CarmenFeature feature = PlaceAutocomplete.getPlace(data);
-            etAdress.setText(feature.placeName());
-
+            try {
+                Point point = (Point) feature.geometry();
+                model.setCustomerAddress(point.coordinates(), feature.placeName());
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "Invalid address provided", Toast.LENGTH_SHORT);
+            }
+            etAddress.setText(feature.placeName());
             Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
-            Log.d("Test_Adress", "ToString: " + feature.toString() + ", PlaceName: " + feature.placeName());
-            Log.d("Test_Adress", "BBox: " + feature.bbox() + ", Adress: " + feature.address());
-            Log.d("Test_Adress", "ID: " + feature.id() + ", Text: " + feature.text());
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getActivity().getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-
+    /**
+     * Initialize all needed components for the current view
+     *
+     * @param cartView
+     */
     private void initView(View cartView) {
         lvContentLayout = cartView.findViewById(R.id.contentLayout);
-        etCartSum = cartView.findViewById(R.id.etCartSum);
-        etDateTime = cartView.findViewById(R.id.etDateTime);
-        etDateTime.setInputType(InputType.TYPE_NULL);
-        etSupplyPrice = cartView.findViewById(R.id.etSupplyPrice);
+        etDeadline = cartView.findViewById(R.id.etDeadline);
+        etDeadline.setInputType(InputType.TYPE_NULL);
+        etUserDeposit = cartView.findViewById(R.id.etUserDeposit);
         etServiceFee = cartView.findViewById(R.id.etServiceFee);
-        etAdress = cartView.findViewById(R.id.etAdress);
-        ilAdress = cartView.findViewById(R.id.ilAdress);
-        test_adress = cartView.findViewById(R.id.test_adress);
+        etAddress = cartView.findViewById(R.id.etAddress);
+        btnPay = cartView.findViewById(R.id.btnPay);
     }
 
-
-    private void showDateTimeDialog(TextInputEditText etDateTime) {
+    private void showDateTimeDialog() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -171,24 +205,18 @@ public class CartFragment extends Fragment {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                 TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
-
-                        etDateTime.setText(simpleDateFormat.format(calendar.getTime()));
+                        model.setDeadline(calendar.getTime());
+                        etDeadline.setText(simpleDateFormat.format(calendar.getTime()));
                     }
                 };
-
-                new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
-
+                new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
             }
         };
-
         new DatePickerDialog(getActivity(),
                 dateSetListener,
                 calendar.get(Calendar.YEAR),
@@ -197,20 +225,21 @@ public class CartFragment extends Fragment {
     }
 
 
+    /**
+     * Predefines some user locations for etAddress
+     */
     private void addUserLocations() {
-        home = CarmenFeature.builder().text("Mapbox SF Office")
-                .geometry(Point.fromLngLat(-122.3964485, 37.7912561))
-                .placeName("50 Beale St, San Francisco, CA")
-                .id("mapbox-sf")
+        reutlingen = CarmenFeature.builder().text("Reutlingen")
+                .geometry(Point.fromLngLat(48.48296039690456, 9.187737058082885))
+                .placeName("Fakultät Informatik, 72762 Reutlingen")
+                .id("mapbox-inf")
                 .properties(new JsonObject())
                 .build();
-
-        work = CarmenFeature.builder().text("Mapbox DC Office")
-                .placeName("740 15th Street NW, Washington DC")
-                .geometry(Point.fromLngLat(-77.0338348, 38.899750))
-                .id("mapbox-dc")
+        berlin = CarmenFeature.builder().text("Berlin")
+                .placeName("Pariser Platz, 10117 Berlin")
+                .geometry(Point.fromLngLat(52.51628219848714, 13.377700670884066))
+                .id("mapbox-ber")
                 .properties(new JsonObject())
                 .build();
     }
-
 }

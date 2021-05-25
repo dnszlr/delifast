@@ -40,7 +40,7 @@ public class RegisterFragment extends Fragment {
                 User user = new User();
                 user.setName(tfUsername.toString().trim());
                 user.setEmail(tfEmail.toString().trim());
-                model.save(user);
+                model.save(user, firebaseUser.getUid());
                 Intent homepage = new Intent(getActivity(), DelifastActivity.class);
                 startActivity(homepage);
             }

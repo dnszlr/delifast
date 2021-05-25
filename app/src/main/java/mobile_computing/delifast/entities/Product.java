@@ -14,7 +14,7 @@ public class Product extends DelifastEntity {
      * Empty firebase constructor, don't remove.
      */
     public Product() {
-
+        super();
     }
 
     public Product(String name, ProductCategory category, double price) {

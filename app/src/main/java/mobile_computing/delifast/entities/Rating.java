@@ -10,7 +10,7 @@ public class Rating extends DelifastEntity {
      * Empty firebase constructor, don't remove.
      */
     public Rating() {
-
+        super();
     }
 
     public Rating(User user, int stars, String description) {

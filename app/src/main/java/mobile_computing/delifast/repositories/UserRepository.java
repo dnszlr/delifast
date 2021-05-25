@@ -32,15 +32,15 @@ public class UserRepository {
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 
-    public MutableLiveData<Boolean> save(User user) {
+    public MutableLiveData<Boolean> save(User user, String uId) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
-        dbCollection
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        dbCollection.document(uId)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(Void unused) {
                         result.setValue(true);
-                        Log.d("saved", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Log.d("saved", "DocumentSnapshot written with ID: " + uId);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

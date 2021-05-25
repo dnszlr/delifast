@@ -1,63 +1,60 @@
 package mobile_computing.delifast.entities;
 
 import com.google.firebase.firestore.ServerTimestamp;
-import com.google.type.DateTime;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import mobile_computing.delifast.delifastEnum.OrderStatus;
 
 
 public class Order extends DelifastEntity {
 
-    private long orderID;
+    private String customerID;
+    private String supplierID;
     @ServerTimestamp
-    private DateTime orderTime;
-    private DateTime deadline;
+    private Date orderTime;
+    private Date deadline;
     private OrderStatus orderStatus;
-    private float deliveryPrice;
-    private float serviceFee;
+    private double userDeposit;
+    private double deliveryPrice;
+    private double serviceFee;
+    private Address customerAddress;
     private ArrayList<OrderPosition> orderPositions;
 
     /**
      * Empty firebase constructor, don't remove.
      */
     public Order() {
-
+        super();
     }
 
-    public Order(long orderID, DateTime orderTime, DateTime deadline, OrderStatus orderStatus, float deliveryPrice, float serviceFee, ArrayList<OrderPosition> orderPositions) {
-        this.orderID = orderID;
+    public Order(String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double deliveryPrice, double serviceFee, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
+        this.customerID = customerID;
+        this.supplierID = supplierID;
         this.orderTime = orderTime;
         this.deadline = deadline;
         this.orderStatus = orderStatus;
+        this.userDeposit = userDeposit;
         this.deliveryPrice = deliveryPrice;
         this.serviceFee = serviceFee;
+        this.customerAddress = customerAddress;
         this.orderPositions = orderPositions;
     }
 
-    public long getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(long orderID) {
-        this.orderID = orderID;
-    }
-
-    public DateTime getOrderTime() {
+    public Date getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(DateTime orderTime) {
+    public void setOrderTime(Date orderTime) {
         this.orderTime = orderTime;
     }
 
-    public DateTime getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(DateTime deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 
@@ -69,20 +66,36 @@ public class Order extends DelifastEntity {
         this.orderStatus = orderStatus;
     }
 
-    public float getDeliveryPrice() {
+    public double getUserDeposit() {
+        return userDeposit;
+    }
+
+    public void setUserDeposit(double userDeposit) {
+        this.userDeposit = userDeposit;
+    }
+
+    public double getDeliveryPrice() {
         return deliveryPrice;
     }
 
-    public void setDeliveryPrice(float deliveryPrice) {
+    public void setDeliveryPrice(double deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
     }
 
-    public float getServiceFee() {
+    public double getServiceFee() {
         return serviceFee;
     }
 
-    public void setServiceFee(float serviceFee) {
+    public void setServiceFee(double serviceFee) {
         this.serviceFee = serviceFee;
+    }
+
+    public Address getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(Address customerAddress) {
+        this.customerAddress = customerAddress;
     }
 
     public ArrayList<OrderPosition> getOrderPositions() {
@@ -91,5 +104,21 @@ public class Order extends DelifastEntity {
 
     public void setOrderPositions(ArrayList<OrderPosition> orderPositions) {
         this.orderPositions = orderPositions;
+    }
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getSupplierID() {
+        return supplierID;
+    }
+
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
     }
 }

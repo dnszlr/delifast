@@ -15,7 +15,7 @@ public class User extends DelifastEntity {
         super();
     }
 
-    public User(String name, String email, String password) {
+    public User(String id, String name, String email, String password) {
         super();
         this.username = name;
         this.email = email;

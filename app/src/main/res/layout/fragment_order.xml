@@ -3,17 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".interaction.order.OrderFragment"
-    android:focusableInTouchMode="true"
     android:focusable="true"
-    >
-
+    android:focusableInTouchMode="true"
+    tools:context=".interaction.order.OrderFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filledTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Suche">
+        android:hint="@string/Suche">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etFilter"

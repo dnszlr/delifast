@@ -9,7 +9,7 @@ public class OrderPosition {
      * Empty firebase constructor, don't remove.
      */
     public OrderPosition() {
-
+        super();
     }
 
     public OrderPosition(Product product, int amount) {

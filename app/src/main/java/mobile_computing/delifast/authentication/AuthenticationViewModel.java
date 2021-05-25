@@ -22,17 +22,14 @@ public class AuthenticationViewModel extends ViewModel {
 
         this.userRepository = new UserRepository();
         this.firebaseAuthRepository = new FirebaseAuthRepository();
-        this.firebaseUser = new MutableLiveData<>();
+        this.firebaseUser = firebaseAuthRepository.getFirebaseUser();
     }
 
     /**
      * @return Returns the MutableLiveData Object from the Repository
      */
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
-        if (this.firebaseUser == null) {
-            this.firebaseUser = firebaseAuthRepository.getFirebaseUser();
-        }
-        return firebaseUser;
+        return firebaseAuthRepository.getFirebaseUser();
     }
 
     /**
@@ -47,9 +44,9 @@ public class AuthenticationViewModel extends ViewModel {
      *
      * @param user
      */
-    public void save(User user) {
+    public void save(User user, String uId) {
         if (user != null) {
-            userRepository.save(user);
+            userRepository.save(user, uId);
         }
     }
 

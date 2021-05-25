@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import mobile_computing.delifast.R;
@@ -54,7 +55,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 User user = new User();
                 user.setName(firebaseUser.getDisplayName());
                 user.setEmail(firebaseUser.getEmail());
-                model.save(user);
+                model.save(user, firebaseUser.getUid());
                 Intent homepage = new Intent(AuthenticationActivity.this, DelifastActivity.class);
                 startActivity(homepage);
             }
@@ -92,14 +93,14 @@ public class AuthenticationActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+        // TODO REMOVE THIS
+        FirebaseAuth.getInstance().signOut();
         FirebaseUser currentUser = model.getCurrentUser();
         if (currentUser != null) {
             //User already loggedIn, no need to login again.
             Log.w(DelifastTags.MAILLOGIN, "User" + currentUser.getDisplayName() + " loggedIn");
-
             Intent homepage = new Intent(AuthenticationActivity.this, DelifastActivity.class);
             startActivity(homepage);
-
         } else {
             // No user logged in, continue with AuthenticationActivity.
             Log.w(DelifastTags.MAILLOGIN, "No user loggedIn");

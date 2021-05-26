@@ -122,12 +122,16 @@ public class OrderViewModel extends ViewModel {
      * @param orderPosition: the order position to be deleted.
      */
     public void deleteOrderPositionFromOrder(OrderPosition orderPosition) {
-        Log.d("DeleteMethod:", "Objekt: " + orderPosition.getProduct().getName() + ", Contains: " +  this.orderPositionList.getValue().contains(orderPosition));
         Order currentOrder = this.order.getValue();
         currentOrder.getOrderPositions().remove(orderPosition);
         calculateCosts(currentOrder);
         this.order.setValue(currentOrder);
 
+        ArrayList<OrderPosition> opList = this.orderPositionList.getValue();
+        OrderPosition deletedItem = opList.stream().filter(op ->
+                op.getProduct().equals(orderPosition.getProduct())).findFirst().orElse(null);
+        deletedItem.setAmount(0);
+        this.orderPositionList.setValue(opList);
     }
 
     /**
@@ -139,7 +143,11 @@ public class OrderViewModel extends ViewModel {
     private void updateOrderItems(OrderPosition orderPosition, OrderPosition oldItem) {
         Order updateOrder = order.getValue();
         ArrayList<OrderPosition> opList = updateOrder.getOrderPositions();
-        if (opList.contains(oldItem)) {
+
+        if(opList.contains(oldItem) && oldItem.getAmount() == 0){
+            opList.remove(oldItem);
+        }
+        else if (opList.contains(oldItem)) {
             opList.set(opList.indexOf(oldItem), orderPosition);
         } else {
             opList.add(orderPosition);
@@ -155,6 +163,7 @@ public class OrderViewModel extends ViewModel {
      */
     private void calculateCosts(Order order) {
         double deliveryPrice = order.getOrderPositions().stream().mapToDouble(OrderPosition::getPrice).sum();
+        order.setUserDeposit(deliveryPrice);
         order.setDeliveryPrice(deliveryPrice);
         double serviceFee = determineServiceFee(deliveryPrice);
         order.setServiceFee(serviceFee);
@@ -218,4 +227,5 @@ public class OrderViewModel extends ViewModel {
     public void setDeadline(Date deadline) {
         this.order.getValue().setDeadline(deadline);
     }
+
 }

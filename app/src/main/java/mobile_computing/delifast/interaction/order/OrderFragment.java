@@ -102,5 +102,4 @@ public class OrderFragment extends Fragment {
         model.changeCountOfOrderPosition(orderPosition);
     }
 
-
 }

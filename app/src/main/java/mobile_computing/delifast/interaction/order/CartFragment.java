@@ -166,18 +166,11 @@ public class CartFragment extends Fragment {
 
             lvContentLayout.addView(positionCarfView);
 
-            /*
-            LinearLayout li = new LinearLayout(getContext());
-            li.setOrientation(LinearLayout.HORIZONTAL);
-            MaterialTextView tv = new MaterialTextView(getContext());
-            tv.setText(orderPositions.get(i).getProduct().getName());
-            li.addView(tv);
-            lvContentLayout.addView(li);
-            */
-
         }
+
         etServiceFee.setText(String.valueOf(order.getServiceFee()));
         etUserDeposit.setText(String.valueOf(order.getUserDeposit()));
+        Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
         if (order.getDeadline() != null) {
             etDeadline.setText(simpleDateFormat.format(order.getDeadline()));
         }

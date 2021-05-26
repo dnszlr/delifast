@@ -53,6 +53,7 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         initView(convertView);
         
         tvProductName.setText(orderPosition.getProduct().getName());
+
         tvProductCount.setText(String.valueOf(orderPosition.getAmount()));
         imgProduct.setImageResource(IconHelper.getIcon(orderPosition.getProduct().getCategory()));
         btnPlus.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +67,6 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 int amount = orderPosition.getAmount() - 1;
                 if (amount >= 0) {
                     orderPosition.setAmount(amount);

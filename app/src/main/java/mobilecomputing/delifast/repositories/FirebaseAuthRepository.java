@@ -14,7 +14,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import cz.msebera.android.httpclient.Header;
+import mobilecomputing.delifast.interaction.order.DelifastHttpClient;
 import mobilecomputing.delifast.others.DelifastTags;
 
 public class FirebaseAuthRepository {
@@ -47,6 +51,7 @@ public class FirebaseAuthRepository {
                     Log.d(DelifastTags.AUTHCREATEACCOUNT, "createUserWithEmail:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     firebaseUser.postValue(user);
+                    createPaypalCustomer(user.getUid(), user.getEmail());
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(DelifastTags.AUTHCREATEACCOUNT, "createUserWithEmail:failure", task.getException());
@@ -89,6 +94,10 @@ public class FirebaseAuthRepository {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(DelifastTags.AUTHLOGINGOOGLE, "signInWithCredential:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                        Log.d("HAHA", "DID SOMETHING");
+                        createPaypalCustomer(user.getUid(), user.getEmail());
+                    }
                     firebaseUser.postValue(user);
                 } else {
                     // If sign in fails, display a message to the user.
@@ -115,12 +124,33 @@ public class FirebaseAuthRepository {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(DelifastTags.AUTHLOGINFB, "signInWithCredential:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                        createPaypalCustomer(user.getUid(), user.getEmail());
+                    }
                     firebaseUser.postValue(user);
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(DelifastTags.AUTHLOGINFB, "signInWithCredential:failure", task.getException());
                     // TODO create a toast to notify user that login was not successful;
                 }
+            }
+        });
+    }
+
+
+    private void createPaypalCustomer(String id, String email) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("id", id);
+        requestParams.put("firstName", email);
+        DelifastHttpClient.get("createuser", requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO HANDLE SUCCESS
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO HANDLE FAILURE
             }
         });
     }

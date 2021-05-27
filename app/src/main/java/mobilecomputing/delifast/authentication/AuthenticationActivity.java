@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import mobilecomputing.delifast.entities.User;
@@ -93,7 +94,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         // TODO REMOVE THIS v
-        //FirebaseAuth.getInstance().signOut();
+        FirebaseAuth.getInstance().signOut();
         FirebaseUser currentUser = model.getCurrentUser();
         if (currentUser != null) {
             //User already loggedIn, no need to login again.

@@ -149,12 +149,12 @@ public class CartFragment extends Fragment {
 
     public void onBraintreeSubmit(View v) {
         RequestParams requestParams = new RequestParams();
-        requestParams.put("customerId", 275485107);
+        requestParams.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
         DelifastHttpClient.get("clienttoken", requestParams, new TextHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String clientToken) {
-                DropInRequest dropInRequest = new DropInRequest()
-                        .clientToken(clientToken);
+                DropInRequest dropInRequest = new DropInRequest();
+                dropInRequest.clientToken(clientToken);
                 startActivityForResult(dropInRequest.getIntent(v.getContext()), DelifastConstants.PAYMENT_REQUEST_CODE);
             }
 
@@ -174,11 +174,11 @@ public class CartFragment extends Fragment {
         ArrayList<OrderPosition> orderPositions = order.getOrderPositions();
         for (int i = 0; i < orderPositions.size(); i++) {
             OrderPosition currentOrderPosition = orderPositions.get(i);
-            final View positionCarfView = getLayoutInflater().inflate(R.layout.order_position_in_cart, null, false);
+            final View positionCardView = getLayoutInflater().inflate(R.layout.order_position_in_cart, null, false);
 
-            TextView productNameInCart = positionCarfView.findViewById(R.id.tvOrderPositionNameInCart);
-            TextView amountInCart = positionCarfView.findViewById(R.id.tvOrderPositionCountInCart);
-            MaterialButton btnDeletePosition = positionCarfView.findViewById(R.id.btnOrderPositionInCart);
+            TextView productNameInCart = positionCardView.findViewById(R.id.tvOrderPositionNameInCart);
+            TextView amountInCart = positionCardView.findViewById(R.id.tvOrderPositionCountInCart);
+            MaterialButton btnDeletePosition = positionCardView.findViewById(R.id.btnOrderPositionInCart);
 
             productNameInCart.setText(orderPositions.get(i).getProduct().getName());
             amountInCart.setText(Integer.toString(orderPositions.get(i).getAmount()));
@@ -189,7 +189,7 @@ public class CartFragment extends Fragment {
                     deleteOrderPositionInViewModel(currentOrderPosition);
                 }
             });
-            lvContentLayout.addView(positionCarfView);
+            lvContentLayout.addView(positionCardView);
         }
         etUserDeposit.setError(null);
         etAddress.setError(null);
@@ -236,12 +236,13 @@ public class CartFragment extends Fragment {
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
                 RequestParams params = new RequestParams();
                 Log.d("ActivityResult", "payment_method_nonce:" + result.getPaymentMethodNonce());
-                params.put("payment_method_nonce", result.getPaymentMethodNonce());
+                params.put("payment_method_nonce", result.getPaymentMethodNonce().getNonce());
                 params.put("amount", tvCartSum.getText());
                 DelifastHttpClient.post("checkout", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Log.d("Payment", "success" + responseBody);
+                        // TODO Order speichern
                     }
 
                     @Override

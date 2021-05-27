@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "124646913594-n3vhf831045ma83144edqi3mk0g1pb1d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mobile_computing.delifast",
+            "certificate_hash": "c7c5ecc9bf277a9c9ebd39de08db55ab2461efde"
+          }
+        },
+        {
           "client_id": "124646913594-u3gkuehggpqnv62k9mmofa941357eig5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,6 +30,43 @@
             "certificate_hash": "1889360741482f3b6c5ae9151f9858430ab555d3"
           }
         },
+        {
+          "client_id": "124646913594-vqd9or3a2p5kui2c6ot06mkbikod8ns4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mobile_computing.delifast",
+            "certificate_hash": "93180bd395e2c5818b57b70a75d33ce438af6abc"
+          }
+        },
+        {
+          "client_id": "124646913594-98kr6bdf4bapeninmmr7m3l4dmsogriq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPYcHUhYGWiqEnn69Vnzsr_fRKM_HFlzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124646913594-98kr6bdf4bapeninmmr7m3l4dmsogriq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124646913594:android:ed80ac6880b659f00d2703",
+        "android_client_info": {
+          "package_name": "mobilecomputing.delifast"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "124646913594-98kr6bdf4bapeninmmr7m3l4dmsogriq.apps.googleusercontent.com",
           "client_type": 3

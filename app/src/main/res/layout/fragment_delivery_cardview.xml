@@ -1,110 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewBacklog"
+        style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/CardView.Light"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraindLayoutcardBacklog"
+            android:id="@+id/constraintLayoutcardBacklog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvCardBacklogAdress"
-                android:text="Raitweg 4, 72770 Reutlingen"
+                android:id="@+id/tvCardBacklogAddress"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:drawableLeft="@drawable/ic_baseline_location_on_24"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:drawableLeft="@drawable/ic_baseline_location_on_24"
                 android:drawablePadding="5dp"
-                style="@style/TextAppearance.AppCompat.Body1"
-                />
+                android:text="Raitweg 4, 72770 Reutlingen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvCardBacklogDeadline"
-                android:text="29.05.2021 14:30"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardBacklogAdress"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:drawableLeft="@drawable/ic_baseline_access_time_24"
                 android:drawablePadding="5dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                style="@style/TextAppearance.AppCompat.Body1"
-                />
+                android:text="29.05.2021 14:30"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardBacklogAddress" />
 
             <TextView
                 android:id="@+id/tvCardBacklogSupplyPrice"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="0dp"
-                android:text="11.30"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:drawablePadding="5dp"
                 android:drawableLeft="@drawable/ic_baseline_euro_24"
+                android:drawablePadding="5dp"
+                android:text="11.30"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvCardBacklogDeadline"
-                style="@style/TextAppearance.AppCompat.Title"
-                />
+                app:layout_constraintTop_toBottomOf="@id/tvCardBacklogDeadline" />
 
             <Button
                 android:id="@+id/btnCardBacklogArrowDown"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardBacklogDeadline"
-                />
+                android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardBacklogDeadline" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraindLayoutExpandableView"
+                android:id="@+id/constraintLayoutExpandableView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/btnCardBacklogArrowDown"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                >
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnCardBacklogArrowDown">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewCardBacklpogUserImage"
+                    android:id="@+id/cardViewCardBacklogUserImage"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
                     android:elevation="12dp"
                     app:cardCornerRadius="25dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="12dp"
-                    app:layout_constraintTop_toTopOf="@+id/constraindLayoutExpandableView"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayoutExpandableView">
 
                     <ImageView
                         android:id="@+id/imgCardBacklogUserImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/outline_person_24"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/outline_person_24" />
 
 
                 </androidx.cardview.widget.CardView>
@@ -117,83 +112,73 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:text="UserName"
-                    app:layout_constraintStart_toEndOf="@id/cardViewCardBacklpogUserImage"
-                    app:layout_constraintTop_toTopOf="@id/constraindLayoutExpandableView" />
+                    app:layout_constraintStart_toEndOf="@id/cardViewCardBacklogUserImage"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutExpandableView" />
 
                 <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:isIndicator="false"
                     android:numStars="5"
+                    android:progressTint="#F6BA06"
                     android:rating="4"
                     android:stepSize="1.0"
-                    android:isIndicator="false"
-                    android:progressTint="#F6BA06"
+                    app:layout_constraintStart_toEndOf="@id/cardViewCardBacklogUserImage"
                     app:layout_constraintTop_toBottomOf="@+id/tvCardBacklogUserName"
-                    app:layout_constraintStart_toEndOf="@id/cardViewCardBacklpogUserImage"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_marginStart="24dp"
 
                     />
 
                 <TextView
-                    android:id="@+id/tvVorkasse"
+                    android:id="@+id/tvDeposit"
+                    style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="0dp"
-                    android:text="Vorkasse:"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
+                    android:text="@string/vorkasse"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklpogUserImage"
-                    style="@style/TextAppearance.AppCompat.Body2"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklogUserImage" />
 
                 <TextView
                     android:id="@+id/tvCardBacklogUserDeposit"
-                    android:layout_width="0dp"
-                    android:text="63.99"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="20dp"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@drawable/ic_baseline_euro_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklpogUserImage"
                     style="@style/TextAppearance.AppCompat.Body2"
-                    />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="12dp"
+                    android:drawableRight="@drawable/ic_baseline_euro_24"
+                    android:drawablePadding="5dp"
+                    android:text="63.99"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklogUserImage" />
 
                 <TextView
                     android:id="@+id/tvSupplyPrice"
+                    style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="0dp"
-                    android:text="Lieferungspreis:"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
+                    android:text="@string/dein_gewinn"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvVorkasse"
-                    style="@style/TextAppearance.AppCompat.Body2"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tvDeposit" />
 
                 <TextView
-                    android:id="@+id/tvCardBacklogSupplyPrice2"
-                    android:layout_width="0dp"
-                    android:text="11.30"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="20dp"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@drawable/ic_baseline_euro_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvCardBacklogUserDeposit"
+                    android:id="@+id/tvCardBacklogSupplyPriceSmall"
                     style="@style/TextAppearance.AppCompat.Body2"
-                    />
-
-
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="12dp"
+                    android:drawableRight="@drawable/ic_baseline_euro_24"
+                    android:drawablePadding="5dp"
+                    android:text="11.30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvCardBacklogUserDeposit" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

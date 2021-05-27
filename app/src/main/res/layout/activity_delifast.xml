@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".interaction.DelifastActivity">
+    tools:context="mobilecomputing.delifast.interaction.DelifastActivity">
 
     <FrameLayout
         android:id="@+id/fragmentLayout"

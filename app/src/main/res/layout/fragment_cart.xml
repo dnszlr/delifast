@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".interaction.order.CartFragment">
+    tools:context="mobilecomputing.delifast.interaction.order.CartFragment">
 
 
     <LinearLayout

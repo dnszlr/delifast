@@ -20,4 +20,6 @@
     <string name="Suche">Suche</string>
     <string name="Login">Login</string>
     <string name="Kostenpflichtig_bestellen">Kostenpflichtig bestellen</string>
+    <string name="dein_gewinn">Dein Gewinn:</string>
+    <string name="vorkasse">Vorkasse:</string>
 </resources>

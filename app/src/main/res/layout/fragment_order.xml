@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".interaction.order.OrderFragment">
+    tools:context="mobilecomputing.delifast.interaction.order.OrderFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filledTextField"

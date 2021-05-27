@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Order;
@@ -35,13 +36,14 @@ public class DeliveryFragment extends Fragment {
         View deliveryView = inflater.inflate(R.layout.fragment_delivery, container, false);
 
         initView(deliveryView);
-        ConstraintLayout c1 = createCardInBacklog();
-        ConstraintLayout c2 = createCardInBacklog();
-        backlog.addView(c1);
-        backlog.addView(c2);
 
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
         viewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
+            if (orders.size() > 0){
+                for (int i = 0; i < orders.size(); i++){
+                    createCardInBacklog(orders.get(i));
+                }
+            }
 
 
         });
@@ -55,12 +57,31 @@ public class DeliveryFragment extends Fragment {
         backlog = view.findViewById(R.id.llBacklog);
     }
 
-    private ConstraintLayout createCardInBacklog(){
+    private void createCardInBacklog(Order order){
         final View orderCard = getLayoutInflater().inflate(R.layout.fragment_delivery_cardview, null, false);
 
 
         ConstraintLayout layoutCardViewBacklog = orderCard.findViewById(R.id.layoutCardViewBacklog);
         CardView cardView = orderCard.findViewById(R.id.cardViewBacklog);
+
+        TextView orderAdress = orderCard.findViewById(R.id.tvCardBacklogAddress);
+        orderAdress.setText(order.getCustomerAddress().getAddressString());
+
+        TextView orderDeadline = orderCard.findViewById(R.id.tvCardBacklogDeadline);
+        orderDeadline.setText(order.getDeadline().toString());
+
+        TextView orderSupplyPrice = orderCard.findViewById(R.id.tvCardBacklogSupplyPrice);
+        orderSupplyPrice.setText(String.valueOf(order.getDeliveryPrice()));
+
+        TextView orderBuyer = orderCard.findViewById(R.id.tvCardBacklogUserName);
+        orderBuyer.setText(order.getCustomerID());
+
+        TextView orderDeposit = orderCard.findViewById(R.id.tvCardBacklogUserDeposit);
+        orderDeposit.setText(String.valueOf(order.getUserDeposit()));
+
+        TextView orderSupplyPrice2 = orderCard.findViewById(R.id.tvCardBacklogSupplyPriceSmall);
+        orderSupplyPrice2.setText(String.valueOf(order.getDeliveryPrice()));
+
         ConstraintLayout expandableView = orderCard.findViewById(R.id.constraintLayoutExpandableView);
         Button arrowDownUp = orderCard.findViewById(R.id.btnCardBacklogArrowDown);
 
@@ -80,6 +101,6 @@ public class DeliveryFragment extends Fragment {
             }
         });
 
-        return layoutCardViewBacklog;
+        backlog.addView(orderCard);
     }
 }

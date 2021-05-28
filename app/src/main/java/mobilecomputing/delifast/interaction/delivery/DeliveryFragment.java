@@ -60,7 +60,7 @@ public class DeliveryFragment extends Fragment {
         initListeners();
 
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
-        viewModel.getAllOrderByRadius(48.481664199, 9.204247876, 20000).observe(getViewLifecycleOwner(), orders -> {
+        viewModel.getAllOrderByRadius(48.48166419984722, 9.204247876280458, 20000).observe(getViewLifecycleOwner(), orders -> {
             Log.d("onCreateView", "iteration test outside");
             if (orders != null) {
                 Log.d("onCreateView", "Orders size: " + orders.size());
@@ -70,8 +70,6 @@ public class DeliveryFragment extends Fragment {
                 }
             }
         });
-
-
         return deliveryView;
     }
 

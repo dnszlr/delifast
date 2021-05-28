@@ -37,7 +37,7 @@ public class DeliveryViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<Order>> getAllOrderByRadius(double latitude, double longitude, double radiusInM) {
-        Log.d("getAllOrderByRadius", "Iteration test2");
+        Log.d("getAllOrderByRadius", "Iteration test");
         return orderRepository.getAllByRadius(latitude, longitude, radiusInM);
     }
 

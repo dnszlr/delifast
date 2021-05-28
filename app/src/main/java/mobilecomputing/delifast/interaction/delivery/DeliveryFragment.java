@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,15 +58,16 @@ public class DeliveryFragment extends Fragment {
         initListeners();
 
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
-        viewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
-            if (orders.size() > 0){
-                for (int i = 0; i < orders.size(); i++){
+        viewModel.getAllOrderByRadius(48.44636033115004, 9.14054419567577, 2000).observe(getViewLifecycleOwner(), orders -> {
+            Log.d("onCreateView", "iteration test outside");
+            if (orders != null) {
+                Log.d("onCreateView", "Orders size: " + orders.size());
+                for (int i = 0; i < orders.size(); i++) {
+                    Log.d("onCreateView", "iteration test inside");
                     createCardInBacklog(orders.get(i));
                 }
             }
         });
-
-
         return deliveryView;
     }
 
@@ -91,10 +93,9 @@ public class DeliveryFragment extends Fragment {
         btnBacklogLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(linearLayoutLocation.getVisibility() == View.GONE){
+                if (linearLayoutLocation.getVisibility() == View.GONE) {
                     linearLayoutLocation.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     linearLayoutLocation.setVisibility(View.GONE);
                 }
             }
@@ -102,7 +103,7 @@ public class DeliveryFragment extends Fragment {
 
     }
 
-    private void createCardInBacklog(Order order){
+    private void createCardInBacklog(Order order) {
         final View orderCard = getLayoutInflater().inflate(R.layout.fragment_delivery_cardview, null, false);
 
 
@@ -138,12 +139,11 @@ public class DeliveryFragment extends Fragment {
         arrowDownUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(expandableView.getVisibility() == View.GONE){
+                if (expandableView.getVisibility() == View.GONE) {
                     TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                     expandableView.setVisibility(View.VISIBLE);
                     arrowDownUp.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
-                }
-                else {
+                } else {
                     TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                     expandableView.setVisibility(View.GONE);
                     arrowDownUp.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_down_24);

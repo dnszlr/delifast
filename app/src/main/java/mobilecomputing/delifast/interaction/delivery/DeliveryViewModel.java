@@ -1,5 +1,7 @@
 package mobilecomputing.delifast.interaction.delivery;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -34,6 +36,7 @@ public class DeliveryViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<Order>> getAllOrderByRadius(double latitude, double longitude, double radiusInM) {
+        Log.d("getAllOrderByRadius", "Iteration test2");
         return orderRepository.getAllByRadius(latitude, longitude, radiusInM);
     }
 

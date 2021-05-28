@@ -112,18 +112,20 @@ public class OrderRepository {
                         for (Task<QuerySnapshot> singleTask : tasks) {
                             QuerySnapshot snap = singleTask.getResult();
                             for (DocumentSnapshot docSnap : snap.getDocuments()) {
-                                double documentLatitude = docSnap.getDouble("latitude");
-                                double documentLongitude = docSnap.getDouble("longitude");
+                                Order order = docSnap.toObject(Order.class);
+                                double documentLatitude = order.getCustomerAddress().getLatitude();
+                                double documentLongitude = order.getCustomerAddress().getLongitude();
                                 // We have to filter out a few false positives due to GeoHash
                                 // accuracy, but most will match
                                 GeoLocation docLocation = new GeoLocation(documentLatitude, documentLongitude);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center);
-                                if (distanceInM <= radiusInM) {
-                                    matchingOrders.add(docSnap.toObject(Order.class));
+                                if (!matchingOrders.contains(order) && distanceInM <= radiusInM) {
+                                    matchingOrders.add(order);
                                 }
                             }
                             orders.setValue(matchingOrders);
                         }
+                        Log.d("Geoquery", "MatchingOrdersSize: " + matchingOrders.size());
                     }
                 });
         return orders;

@@ -201,9 +201,9 @@ public class CartFragment extends Fragment {
         etUserDeposit.setError(null);
         etAddress.setError(null);
         etDeadline.setError(null);
-        etServiceFee.setText(String.valueOf(model.doubleUIRep(order.getServiceFee())));
-        etUserDeposit.setText(String.valueOf(model.doubleUIRep(order.getUserDeposit())));
-        tvCartSum.setText(String.valueOf(model.doubleUIRep(order.getUserDeposit() + order.getServiceFee())));
+        etServiceFee.setText(String.valueOf(model.roundDouble(order.getServiceFee())));
+        etUserDeposit.setText(String.valueOf(model.roundDouble(order.getUserDeposit())));
+        tvCartSum.setText(String.valueOf(model.roundDouble(order.getUserDeposit() + order.getServiceFee())));
         Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
         if (order.getDeadline() != null) {
             etDeadline.setText(simpleDateFormat.format(order.getDeadline()));
@@ -270,7 +270,6 @@ public class CartFragment extends Fragment {
                 Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_SHORT);
             }
         }
-
     }
 
     /**

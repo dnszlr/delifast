@@ -72,7 +72,6 @@ public class CartFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,6 +92,9 @@ public class CartFragment extends Fragment {
         return cartView;
     }
 
+    /**
+     * Initialize all listeners for the UI components
+     */
     private void initListeners() {
         etAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +108,7 @@ public class CartFragment extends Fragment {
                                 .addInjectedFeature(berlin)
                                 .build(PlaceOptions.MODE_CARDS))
                         .build(getActivity());
-                startActivityForResult(intent, 100);
+                startActivityForResult(intent, DelifastConstants.MAPBOX_REQUEST_TOKEN);
             }
         });
         etDeadline.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +149,11 @@ public class CartFragment extends Fragment {
         });
     }
 
+    /**
+     * Submit Method for the payment process
+     *
+     * @param v
+     */
     public void onBraintreeSubmit(View v) {
         RequestParams requestParams = new RequestParams();
         requestParams.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -160,7 +167,7 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -194,9 +201,9 @@ public class CartFragment extends Fragment {
         etUserDeposit.setError(null);
         etAddress.setError(null);
         etDeadline.setError(null);
-        etServiceFee.setText(String.valueOf(order.getServiceFee()));
-        etUserDeposit.setText(String.valueOf(order.getUserDeposit()));
-        tvCartSum.setText(String.valueOf(roundDouble(order.getUserDeposit() + order.getServiceFee())));
+        etServiceFee.setText(String.valueOf(model.doubleUIRep(order.getServiceFee())));
+        etUserDeposit.setText(String.valueOf(model.doubleUIRep(order.getUserDeposit())));
+        tvCartSum.setText(String.valueOf(model.doubleUIRep(order.getUserDeposit() + order.getServiceFee())));
         Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
         if (order.getDeadline() != null) {
             etDeadline.setText(simpleDateFormat.format(order.getDeadline()));
@@ -206,31 +213,30 @@ public class CartFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         Log.d("ActivityResult", "RequestCode arrived:" + requestCode);
 
-        if (resultCode == AutocompleteActivity.RESULT_OK && requestCode == 100) {
-            CarmenFeature feature = PlaceAutocomplete.getPlace(data);
-            try {
-                Point point = (Point) feature.geometry();
-                model.setCustomerAddress(point.coordinates(), feature.placeName());
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getActivity(), "Invalid address provided", Toast.LENGTH_SHORT);
+        if (requestCode == DelifastConstants.MAPBOX_REQUEST_TOKEN) {
+            if (resultCode == AutocompleteActivity.RESULT_OK) {
+                CarmenFeature feature = PlaceAutocomplete.getPlace(data);
+                try {
+                    Point point = (Point) feature.geometry();
+                    model.setCustomerAddress(point.coordinates(), feature.placeName());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Invalid address provided", Toast.LENGTH_SHORT);
+                }
+                etAddress.setText(feature.placeName());
+                Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Toast.makeText(getActivity().getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
             }
-            etAddress.setText(feature.placeName());
-            Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
-        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-            Status status = Autocomplete.getStatusFromIntent(data);
-            Toast.makeText(getActivity().getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
 
         if (requestCode == DelifastConstants.PAYMENT_REQUEST_CODE) {
-            // TODO Maybe change this to .. || RESULT_OK, dunno atm why first user is needed.
             if (resultCode == AutocompleteActivity.RESULT_OK) {
                 // use the result to update your UI and send the payment method nonce to your server
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
@@ -242,22 +248,26 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Log.d("Payment", "success" + responseBody);
-                        // TODO Order speichern
+                        // Payment was Successful, persist the current order.
+                        model.saveOrder();
+                        Toast.makeText(getActivity(), "Ihre Bestellung wurde erfolgreich gespeichert", Toast.LENGTH_SHORT);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.d("Payment", "failure" + statusCode);
+                        Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_SHORT);
                     }
                 });
             } else if (resultCode == AutocompleteActivity.RESULT_CANCELED) {
                 // the user canceled
-                // TODO make toast
+                Log.d("Braintree Result", "User canceled transaction");
+                Toast.makeText(getActivity(), "BezaHLVO wurde von abgebrochen", Toast.LENGTH_SHORT);
             } else {
                 // handle errors here, an exception may be available in
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
                 Log.d("Braintree Result", "error: " + error.getMessage());
-                // TODO make toast
+                Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_SHORT);
             }
         }
 
@@ -279,6 +289,9 @@ public class CartFragment extends Fragment {
         btnPay = cartView.findViewById(R.id.btnPay);
     }
 
+    /**
+     * ClickListener Method for etDeadline
+     */
     private void showDateTimeDialog() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -306,9 +319,8 @@ public class CartFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-
     /**
-     * Predefines some user locations for etAddress
+     * Predefines locations for etAddress
      */
     private void addUserLocations() {
         reutlingen = CarmenFeature.builder().text("Reutlingen")
@@ -335,36 +347,21 @@ public class CartFragment extends Fragment {
         model.deleteOrderPositionFromOrder(orderPosition);
     }
 
-
-    /**
-     * Round a double value to a value with only
-     * 2 positions after the comma
-     *
-     * @param value: the double value to be rounded
-     */
-    public static double roundDouble(double value) {
-        int places = 2;
-        BigDecimal bd = BigDecimal.valueOf(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
-
-
     /**
      * Check if all required details for the order
-     * are available (adress, price > 0 and time)
+     * are available (address, price > 0 and time)
      *
      * @param sum: the order price
-     *             adress: the order adress
+     *             address: the order address
      *             dateTime: the required time of order
      */
-    private boolean isReadyToPay(double sum, String adress, String dateTime) {
+    private boolean isReadyToPay(double sum, String address, String dateTime) {
         if (sum < 1) {
             etUserDeposit.setError(DelifastConstants.MISSING_PRODUCTS);
             etUserDeposit.requestFocus();
             return false;
         }
-        if (adress.isEmpty()) {
+        if (address.isEmpty()) {
             etAddress.setError(DelifastConstants.MISSING_ADRESS);
             etAddress.requestFocus();
             return false;

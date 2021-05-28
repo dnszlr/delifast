@@ -19,6 +19,7 @@ public class Order extends DelifastEntity {
     private double userDeposit;
     private double deliveryPrice;
     private double serviceFee;
+    private String description;
     private Address customerAddress;
     private ArrayList<OrderPosition> orderPositions;
 
@@ -29,7 +30,7 @@ public class Order extends DelifastEntity {
         super();
     }
 
-    public Order(String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double deliveryPrice, double serviceFee, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
+    public Order(String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double deliveryPrice, double serviceFee, String description, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
         this.customerID = customerID;
         this.supplierID = supplierID;
         this.orderTime = orderTime;
@@ -38,6 +39,7 @@ public class Order extends DelifastEntity {
         this.userDeposit = userDeposit;
         this.deliveryPrice = deliveryPrice;
         this.serviceFee = serviceFee;
+        this.description = description;
         this.customerAddress = customerAddress;
         this.orderPositions = orderPositions;
     }
@@ -120,5 +122,13 @@ public class Order extends DelifastEntity {
 
     public void setSupplierID(String supplierID) {
         this.supplierID = supplierID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

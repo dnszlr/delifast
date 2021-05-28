@@ -30,6 +30,7 @@ public class DelifastConstants {
     // Mapbox API key
     public static final String MAPBOX_ACCESS_TOKEN = "sk.eyJ1IjoibWthbGFzaCIsImEiOiJja3AyYWVsNm0xMjltMndsZ3FqZXhnZG11In0.G0zqmJ50IGR31LpPx82LNg";
     public static final String TIMEFORMAT = "dd.MM.yy HH:mm";
+    public static final int MAPBOX_REQUEST_TOKEN = 100;
 
     // Braintree
     public static final int PAYMENT_REQUEST_CODE = 7171;

@@ -7,6 +7,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -138,10 +141,9 @@ public class OrderViewModel extends ViewModel {
         Order updateOrder = order.getValue();
         ArrayList<OrderPosition> opList = updateOrder.getOrderPositions();
 
-        if(opList.contains(oldItem) && oldItem.getAmount() == 0){
+        if (opList.contains(oldItem) && oldItem.getAmount() == 0) {
             opList.remove(oldItem);
-        }
-        else if (opList.contains(oldItem)) {
+        } else if (opList.contains(oldItem)) {
             opList.set(opList.indexOf(oldItem), orderPosition);
         } else {
             opList.add(orderPosition);
@@ -195,7 +197,6 @@ public class OrderViewModel extends ViewModel {
      */
     public void setUserDeposit(CharSequence userDeposit) {
         double deposit = Double.valueOf(String.valueOf(userDeposit));
-        deposit = Math.round(deposit * 100.0) / 100.0;
         this.order.getValue().setUserDeposit(deposit);
     }
 
@@ -220,6 +221,24 @@ public class OrderViewModel extends ViewModel {
      */
     public void setDeadline(Date deadline) {
         this.order.getValue().setDeadline(deadline);
+    }
+
+    /**
+     * Round a double value to a value with only
+     * 2 positions after the comma
+     *
+     * @param value: the double value to be rounded
+     */
+    public double roundDouble(double value) {
+        int places = 2;
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public String doubleUIRep(double value) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(roundDouble(value));
     }
 
 }

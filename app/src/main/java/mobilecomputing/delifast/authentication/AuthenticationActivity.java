@@ -93,8 +93,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        // TODO REMOVE THIS v
-        FirebaseAuth.getInstance().signOut();
         FirebaseUser currentUser = model.getCurrentUser();
         if (currentUser != null) {
             //User already loggedIn, no need to login again.

@@ -107,7 +107,7 @@ public class OrderRepository {
         Tasks.whenAllComplete(tasks)
                 .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
                     @Override
-                    public void onComplete(@NonNull @NotNull Task<List<Task<?>>> task) {
+                    public void onComplete(@NonNull Task<List<Task<?>>> task) {
                         ArrayList<Order> matchingOrders = new ArrayList<>();
                         for (Task<QuerySnapshot> singleTask : tasks) {
                             QuerySnapshot snap = singleTask.getResult();
@@ -119,13 +119,12 @@ public class OrderRepository {
                                 // accuracy, but most will match
                                 GeoLocation docLocation = new GeoLocation(documentLatitude, documentLongitude);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center);
-                                if (!matchingOrders.contains(order) && distanceInM <= radiusInM) {
-                                    matchingOrders.add(order);
+                                if (distanceInM <= radiusInM) {
+                                    matchingOrders.add(docSnap.toObject(Order.class));
                                 }
                             }
-                            orders.setValue(matchingOrders);
                         }
-                        Log.d("Geoquery", "MatchingOrdersSize: " + matchingOrders.size());
+                        orders.setValue(matchingOrders);
                     }
                 });
         return orders;

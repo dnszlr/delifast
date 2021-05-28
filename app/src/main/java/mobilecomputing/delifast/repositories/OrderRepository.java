@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobilecomputing.delifast.delifastEnum.OrderStatus;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.others.DelifastConstants;
 import mobilecomputing.delifast.others.DelifastTags;
@@ -119,7 +120,7 @@ public class OrderRepository {
                                 // accuracy, but most will match
                                 GeoLocation docLocation = new GeoLocation(documentLatitude, documentLongitude);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center);
-                                if (distanceInM <= radiusInM) {
+                                if (distanceInM <= radiusInM && order.getOrderStatus().equals(OrderStatus.OPEN)) {
                                     matchingOrders.add(docSnap.toObject(Order.class));
                                 }
                             }

@@ -65,6 +65,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvCardBacklogDeadline" />
 
+
             <Button
                 android:id="@+id/btnCardBacklogArrowDown"
                 android:layout_width="40dp"
@@ -132,6 +133,18 @@
 
                     />
 
+                <Button
+                    android:id="@+id/btnCardBacklogAcceptOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Auftrag annehmen"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklogUserImage"
+                    />
+
                 <TextView
                     android:id="@+id/tvDeposit"
                     style="@style/TextAppearance.AppCompat.Body2"
@@ -141,7 +154,7 @@
                     android:layout_marginTop="20dp"
                     android:text="@string/vorkasse"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklogUserImage" />
+                    app:layout_constraintTop_toBottomOf="@id/btnCardBacklogAcceptOrder" />
 
                 <TextView
                     android:id="@+id/tvCardBacklogUserDeposit"
@@ -154,7 +167,7 @@
                     android:drawablePadding="5dp"
                     android:text="63.99"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardViewCardBacklogUserImage" />
+                    app:layout_constraintTop_toBottomOf="@id/btnCardBacklogAcceptOrder" />
 
                 <TextView
                     android:id="@+id/tvSupplyPrice"

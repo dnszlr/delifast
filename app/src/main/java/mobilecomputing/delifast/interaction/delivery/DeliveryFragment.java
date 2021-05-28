@@ -2,6 +2,7 @@ package mobilecomputing.delifast.interaction.delivery;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -9,12 +10,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+
+import java.util.zip.Inflater;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Order;
@@ -24,6 +36,8 @@ public class DeliveryFragment extends Fragment {
     private DeliveryViewModel viewModel;
 
     private LinearLayout backlog;
+    private ImageView btnBacklogLocation;
+    private LinearLayout linearLayoutLocation;
 
 
     public DeliveryFragment() {
@@ -36,6 +50,7 @@ public class DeliveryFragment extends Fragment {
         View deliveryView = inflater.inflate(R.layout.fragment_delivery, container, false);
 
         initView(deliveryView);
+        initListeners();
 
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
         viewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
@@ -44,17 +59,43 @@ public class DeliveryFragment extends Fragment {
                     createCardInBacklog(orders.get(i));
                 }
             }
-
-
         });
 
 
-        // Inflate the layout for this fragment
         return deliveryView;
     }
 
+
+    /**
+     * Initialize the view elements
+     *
+     * @param view
+     */
     private void initView(View view) {
         backlog = view.findViewById(R.id.llBacklog);
+        btnBacklogLocation = view.findViewById(R.id.btnBacklogLocation);
+        linearLayoutLocation = view.findViewById(R.id.linearLayoutLocation);
+    }
+
+
+    /**
+     * Initialize the listeners for the buttons in the view
+     *
+     * @param
+     */
+    private void initListeners() {
+        btnBacklogLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(linearLayoutLocation.getVisibility() == View.GONE){
+                    linearLayoutLocation.setVisibility(View.VISIBLE);
+                }
+                else {
+                    linearLayoutLocation.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
     private void createCardInBacklog(Order order){
@@ -103,4 +144,6 @@ public class DeliveryFragment extends Fragment {
 
         backlog.addView(orderCard);
     }
+
+
 }

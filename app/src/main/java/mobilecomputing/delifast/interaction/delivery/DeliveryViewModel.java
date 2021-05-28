@@ -2,6 +2,7 @@ package mobilecomputing.delifast.interaction.delivery;
 
 import android.util.Log;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -40,11 +41,8 @@ public class DeliveryViewModel extends ViewModel {
         return orderRepository.getAllByRadius(latitude, longitude, radiusInM);
     }
 
-    public User getUserByID(String userID) {
-        MutableLiveData<User> userMutableLiveData = userRepository.findById(userID);
-        User user = userMutableLiveData.getValue();
-
-        return user;
+    public MutableLiveData<User> getUserByID(String userID) {
+        return userRepository.findById(userID);
     }
 
 }

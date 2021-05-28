@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 
@@ -58,7 +60,7 @@ public class DeliveryFragment extends Fragment {
         initListeners();
 
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
-        viewModel.getAllOrderByRadius(48.44636033115004, 9.14054419567577, 2000).observe(getViewLifecycleOwner(), orders -> {
+        viewModel.getAllOrderByRadius(48.481664199, 9.204247876, 20000).observe(getViewLifecycleOwner(), orders -> {
             Log.d("onCreateView", "iteration test outside");
             if (orders != null) {
                 Log.d("onCreateView", "Orders size: " + orders.size());
@@ -68,6 +70,8 @@ public class DeliveryFragment extends Fragment {
                 }
             }
         });
+
+
         return deliveryView;
     }
 
@@ -121,10 +125,9 @@ public class DeliveryFragment extends Fragment {
 
         TextView orderBuyer = orderCard.findViewById(R.id.tvCardBacklogUserName);
 
-        User buyer = viewModel.getUserByID(order.getCustomerID());
-        //orderBuyer.setText(buyer.getName());
-        orderBuyer.setText(order.getCustomerID());
-
+        viewModel.getUserByID(order.getCustomerID()).observe(getViewLifecycleOwner(), user -> {
+            orderBuyer.setText(user.getName());
+        });
 
 
         TextView orderDeposit = orderCard.findViewById(R.id.tvCardBacklogUserDeposit);
@@ -132,6 +135,9 @@ public class DeliveryFragment extends Fragment {
 
         TextView orderSupplyPrice2 = orderCard.findViewById(R.id.tvCardBacklogSupplyPriceSmall);
         orderSupplyPrice2.setText(String.valueOf(order.getDeliveryPrice()));
+
+        EditText etOrderDescription = orderCard.findViewById(R.id.tvCardBacklogRemarks);
+        etOrderDescription.setText(order.getDescription());
 
         ConstraintLayout expandableView = orderCard.findViewById(R.id.constraintLayoutExpandableView);
         Button arrowDownUp = orderCard.findViewById(R.id.btnCardBacklogArrowDown);
@@ -164,6 +170,16 @@ public class DeliveryFragment extends Fragment {
 
             productsList.addView(productInCardView);
         }
+
+        MaterialButton btnAcceptOrder = orderCard.findViewById(R.id.btnCardBacklogAcceptOrder);
+        btnAcceptOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+        });
 
         backlog.addView(orderCard);
     }

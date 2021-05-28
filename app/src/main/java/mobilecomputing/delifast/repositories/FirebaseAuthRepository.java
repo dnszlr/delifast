@@ -141,7 +141,7 @@ public class FirebaseAuthRepository {
     private void createPaypalCustomer(String id, String email) {
         RequestParams requestParams = new RequestParams();
         requestParams.put("id", id);
-        requestParams.put("firstName", email);
+        requestParams.put("email", email);
         DelifastHttpClient.get("createuser", requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

@@ -58,7 +58,7 @@ import mobilecomputing.delifast.others.DelifastConstants;
 
 public class CartFragment extends Fragment {
 
-    private TextInputEditText etUserDeposit, etSupplyPrice, etServiceFee, etAddress, etDeadline;
+    private TextInputEditText etUserDeposit, etSupplyPrice, etServiceFee, etAddress, etDeadline, etDescription;
     private TextView tvCartSum;
     private MaterialButton btnPay;
     private OrderViewModel model;
@@ -136,6 +136,25 @@ public class CartFragment extends Fragment {
             }
         });
 
+        etDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    model.setDescription(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,6 +222,7 @@ public class CartFragment extends Fragment {
         etDeadline.setError(null);
         etServiceFee.setText(String.valueOf(model.doubleUIRep(order.getServiceFee())));
         etUserDeposit.setText(String.valueOf(model.doubleUIRep(order.getUserDeposit())));
+        etDescription.setText(order.getDescription());
         tvCartSum.setText(String.valueOf(model.doubleUIRep(order.getUserDeposit() + order.getServiceFee())));
         Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
         if (order.getDeadline() != null) {
@@ -285,6 +305,7 @@ public class CartFragment extends Fragment {
         etUserDeposit = cartView.findViewById(R.id.etUserDeposit);
         etServiceFee = cartView.findViewById(R.id.etServiceFee);
         etAddress = cartView.findViewById(R.id.etAddress);
+        etDescription = cartView.findViewById(R.id.etDescription);
         tvCartSum = cartView.findViewById(R.id.tvCartSum);
         btnPay = cartView.findViewById(R.id.btnPay);
     }

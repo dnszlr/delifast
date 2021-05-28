@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -141,6 +142,20 @@ public class DeliveryFragment extends Fragment {
                 }
             }
         });
+
+        LinearLayout productsList = orderCard.findViewById(R.id.lvCardBacklogProducts);
+        for(int j = 0; j < order.getOrderPositions().size(); j++){
+            final View productInCardView = getLayoutInflater().inflate(R.layout.fragment_delivery_cardview_product, null, false);
+
+            TextView productNameInCardView = productInCardView.findViewById(R.id.tvOrderPositionNameInBacklog);
+            TextView amountInCardView = productInCardView.findViewById(R.id.tvOrderPositionCountInBacklog);
+
+            productNameInCardView.setText(order.getOrderPositions().get(j).getProduct().getName());
+            amountInCardView.setText(Integer.toString(order.getOrderPositions().get(j).getAmount()));
+
+
+            productsList.addView(productInCardView);
+        }
 
         backlog.addView(orderCard);
     }

@@ -236,6 +236,16 @@ public class OrderViewModel extends ViewModel {
         return bd.doubleValue();
     }
 
+    /**
+     * Reacts to userDeposit changes and stores it in the view models livedata
+     *
+     * @param userDeposit
+     */
+    public void setDescription(CharSequence userDeposit) {
+        String deposit = String.valueOf(userDeposit);
+        this.order.getValue().setDescription(deposit);
+    }
+
     public String doubleUIRep(double value) {
         DecimalFormat df = new DecimalFormat("#.00");
         return df.format(roundDouble(value));

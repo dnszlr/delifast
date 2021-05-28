@@ -313,6 +313,7 @@ public class CartFragment extends Fragment {
         etUserDeposit = cartView.findViewById(R.id.etUserDeposit);
         etServiceFee = cartView.findViewById(R.id.etServiceFee);
         etAddress = cartView.findViewById(R.id.etAddress);
+        etDescription = cartView.findViewById(R.id.etDescription);
         tvCartSum = cartView.findViewById(R.id.tvCartSum);
         btnPay = cartView.findViewById(R.id.btnPay);
     }

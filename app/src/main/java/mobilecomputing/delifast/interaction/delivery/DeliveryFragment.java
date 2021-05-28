@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.transition.AutoTransition;
@@ -25,12 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.firebase.firestore.DocumentReference;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 
 import java.util.zip.Inflater;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Order;
+import mobilecomputing.delifast.entities.User;
 
 public class DeliveryFragment extends Fragment {
 
@@ -116,7 +119,12 @@ public class DeliveryFragment extends Fragment {
         orderSupplyPrice.setText(String.valueOf(order.getDeliveryPrice()));
 
         TextView orderBuyer = orderCard.findViewById(R.id.tvCardBacklogUserName);
+
+        User buyer = viewModel.getUserByID(order.getCustomerID());
+        //orderBuyer.setText(buyer.getName());
         orderBuyer.setText(order.getCustomerID());
+
+
 
         TextView orderDeposit = orderCard.findViewById(R.id.tvCardBacklogUserDeposit);
         orderDeposit.setText(String.valueOf(order.getUserDeposit()));

@@ -4,18 +4,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mobilecomputing.delifast.entities.Order;
+import mobilecomputing.delifast.entities.User;
 import mobilecomputing.delifast.repositories.OrderRepository;
+import mobilecomputing.delifast.repositories.UserRepository;
 
 public class DeliveryViewModel extends ViewModel {
 
     private OrderRepository orderRepository;
+    private UserRepository userRepository;
     private MutableLiveData<ArrayList<Order>> orderList;
 
     public DeliveryViewModel() {
 
         this.orderRepository = new OrderRepository();
+        this.userRepository = new UserRepository();
         orderList = orderRepository.getAll();
     }
 
@@ -32,5 +37,11 @@ public class DeliveryViewModel extends ViewModel {
         return orderRepository.getAllByRadius(latitude, longitude, radiusInM);
     }
 
+    public User getUserByID(String userID) {
+        MutableLiveData<User> userMutableLiveData = userRepository.findById(userID);
+        User user = userMutableLiveData.getValue();
+
+        return user;
+    }
 
 }

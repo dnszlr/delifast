@@ -226,8 +226,8 @@ public class OrderViewModel extends ViewModel {
      * @param address     - A json String which holds all necessary address data.
      */
     public void setCustomerAddress(List<Double> coordinates, String address) throws JSONException {
-        double latitude = coordinates.get(0);
-        double longitude = coordinates.get(1);
+        double longitude = coordinates.get(0);
+        double latitude = coordinates.get(1);
         Address customerAddress = new Address(latitude, longitude, address);
         this.order.getValue().setCustomerAddress(customerAddress);
     }

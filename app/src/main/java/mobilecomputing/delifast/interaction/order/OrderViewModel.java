@@ -1,5 +1,7 @@
 package mobilecomputing.delifast.interaction.order;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -53,6 +55,22 @@ public class OrderViewModel extends ViewModel {
         if (orderToSave != null) {
             orderRepository.save(orderToSave);
         }
+    }
+
+
+    public void resetOrder() {
+        Order order = new Order();
+        order.setOrderStatus(OrderStatus.OPEN);
+        order.setCustomerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        order.setOrderPositions(new ArrayList<OrderPosition>());
+        this.order.setValue(order);
+        resetOrderPositionList();
+    }
+
+    private void resetOrderPositionList() {
+        ArrayList<OrderPosition> opList = this.orderPositionList.getValue();
+        opList.forEach(op -> op.setAmount(0));
+        this.orderPositionList.setValue(opList);
     }
 
     /**

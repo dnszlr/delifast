@@ -179,6 +179,7 @@ public class CartFragment extends Fragment {
      */
     private void updateUI(Order order) {
         ArrayList<OrderPosition> orderPositions = order.getOrderPositions();
+        Log.d("updateUI", "orderPosition size:" + orderPositions.size());
         for (int i = 0; i < orderPositions.size(); i++) {
             OrderPosition currentOrderPosition = orderPositions.get(i);
             final View positionCardView = getLayoutInflater().inflate(R.layout.order_position_in_cart, null, false);
@@ -204,13 +205,10 @@ public class CartFragment extends Fragment {
         etServiceFee.setText(String.valueOf(model.roundDouble(order.getServiceFee())));
         etUserDeposit.setText(String.valueOf(model.roundDouble(order.getUserDeposit())));
         tvCartSum.setText(String.valueOf(model.roundDouble(order.getUserDeposit() + order.getServiceFee())));
-        Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
-        if (order.getDeadline() != null) {
-            etDeadline.setText(simpleDateFormat.format(order.getDeadline()));
-        }
-        if (order.getCustomerAddress() != null) {
-            etAddress.setText(order.getCustomerAddress().getAddressString());
-        }
+        String deadline = order.getDeadline() != null ? simpleDateFormat.format(order.getDeadline()) : "";
+        etDeadline.setText(deadline);
+        String address = order.getCustomerAddress() != null ? order.getCustomerAddress().getAddressString() : "";
+        etAddress.setText(address);
     }
 
     @Override
@@ -226,7 +224,7 @@ public class CartFragment extends Fragment {
                     model.setCustomerAddress(point.coordinates(), feature.placeName());
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getActivity(), "Invalid address provided", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "Invalid address provided", Toast.LENGTH_SHORT).show();
                 }
                 etAddress.setText(feature.placeName());
                 Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
@@ -250,24 +248,25 @@ public class CartFragment extends Fragment {
                         Log.d("Payment", "success" + responseBody);
                         // Payment was Successful, persist the current order.
                         model.saveOrder();
-                        Toast.makeText(getActivity(), "Ihre Bestellung wurde erfolgreich gespeichert", Toast.LENGTH_SHORT);
+                        model.resetOrder();
+                        Toast.makeText(getActivity(), "Ihre Bestellung wurde erfolgreich gespeichert", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.d("Payment", "failure" + statusCode);
-                        Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_SHORT);
+                        Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_LONG).show();
                     }
                 });
             } else if (resultCode == AutocompleteActivity.RESULT_CANCELED) {
                 // the user canceled
                 Log.d("Braintree Result", "User canceled transaction");
-                Toast.makeText(getActivity(), "BezaHLVO wurde von abgebrochen", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "Bezahlung wurde von abgebrochen", Toast.LENGTH_LONG).show();
             } else {
                 // handle errors here, an exception may be available in
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
                 Log.d("Braintree Result", "error: " + error.getMessage());
-                Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_LONG).show();
             }
         }
     }

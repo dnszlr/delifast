@@ -52,12 +52,10 @@ public class DeliveryFragment extends Fragment {
 
         initView(deliveryView);
         initListeners();
-
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
-        viewModel.getAllOrderByRadius(48.44636033115004, 9.14054419567577, 2000).observe(getViewLifecycleOwner(), orders -> {
+        viewModel.getAllOrderByRadius(48.48166419984722, 9.204247876280458, 20000).observe(getViewLifecycleOwner(), orders -> {
             Log.d("onCreateView", "iteration test outside");
             if (orders != null) {
-                Log.d("onCreateView", "Orders size: " + orders.size());
                 for (int i = 0; i < orders.size(); i++) {
                     Log.d("onCreateView", "iteration test inside");
                     createCardInBacklog(orders.get(i));

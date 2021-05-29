@@ -17,7 +17,7 @@ public class Order extends DelifastEntity {
     private Date deadline;
     private OrderStatus orderStatus;
     private double userDeposit;
-    private double deliveryPrice;
+    private double customerFee;
     private double serviceFee;
     private String description;
     private Address customerAddress;
@@ -30,14 +30,14 @@ public class Order extends DelifastEntity {
         super();
     }
 
-    public Order(String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double deliveryPrice, double serviceFee, String description, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
+    public Order(String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double customerFee, double serviceFee, String description, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
         this.customerID = customerID;
         this.supplierID = supplierID;
         this.orderTime = orderTime;
         this.deadline = deadline;
         this.orderStatus = orderStatus;
         this.userDeposit = userDeposit;
-        this.deliveryPrice = deliveryPrice;
+        this.customerFee = customerFee;
         this.serviceFee = serviceFee;
         this.description = description;
         this.customerAddress = customerAddress;
@@ -76,12 +76,12 @@ public class Order extends DelifastEntity {
         this.userDeposit = userDeposit;
     }
 
-    public double getDeliveryPrice() {
-        return deliveryPrice;
+    public double getCustomerFee() {
+        return customerFee;
     }
 
-    public void setDeliveryPrice(double deliveryPrice) {
-        this.deliveryPrice = deliveryPrice;
+    public void setCustomerFee(double customerFee) {
+        this.customerFee = customerFee;
     }
 
     public double getServiceFee() {

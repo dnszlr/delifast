@@ -1,7 +1,5 @@
 package mobilecomputing.delifast.interaction.order;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,9 +7,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -176,11 +171,12 @@ public class OrderViewModel extends ViewModel {
      * @param order
      */
     private void calculateCosts(Order order) {
-        double deliveryPrice = order.getOrderPositions().stream().mapToDouble(OrderPosition::getPrice).sum();
-        order.setUserDeposit(deliveryPrice);
-        order.setDeliveryPrice(deliveryPrice);
-        double serviceFee = determineServiceFee(deliveryPrice);
-        order.setServiceFee(serviceFee);
+        double userDeposit = order.getOrderPositions().stream().mapToDouble(OrderPosition::getPrice).sum();
+        order.setUserDeposit(userDeposit);
+        double fee = determineFee(userDeposit);
+        order.setServiceFee(fee * 0.3);
+        //
+        order.setCustomerFee(fee * 0.7);
     }
 
     /**
@@ -189,7 +185,7 @@ public class OrderViewModel extends ViewModel {
      * @param deliveryPrice
      * @return serviceFee
      */
-    private double determineServiceFee(double deliveryPrice) {
+    private double determineFee(double deliveryPrice) {
         // Price > 75€ = 10% fee
         double servicePercentage = 0.1;
         if (deliveryPrice <= 5.0) {
@@ -241,18 +237,6 @@ public class OrderViewModel extends ViewModel {
         this.order.getValue().setDeadline(deadline);
     }
 
-    /**
-     * Round a double value to a value with only
-     * 2 positions after the comma
-     *
-     * @param value: the double value to be rounded
-     */
-    public double roundDouble(double value) {
-        int places = 2;
-        BigDecimal bd = BigDecimal.valueOf(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
 
     /**
      * Reacts to userDeposit changes and stores it in the view models livedata
@@ -262,11 +246,6 @@ public class OrderViewModel extends ViewModel {
     public void setDescription(CharSequence userDeposit) {
         String deposit = String.valueOf(userDeposit);
         this.order.getValue().setDescription(deposit);
-    }
-
-    public String doubleUIRep(double value) {
-        DecimalFormat df = new DecimalFormat("#.00");
-        return df.format(roundDouble(value));
     }
 
 }

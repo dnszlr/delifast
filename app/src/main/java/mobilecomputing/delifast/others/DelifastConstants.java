@@ -1,5 +1,9 @@
 package mobilecomputing.delifast.others;
 
+import com.google.gson.JsonObject;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.geojson.Point;
+
 public class DelifastConstants {
 
     public final static int TIMEOUT = 1500;
@@ -35,4 +39,17 @@ public class DelifastConstants {
     // Braintree
     public static final int PAYMENT_REQUEST_CODE = 7171;
     public static final String TOKENIZATION_KEY = "sandbox_jysdqffh_kw5tm45ddfp9f34v";
+
+    public static final CarmenFeature REUTLINGEN = CarmenFeature.builder().text("Reutlingen")
+            .geometry(Point.fromLngLat(9.187737058082885, 48.48296039690456))
+            .placeName("Fakultät Informatik, 72762 Reutlingen")
+            .id("mapbox-inf")
+            .properties(new JsonObject())
+            .build();
+    public static final CarmenFeature BERLIN = CarmenFeature.builder().text("Berlin")
+            .placeName("Pariser Platz, 10117 Berlin")
+            .geometry(Point.fromLngLat(13.377700670884066, 52.51628219848714))
+            .id("mapbox-ber")
+            .properties(new JsonObject())
+            .build();
 }

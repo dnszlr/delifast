@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="mobilecomputing.delifast.interaction.delivery.DeliveryFragment"
-    android:background="#D3D2D2">
+    android:background="#D3D2D2"
+    tools:context="mobilecomputing.delifast.interaction.delivery.DeliveryFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,9 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -38,19 +37,19 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:title="Lieferungen"
+                        app:title="Backlog"
                         app:titleTextColor="#fff" />
 
                     <ImageView
                         android:id="@+id/btnBacklogLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
                         android:src="@drawable/ic_baseline_location_on_24"
-                        app:tint="#fff"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="12dp"/>
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="#fff" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.appbar.AppBarLayout>
@@ -63,36 +62,42 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
-            <EditText
-                android:id="@+id/etBacklogAdress"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ilAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Standort hinzufügen"
-                android:layout_marginEnd="12dp"
-                android:layout_marginStart="12dp"
-                />
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:hint="@string/Adresse"
+                app:boxBackgroundColor="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBacklogAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_baseline_location_on_24"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Umkreis:"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                />
+                android:text="Umkreis in km" />
 
             <com.google.android.material.slider.Slider
-                android:id="@+id/sliderBacklogLocation"
+                android:id="@+id/sliderRadius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
+                android:stepSize="5"
                 android:valueFrom="0"
-                android:valueTo="50"
-                android:stepSize="1"
-                />
+                android:valueTo="100" />
 
         </LinearLayout>
 
@@ -101,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="12dp"/>
+            android:paddingBottom="12dp" />
 
     </LinearLayout>
 

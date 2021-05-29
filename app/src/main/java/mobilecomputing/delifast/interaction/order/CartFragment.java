@@ -31,6 +31,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
@@ -54,6 +55,7 @@ import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.OrderPosition;
+import mobilecomputing.delifast.others.CurrencyFormatter;
 import mobilecomputing.delifast.others.DelifastConstants;
 
 public class CartFragment extends Fragment {
@@ -63,8 +65,6 @@ public class CartFragment extends Fragment {
     private MaterialButton btnPay;
     private OrderViewModel model;
     private LinearLayout lvContentLayout;
-    private CarmenFeature reutlingen;
-    private CarmenFeature berlin;
     private SimpleDateFormat simpleDateFormat;
 
 
@@ -80,7 +80,6 @@ public class CartFragment extends Fragment {
         Places.initialize(getActivity().getApplicationContext(), DelifastConstants.APIKEY);
         initView(cartView);
         initListeners();
-        addUserLocations();
         simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT);
         model = new ViewModelProvider(requireActivity()).get(OrderViewModel.class);
         model.getOrder().observe(getViewLifecycleOwner(), order -> {
@@ -104,8 +103,8 @@ public class CartFragment extends Fragment {
                         .placeOptions(PlaceOptions.builder()
                                 .backgroundColor(Color.parseColor("#EEEEEE"))
                                 .limit(10)
-                                .addInjectedFeature(reutlingen)
-                                .addInjectedFeature(berlin)
+                                .addInjectedFeature(DelifastConstants.REUTLINGEN)
+                                .addInjectedFeature(DelifastConstants.BERLIN)
                                 .build(PlaceOptions.MODE_CARDS))
                         .build(getActivity());
                 startActivityForResult(intent, DelifastConstants.MAPBOX_REQUEST_TOKEN);
@@ -125,6 +124,7 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("onTextChanged", String.valueOf(s));
                 if (s.length() > 0) {
                     model.setUserDeposit(s);
                 }
@@ -221,9 +221,6 @@ public class CartFragment extends Fragment {
         etUserDeposit.setError(null);
         etAddress.setError(null);
         etDeadline.setError(null);
-        etServiceFee.setText(String.valueOf(model.roundDouble(order.getServiceFee())));
-        etUserDeposit.setText(String.valueOf(model.roundDouble(order.getUserDeposit())));
-        tvCartSum.setText(String.valueOf(model.roundDouble(order.getUserDeposit() + order.getServiceFee())));
         etDescription.setText(order.getDescription());
         Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
         if (order.getDeadline() != null) {
@@ -232,9 +229,9 @@ public class CartFragment extends Fragment {
         if (order.getCustomerAddress() != null) {
             etAddress.setText(order.getCustomerAddress().getAddressString());
         }
-        etServiceFee.setText(String.valueOf(model.roundDouble(order.getServiceFee())));
-        etUserDeposit.setText(String.valueOf(model.roundDouble(order.getUserDeposit())));
-        tvCartSum.setText(String.valueOf(model.roundDouble(order.getUserDeposit() + order.getServiceFee())));
+        etServiceFee.setText(CurrencyFormatter.doubleToUIRep(order.getServiceFee() + order.getCustomerFee()));
+        etUserDeposit.setText(CurrencyFormatter.doubleToUIRep(order.getUserDeposit()));
+        tvCartSum.setText(CurrencyFormatter.doubleToUIRep(order.getUserDeposit() + order.getServiceFee() + order.getCustomerFee()));
         String deadline = order.getDeadline() != null ? simpleDateFormat.format(order.getDeadline()) : "";
         etDeadline.setText(deadline);
         String address = order.getCustomerAddress() != null ? order.getCustomerAddress().getAddressString() : "";
@@ -347,25 +344,6 @@ public class CartFragment extends Fragment {
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
-
-    /**
-     * Predefines locations for etAddress
-     */
-    private void addUserLocations() {
-        reutlingen = CarmenFeature.builder().text("Reutlingen")
-                .geometry(Point.fromLngLat(9.187737058082885, 48.48296039690456))
-                .placeName("Fakultät Informatik, 72762 Reutlingen")
-                .id("mapbox-inf")
-                .properties(new JsonObject())
-                .build();
-        berlin = CarmenFeature.builder().text("Berlin")
-                .placeName("Pariser Platz, 10117 Berlin")
-                .geometry(Point.fromLngLat(13.377700670884066,52.51628219848714))
-                .id("mapbox-ber")
-                .properties(new JsonObject())
-                .build();
-    }
-
 
     /**
      * Delete the order position from the order in view model

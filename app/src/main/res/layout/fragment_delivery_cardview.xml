@@ -213,7 +213,9 @@
                     android:hint="Keine Bemerkungen"
                     android:editable="false"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvRemarks"/>
+                    app:layout_constraintTop_toBottomOf="@id/tvRemarks"
+                    android:clickable="false"
+                    android:background="@null"/>
 
                 <TextView
                     android:id="@+id/tvProducts"

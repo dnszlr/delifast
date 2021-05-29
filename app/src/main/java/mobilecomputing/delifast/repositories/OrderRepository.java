@@ -28,6 +28,7 @@ import java.util.List;
 
 import mobilecomputing.delifast.delifastEnum.OrderStatus;
 import mobilecomputing.delifast.entities.Order;
+import mobilecomputing.delifast.entities.User;
 import mobilecomputing.delifast.others.DelifastConstants;
 import mobilecomputing.delifast.others.DelifastTags;
 
@@ -58,6 +59,29 @@ public class OrderRepository {
                 Log.w(DelifastTags.ORDERSAVE, "Error adding document", e);
             }
         });
+        return result;
+    }
+
+    public MutableLiveData<Boolean> update(Order order) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
+        DocumentReference entityToUpdate = dbCollection.document(order.getId());
+
+        entityToUpdate
+                .set(order)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        result.setValue(true);
+                        Log.d("TAG", "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        result.setValue(false);
+                        Log.w("TAG", "Error updating document", e);
+                    }
+                });
         return result;
     }
 

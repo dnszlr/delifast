@@ -1,42 +1,34 @@
 package mobilecomputing.delifast.interaction.delivery;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.firestore.DocumentReference;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
-
-import java.util.zip.Inflater;
+import com.google.firebase.auth.FirebaseAuth;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Order;
-import mobilecomputing.delifast.entities.User;
 
 public class DeliveryFragment extends Fragment {
 
@@ -60,7 +52,8 @@ public class DeliveryFragment extends Fragment {
         initListeners();
 
         viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
-        viewModel.getAllOrderByRadius(48.48166419984722, 9.204247876280458, 20000).observe(getViewLifecycleOwner(), orders -> {
+        //viewModel.getAllOrderByRadius(48.48166419984722, 9.204247876280458, 20000).observe(getViewLifecycleOwner(), orders -> {
+        viewModel.getOrderList().observe(getViewLifecycleOwner(), orders -> {
             Log.d("onCreateView", "iteration test outside");
             if (orders != null) {
                 Log.d("onCreateView", "Orders size: " + orders.size());
@@ -70,6 +63,7 @@ public class DeliveryFragment extends Fragment {
                 }
             }
         });
+        viewModel.getAllOrderByRadius(48.48166419984722, 9.204247876280458, 20000);
         return deliveryView;
     }
 
@@ -173,16 +167,46 @@ public class DeliveryFragment extends Fragment {
         btnAcceptOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
+                openAcceptOrderDialog(order);
             }
         });
 
         backlog.addView(orderCard);
     }
 
+    private void openAcceptOrderDialog(Order order) {
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Bestellung annehmen")
+                .setMessage("Möchten Sie diesen Auftrag wirklich annehmen?")
+                .setPositiveButton("Ja", null)
+                .setNegativeButton("Nein", null)
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assignOrdertoUser(order);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
 
 
+
+        dialog.show();
+    }
+
+    private void assignOrdertoUser(Order order) {
+        viewModel.setOrderAcceptedinDB(order, FirebaseAuth.getInstance().getUid());
+
+        Toast.makeText(getActivity(), "Sie haben den Auftrag angenommen", Toast.LENGTH_SHORT).show();
+    }
 
 }

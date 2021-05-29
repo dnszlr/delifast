@@ -63,7 +63,7 @@
                         android:id="@+id/ilServiceFee"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:clickable="false"
                         android:hint="@string/Service"
                         app:boxBackgroundColor="@color/white"
@@ -73,11 +73,14 @@
                             android:id="@+id/etServiceFee"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:text="0"
+                            android:inputType="numberDecimal"
                             android:clickable="false"
-                            android:drawableRight="@drawable/ic_baseline_euro_24"
                             android:editable="false"
+                            android:drawableRight="@drawable/ic_baseline_euro_24"
                             android:focusable="false"
-                            android:text="0" />
+                            />
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout

@@ -25,24 +25,21 @@ public class DeliveryViewModel extends ViewModel {
 
         this.orderRepository = new OrderRepository();
         this.userRepository = new UserRepository();
-        orderList = new MutableLiveData<>();
+        this.orderList = orderRepository.getOrderList();
     }
 
     public MutableLiveData<ArrayList<Order>> getOrderList() {
-        return this.orderList;
+        return orderList;
     }
 
-    public MutableLiveData<ArrayList<Order>> getAllOrder() {
+    public void getAll() {
 
-        return orderRepository.getAll();
+        orderRepository.getAll();
     }
 
     public void getAllOrderByRadius(double latitude, double longitude, double radiusInM) {
         Log.d("getAllOrderByRadius", "Iteration test");
-        MutableLiveData<ArrayList<Order>> updatedOrderList = orderRepository.getAllByRadius(latitude, longitude, radiusInM);
-        if(updatedOrderList.getValue() != null){
-            orderList.setValue(updatedOrderList.getValue());
-        }
+        orderRepository.getAllByRadius(latitude, longitude, radiusInM);
     }
 
     public MutableLiveData<User> getUserByID(String userID) {
@@ -52,11 +49,10 @@ public class DeliveryViewModel extends ViewModel {
     public void setOrderAcceptedinDB(Order order, String uid) {
         ArrayList<Order> updatedOrderList = this.orderList.getValue();
         updatedOrderList.remove(order);
-
         order.setSupplierID(uid);
         order.setOrderStatus(OrderStatus.ACCEPTED);
         orderRepository.update(order);
 
-        this.orderList.setValue(updatedOrderList);
+        orderList.setValue(updatedOrderList);
     }
 }

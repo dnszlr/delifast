@@ -56,6 +56,7 @@ public class DeliveryFragment extends Fragment {
         viewModel.getOrderList().observe(getViewLifecycleOwner(), orders -> {
             Log.d("onCreateView", "iteration test outside");
             if (orders != null) {
+                backlog.removeAllViewsInLayout();
                 Log.d("onCreateView", "Orders size: " + orders.size());
                 for (int i = 0; i < orders.size(); i++) {
                     Log.d("onCreateView", "iteration test inside");

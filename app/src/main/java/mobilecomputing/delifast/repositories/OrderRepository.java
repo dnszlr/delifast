@@ -36,10 +36,16 @@ public class OrderRepository {
 
     private String collection;
     private CollectionReference dbCollection;
+    private MutableLiveData<ArrayList<Order>> orderList;
 
     public OrderRepository() {
         this.collection = DelifastConstants.ORDERCOLLECTION;
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
+        this.orderList = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<ArrayList<Order>> getOrderList() {
+        return orderList;
     }
 
     public MutableLiveData<Boolean> save(Order order) {
@@ -85,8 +91,7 @@ public class OrderRepository {
         return result;
     }
 
-    public MutableLiveData<ArrayList<Order>> getAll() {
-        final MutableLiveData<ArrayList<Order>> orders = new MutableLiveData<>();
+    public void getAll() {
         dbCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -96,13 +101,12 @@ public class OrderRepository {
                         Log.d(DelifastTags.ORDERGETALL, document.getId() + " => " + document.getData());
                         resultList.add(document.toObject(Order.class));
                     }
-                    orders.setValue(resultList);
+                    orderList.postValue(resultList);
                 } else {
                     Log.d(DelifastTags.ORDERGETALL, "Error getting documents: ", task.getException());
                 }
             }
         });
-        return orders;
     }
 
     /**
@@ -113,8 +117,7 @@ public class OrderRepository {
      * @param radiusInM radius in meters
      * @return a ArrayList containing all fitting Orders
      */
-    public MutableLiveData<ArrayList<Order>> getAllByRadius(double latitude, double longitude, double radiusInM) {
-        final MutableLiveData<ArrayList<Order>> orders = new MutableLiveData<>();
+    public void getAllByRadius(double latitude, double longitude, double radiusInM) {
         final GeoLocation center = new GeoLocation(latitude, longitude);
         // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
         // a separate query for each pair. There can be up to 9 pairs of bounds
@@ -149,11 +152,8 @@ public class OrderRepository {
                                 }
                             }
                         }
-                        orders.setValue(matchingOrders);
+                        orderList.postValue(matchingOrders);
                     }
                 });
-        return orders;
     }
-
-
 }

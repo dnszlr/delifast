@@ -52,4 +52,5 @@ public class DelifastConstants {
             .id("mapbox-ber")
             .properties(new JsonObject())
             .build();
+    public static final int PERMISSION_REQUEST_CODE = 200;
 }

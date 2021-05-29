@@ -1,12 +1,17 @@
 package mobilecomputing.delifast.interaction.order;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,6 +32,9 @@ import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -38,7 +46,10 @@ import com.google.gson.JsonObject;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.mapbox.api.geocoding.v5.GeocodingCriteria;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
@@ -50,6 +61,7 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.entities.Order;
@@ -57,6 +69,9 @@ import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.OrderPosition;
 import mobilecomputing.delifast.others.CurrencyFormatter;
 import mobilecomputing.delifast.others.DelifastConstants;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartFragment extends Fragment {
 
@@ -66,6 +81,8 @@ public class CartFragment extends Fragment {
     private OrderViewModel model;
     private LinearLayout lvContentLayout;
     private SimpleDateFormat simpleDateFormat;
+    private MaterialButton btnLocationPicker;
+    private FusedLocationProviderClient fusedLocationClient;
 
 
     public CartFragment() {
@@ -81,6 +98,7 @@ public class CartFragment extends Fragment {
         initView(cartView);
         initListeners();
         simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         model = new ViewModelProvider(requireActivity()).get(OrderViewModel.class);
         model.getOrder().observe(getViewLifecycleOwner(), order -> {
             if (order != null) {
@@ -166,7 +184,89 @@ public class CartFragment extends Fragment {
 
             }
         });
+        btnLocationPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(
+                        v.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    locationPicker();
+                } else {
+                    // You can directly ask for the permission.
+                    requestPermissions(
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            DelifastConstants.PERMISSION_REQUEST_CODE);
+                }
+            }
+        });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case DelifastConstants.PERMISSION_REQUEST_CODE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    locationPicker();
+                } else {
+                    Toast.makeText(getActivity(), "Aufgrund fehlender Rechte kann der Standord nicht lokalisiert werden", Toast.LENGTH_LONG).show();
+                }
+                return;
+        }
+    }
+
+    public void locationPicker() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        Log.d("latitude:", "" + location.getLatitude());
+                        Log.d("longitude:", "" + location.getLongitude());
+                        Point point = Point.fromLngLat(location.getLongitude(), location.getLatitude());
+                        Log.d("Point latitude:", "" + point.latitude());
+                        Log.d("Point longitude:", "" + point.longitude());
+                        MapboxGeocoding reverseGeocode = MapboxGeocoding.builder()
+                                .accessToken(DelifastConstants.MAPBOX_ACCESS_TOKEN)
+                                .query(point)
+                                .geocodingTypes(GeocodingCriteria.TYPE_ADDRESS)
+                                .build();
+                        reverseGeocode.enqueueCall(new Callback<GeocodingResponse>() {
+                            @Override
+                            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+                                List<CarmenFeature> results = response.body().features();
+                                if (results.size() > 0) {
+                                    String placeName = results.get(0).placeName();
+                                    etAddress.setText(placeName);
+                                    try {
+                                        model.setCustomerAddress(point.coordinates(), placeName);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Es konnte keine Addresse gefunden werden", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getActivity(), "Bitte GPS einschalten", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "Keine Rechte vorhanden", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     /**
      * Submit Method for the payment process
@@ -313,6 +413,7 @@ public class CartFragment extends Fragment {
         etDescription = cartView.findViewById(R.id.etDescription);
         tvCartSum = cartView.findViewById(R.id.tvCartSum);
         btnPay = cartView.findViewById(R.id.btnPay);
+        btnLocationPicker = cartView.findViewById(R.id.btnLocationPicker);
     }
 
     /**

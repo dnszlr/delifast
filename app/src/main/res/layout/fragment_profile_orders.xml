@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#D3D2D2">
+
+    <ImageView
+        android:id="@+id/imgProfileOrders"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src="@drawable/outline_shopping_bag_24"
+        android:layout_gravity="center"
+        android:transitionName="transationOrdersInProfile"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Text in the Fragment of orders"/>
+
+</LinearLayout>

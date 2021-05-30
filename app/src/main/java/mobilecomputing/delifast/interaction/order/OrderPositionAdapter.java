@@ -48,7 +48,7 @@ public class OrderPositionAdapter extends ArrayAdapter<OrderPosition> {
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
         initView(convertView);
-        
+
         tvProductName.setText(orderPosition.getProduct().getName());
 
         tvProductCount.setText(String.valueOf(orderPosition.getAmount()));

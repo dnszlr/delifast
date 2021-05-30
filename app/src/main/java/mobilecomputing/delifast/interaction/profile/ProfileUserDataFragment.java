@@ -92,7 +92,7 @@ public class ProfileUserDataFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==221 && resultCode== Activity.RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == 221 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             profilePic.setImageURI(imageUri);
             uploadPicture();
@@ -113,8 +113,8 @@ public class ProfileUserDataFragment extends Fragment {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         pd.dismiss();
-                        Snackbar.make(getView().findViewById(R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
-
+                        //Snackbar.make(getView().findViewById(R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Image Uploaded.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -130,6 +130,5 @@ public class ProfileUserDataFragment extends Fragment {
                 pd.setMessage("Progress: " + (int) processPercent + "%");
             }
         });
-
     }
 }

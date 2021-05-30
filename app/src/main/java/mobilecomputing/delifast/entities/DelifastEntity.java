@@ -1,7 +1,10 @@
 package mobilecomputing.delifast.entities;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.ServerTimestamp;
+import com.google.type.Date;
 import com.google.type.DateTime;
 
 import java.util.Objects;
@@ -11,7 +14,7 @@ public abstract class DelifastEntity {
 
     @DocumentId
     private String id;
-    private DateTime lastChanged;
+    private Timestamp lastChanged;
 
     public DelifastEntity() {
 
@@ -25,11 +28,11 @@ public abstract class DelifastEntity {
         this.id = id;
     }
 
-    public DateTime getLastChanged() {
+    public Timestamp getLastChanged() {
         return lastChanged;
     }
 
-    public void setLastChanged(DateTime lastChanged) {
+    public void setLastChanged(Timestamp lastChanged) {
         this.lastChanged = lastChanged;
     }
 

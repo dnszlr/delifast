@@ -55,6 +55,7 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -371,9 +372,15 @@ public class CartFragment extends Fragment {
                 DelifastHttpClient.post("checkout", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Log.d("Payment", "success" + responseBody);
+                        String transactionId = "";
+                        try {
+                            JSONObject response = new JSONObject(new String(responseBody));
+                            transactionId = (String) response.getJSONObject("transaction").get("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         // Payment was Successful, persist the current order.
-                        model.saveOrder();
+                        model.saveOrder(transactionId);
                         model.resetOrder();
                         Toast.makeText(getActivity(), "Ihre Bestellung wurde erfolgreich gespeichert", Toast.LENGTH_LONG).show();
                     }

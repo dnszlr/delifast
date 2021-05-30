@@ -45,9 +45,10 @@ public class OrderViewModel extends ViewModel {
         this.order.setValue(order);
     }
 
-    public void saveOrder() {
+    public void saveOrder(String transactionId) {
         Order orderToSave = this.order.getValue();
         if (orderToSave != null) {
+            orderToSave.setTransactionID(transactionId);
             orderRepository.save(orderToSave);
         }
     }

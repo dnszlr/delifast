@@ -11,7 +11,7 @@
         android:orientation="vertical"
         >
 
-        <!-- Secound row of cards -->
+        <!-- Header card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,6 +56,17 @@
 
         </LinearLayout>
 
+
+        <!-- Cards Container -->
+        <LinearLayout
+            android:id="@+id/containerProfileOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+        </LinearLayout>
 
 
     </LinearLayout>

@@ -16,48 +16,50 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import mobilecomputing.delifast.entities.Order;
+import mobilecomputing.delifast.entities.Rating;
 import mobilecomputing.delifast.entities.User;
 import mobilecomputing.delifast.others.DelifastConstants;
+import mobilecomputing.delifast.others.DelifastTags;
 
-public class UserRepository {
-
+public class RatingRepository {
     private String collection;
     private CollectionReference dbCollection;
 
-    public UserRepository() {
-        this.collection = DelifastConstants.USERCOLLECTION;
+    public RatingRepository() {
+        this.collection = DelifastConstants.RATINGCOLLECTION;
         this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
     }
 
-    public MutableLiveData<Boolean> save(User user, String uId) {
+    public MutableLiveData<Boolean> save(Rating rating) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
-        dbCollection.document(uId)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        dbCollection.add(rating)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void unused) {
+                    public void onSuccess(DocumentReference documentReference) {
                         result.setValue(true);
-                        Log.d("saved", "DocumentSnapshot written with ID: " + uId);
+                        Log.d(DelifastTags.ORDERSAVE, "DocumentSnapshot written with ID: " + documentReference.getId());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 result.setValue(false);
-                Log.w("saved", "Error adding document", e);
+                Log.w(DelifastTags.ORDERSAVE, "Error adding document", e);
             }
         });
         return result;
     }
 
-    public MutableLiveData<Boolean> update(User user) {
+    public MutableLiveData<Boolean> update(Rating rating) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
-        DocumentReference entityToUpdate = dbCollection.document(user.getId());
-
+        DocumentReference entityToUpdate = dbCollection.document(rating.getId());
         entityToUpdate
-                .set(user)
+                .set(rating)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -75,61 +77,61 @@ public class UserRepository {
         return result;
     }
 
-    public MutableLiveData<Boolean> delete(User user) {
-        MutableLiveData<Boolean> result = new MutableLiveData<>();
-        dbCollection.document(user.getId())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        result.setValue(true);
-                        Log.d("TAG", "DocumentSnapshot successfully deleted!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        result.setValue(false);
-                        Log.w("TAG", "Error deleting document", e);
-                    }
-                });
-        return result;
-    }
-
-    public MutableLiveData<User> getById(String id) {
-        final MutableLiveData<User> entity = new MutableLiveData<>();
+    public MutableLiveData<Rating> getById(String id) {
+        final MutableLiveData<Rating> entity = new MutableLiveData<>();
         dbCollection.document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG", "DocumentSnapshot successfully found!");
-                entity.setValue(documentSnapshot.toObject(User.class));
+                entity.setValue(documentSnapshot.toObject(Rating.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(@NonNull @NotNull Exception e) {
                 Log.w("TAG", "Error finding document", e);
             }
         });
         return entity;
     }
 
-    public MutableLiveData<List<User>> getAll() {
-        final MutableLiveData<List<User>> entities = new MutableLiveData<>();
+    public MutableLiveData<List<Rating>> getAllByUserId(String userId) {
+        final MutableLiveData<List<Rating>> entity = new MutableLiveData<>();
+        dbCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        List<Rating> resultList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            resultList = task.getResult().toObjects(Rating.class);
+                        } else {
+                            Log.d(DelifastTags.RATINGETALLBYUSERID, "Error getting documents: ", task.getException());
+                        }
+                        entity.setValue(resultList);
+                    }
+                });
+        return entity;
+    }
+
+    public MutableLiveData<List<Rating>> getAll() {
+        MutableLiveData<List<Rating>> ratingList = new MutableLiveData<>();
         dbCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<User> resultList = new ArrayList<>();
+                ArrayList<Rating> resultList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("TAG", document.getId() + " => " + document.getData());
-                        resultList.add(document.toObject(User.class));
+                        Log.d(DelifastTags.ORDERGETALL, document.getId() + " => " + document.getData());
+                        resultList.add(document.toObject(Rating.class));
                     }
-                    entities.setValue(resultList);
+                    ratingList.postValue(resultList);
                 } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
+                    Log.d(DelifastTags.ORDERGETALL, "Error getting documents: ", task.getException());
                 }
             }
         });
-        return entities;
+        return ratingList;
     }
+
 }

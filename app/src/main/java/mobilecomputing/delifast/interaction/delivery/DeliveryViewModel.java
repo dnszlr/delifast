@@ -2,15 +2,12 @@ package mobilecomputing.delifast.interaction.delivery;
 
 import android.util.Log;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mapbox.geojson.Point;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 import mobilecomputing.delifast.delifastEnum.OrderStatus;
 import mobilecomputing.delifast.entities.LocationHelper;
@@ -57,7 +54,7 @@ public class DeliveryViewModel extends ViewModel {
     }
 
     public MutableLiveData<User> getUserByID(String userID) {
-        return userRepository.findById(userID);
+        return userRepository.getById(userID);
     }
 
     public void setOrderAcceptedinDB(Order order, String uid) {

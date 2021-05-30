@@ -2,7 +2,7 @@ package mobilecomputing.delifast.entities;
 
 public class Rating extends DelifastEntity {
 
-    private User user;
+    private String userId;
     private int stars;
     private String description;
 
@@ -13,18 +13,18 @@ public class Rating extends DelifastEntity {
         super();
     }
 
-    public Rating(User user, int stars, String description) {
-        this.user = user;
+    public Rating(String userId, int stars, String description) {
+        this.userId = userId;
         this.stars = stars;
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserid(String userId) {
+        this.userId = userId;
     }
 
     public int getStars() {

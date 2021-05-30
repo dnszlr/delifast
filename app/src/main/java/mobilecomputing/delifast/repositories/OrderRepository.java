@@ -114,6 +114,7 @@ public class OrderRepository {
     public void getAllByCustomerId(String customerID) {
         dbCollection
                 .whereEqualTo("customerID", customerID)
+                .orderBy("deadline")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -135,6 +136,7 @@ public class OrderRepository {
     public void getAllBySupplierId(String supplierID) {
         dbCollection
                 .whereEqualTo("supplierID", supplierID)
+                .orderBy("deadline")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

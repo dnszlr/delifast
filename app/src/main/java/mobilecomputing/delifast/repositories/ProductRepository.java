@@ -65,7 +65,9 @@ public class ProductRepository {
      */
     public MutableLiveData<ArrayList<Product>> getAll() {
         final MutableLiveData<ArrayList<Product>> products = new MutableLiveData<>();
-        dbCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        dbCollection
+                .orderBy("category")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<Product> resultList = new ArrayList<>();

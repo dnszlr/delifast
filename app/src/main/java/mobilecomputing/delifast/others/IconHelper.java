@@ -45,6 +45,12 @@ public class IconHelper {
             case VEGETABLES:
                 image = R.drawable.vegetable;
                 break;
+            case FISH:
+                image = R.drawable.fish;
+                break;
+            case CHEESE:
+                image = R.drawable.cheese;
+                break;
         }
         return image;
     }

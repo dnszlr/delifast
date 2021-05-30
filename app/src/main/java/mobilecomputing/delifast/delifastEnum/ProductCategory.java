@@ -3,7 +3,9 @@ package mobilecomputing.delifast.delifastEnum;
 public enum ProductCategory {
 
     MEAT("Fleisch"),
+    FISH("Fisch"),
     MILKPRODUCT("Milchprodukt"),
+    CHEESE("Käse"),
     PASTA("Teigwaren"),
     BREAD("Brot"),
     OIL("Öl"),
@@ -13,6 +15,7 @@ public enum ProductCategory {
     SWEETS("Süßwaren"),
     SEASONING("Gewürz"),
     OTHERS("Sonstige");
+
 
     private String productCategory;
 

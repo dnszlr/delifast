@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
         cardProfileUserData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileUserDataFragment nextFrag= new ProfileUserDataFragment();
+                ProfileUserDataFragment nextFrag = new ProfileUserDataFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addSharedElement(layoutProfileUserdataTransation, "transationDeliveriesInProfile")
                         .replace(R.id.fragmentLayout, nextFrag, null)
@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
         cardProfileOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileOrdersFragment nextFrag= new ProfileOrdersFragment();
+                ProfileOrdersFragment nextFrag = new ProfileOrdersFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addSharedElement(layoutProfileOrdersTransation, "translationOrdersInProfile")
                         .replace(R.id.fragmentLayout, nextFrag, null)
@@ -117,7 +117,7 @@ public class ProfileFragment extends Fragment {
         cardProfileDeliveries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileDeliveriesFragment nextFrag= new ProfileDeliveriesFragment();
+                ProfileDeliveriesFragment nextFrag = new ProfileDeliveriesFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addSharedElement(layoutProfileDeliveriesTransation, "transationDeliveriesInProfile")
                         .replace(R.id.fragmentLayout, nextFrag, null)
@@ -130,7 +130,7 @@ public class ProfileFragment extends Fragment {
         cardProfileRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileRatingFragment nextFrag= new ProfileRatingFragment();
+                ProfileRatingFragment nextFrag = new ProfileRatingFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addSharedElement(layoutProfileRatingTransition, "transationRatingInProfile")
                         .replace(R.id.fragmentLayout, nextFrag, null)
@@ -141,7 +141,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void delifastLogout(){
+    private void delifastLogout() {
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle("Logout")
                 .setMessage("Möchten Sie sich wirklich abmelden?")

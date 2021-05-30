@@ -10,6 +10,7 @@ import mobilecomputing.delifast.delifastEnum.OrderStatus;
 
 public class Order extends DelifastEntity {
 
+    private String transactionID;
     private String customerID;
     private String supplierID;
     @ServerTimestamp
@@ -30,7 +31,8 @@ public class Order extends DelifastEntity {
         super();
     }
 
-    public Order(String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double customerFee, double serviceFee, String description, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
+    public Order(String transactionID, String customerID, String supplierID, Date orderTime, Date deadline, OrderStatus orderStatus, double userDeposit, double customerFee, double serviceFee, String description, Address customerAddress, ArrayList<OrderPosition> orderPositions) {
+        this.transactionID = transactionID;
         this.customerID = customerID;
         this.supplierID = supplierID;
         this.orderTime = orderTime;
@@ -130,5 +132,13 @@ public class Order extends DelifastEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTransactionID() {
+        return transactionID;
+    }
+
+    public void setTransactionID(String transactionID) {
+        this.transactionID = transactionID;
     }
 }

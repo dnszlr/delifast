@@ -75,7 +75,7 @@ public class OrderFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(orderPositionAdapter != null) {
+                if (orderPositionAdapter != null) {
                     orderPositionAdapter.getFilter().filter(s);
                 }
             }

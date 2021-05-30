@@ -16,6 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mobilecomputing.delifast.entities.Product;
 import mobilecomputing.delifast.others.DelifastConstants;
@@ -69,13 +70,10 @@ public class ProductRepository {
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<Product> resultList = new ArrayList<>();
+                List<Product> resultList = new ArrayList<>();
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(DelifastTags.PRODUCTGETALL, document.getId() + " => " + document.getData());
-                        resultList.add(document.toObject(Product.class));
-                    }
-                    products.setValue(resultList);
+                    resultList = task.getResult().toObjects(Product.class);
+                    products.setValue((ArrayList) resultList);
                 } else {
                     Log.d(DelifastTags.PRODUCTGETALL, "Error getting documents: ", task.getException());
                 }

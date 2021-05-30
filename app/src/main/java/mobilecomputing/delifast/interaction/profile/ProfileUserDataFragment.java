@@ -15,6 +15,8 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+
 import android.provider.MediaStore;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -25,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
+import io.grpc.Context;
 import mobilecomputing.delifast.R;
 
 public class ProfileUserDataFragment extends Fragment {
@@ -105,7 +107,7 @@ public class ProfileUserDataFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==221 && resultCode== Activity.RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == 221 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             profilePic.setImageURI(imageUri);
             uploadPicture();
@@ -144,27 +146,23 @@ public class ProfileUserDataFragment extends Fragment {
         });
     }
 
-    private void downloadPicture(String uId){
+    private void downloadPicture(String uId) {
+
         storageReference.child("images/" + uId).getBytes(Long.MAX_VALUE)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        Bitmap bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         profilePic.setImageBitmap(bmp);
-                    }})
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        try {
-                            throw e;
-                        } catch(Exception imageException) {
-                            Toast.makeText(getContext(), "Das Bild wurde NICHT geladen.", Toast.LENGTH_SHORT).show();
-                        }
-                        Log.d("Scheiss Error: ", "Hier: " + e);
-                        Toast.makeText(getContext(), "Das Bild wurde NICHT geladen.", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
                     }
                 });
+
         /*
         if(FirebaseStorage.getInstance().getReference() != null){
             Glide.with(this).load(pathReference).into(profilePic)

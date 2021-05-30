@@ -29,6 +29,7 @@ import mobilecomputing.delifast.others.DelifastConstants;
 public class ProfileFragment extends Fragment {
 
     private ImageView btnLogout;
+    private Button btnLogout2;
     private ImageView imgProfileOrders, imgProfiledeliveries;
     private CardView cardProfileUserData, cardProfileOrders, cardProfileDeliveries, cardProfileRating;
 
@@ -52,6 +53,7 @@ public class ProfileFragment extends Fragment {
 
     private void initView(View view) {
         btnLogout = view.findViewById(R.id.btnProfileLogout);
+        btnLogout2 = view.findViewById(R.id.btnProfileLogout2);
 
         cardProfileUserData = view.findViewById(R.id.cardProfileUserData);
         layoutProfileUserdataTransation = view.findViewById(R.id.layoutProfileUserdataTransation);
@@ -68,36 +70,19 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setOnClickListener() {
-        // on click listner for the login button in the profile view
+        // on click listner for the logout button in the profile view
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                        .setTitle("Logout")
-                        .setMessage("Möchten Sie sich wirklich abmelden?")
-                        .setPositiveButton("Logout", null)
-                        .setNegativeButton("abbrechen", null)
-                        .create();
+                delifastLogout();
+            }
+        });
 
-                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
-
-                        Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent loginPage = new Intent(getActivity(), AuthenticationActivity.class);
-                                startActivity(loginPage);
-                                getActivity().finish();
-                                FirebaseAuth.getInstance().signOut();
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-                });
-                dialog.show();
+        // on click listner for the logout2 button in the profile view
+        btnLogout2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delifastLogout();
             }
         });
 
@@ -154,7 +139,34 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+    }
 
+    private void delifastLogout(){
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Logout")
+                .setMessage("Möchten Sie sich wirklich abmelden?")
+                .setPositiveButton("Logout", null)
+                .setNegativeButton("abbrechen", null)
+                .create();
 
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent loginPage = new Intent(getActivity(), AuthenticationActivity.class);
+                        startActivity(loginPage);
+                        getActivity().finish();
+                        FirebaseAuth.getInstance().signOut();
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        dialog.show();
     }
 }

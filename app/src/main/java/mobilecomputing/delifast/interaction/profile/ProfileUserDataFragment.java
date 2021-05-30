@@ -1,7 +1,12 @@
 package mobilecomputing.delifast.interaction.profile;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -12,6 +17,17 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import mobilecomputing.delifast.R;
 
@@ -19,6 +35,12 @@ public class ProfileUserDataFragment extends Fragment {
 
     private CardView cardProfileUserData;
     private ConstraintLayout layoutProfileUserdataTransation;
+
+    private ImageView profilePic;
+
+    public Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     public ProfileUserDataFragment() {
         // Required empty public constructor
@@ -37,6 +59,9 @@ public class ProfileUserDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         View profileUserDataView = inflater.inflate(R.layout.fragment_profile_user_data, container, false);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         initView(profileUserDataView);
 
         return profileUserDataView;
@@ -45,6 +70,66 @@ public class ProfileUserDataFragment extends Fragment {
     private void initView(View view) {
         cardProfileUserData = view.findViewById(R.id.cardProfileUserData);
         layoutProfileUserdataTransation = view.findViewById(R.id.layoutProfileUserdataTransation);
+
+        profilePic = view.findViewById(R.id.imgProfilePic);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePicture();
+            }
+        });
+    }
+
+    private void choosePicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 221);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==221 && resultCode== Activity.RESULT_OK && data != null && data.getData() != null){
+            imageUri = data.getData();
+            profilePic.setImageURI(imageUri);
+            uploadPicture();
+
+        }
+    }
+
+    private void uploadPicture() {
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setTitle("Bild wird hochgeladen...");
+        pd.show();
+
+        String imgID = FirebaseAuth.getInstance().getUid();
+        StorageReference ref = storageReference.child("images/" + imgID);
+
+        ref.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Snackbar.make(getView().findViewById(R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(getContext(), "Fehler beim Laden des Bildes.", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double processPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                pd.setMessage("Progress: " + (int) processPercent + "%");
+            }
+        });
 
     }
 }

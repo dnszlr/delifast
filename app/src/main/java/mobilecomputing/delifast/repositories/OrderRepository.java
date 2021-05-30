@@ -92,22 +92,67 @@ public class OrderRepository {
     }
 
     public void getAll() {
-        dbCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<Order> resultList = new ArrayList<>();
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(DelifastTags.ORDERGETALL, document.getId() + " => " + document.getData());
-                        resultList.add(document.toObject(Order.class));
+        dbCollection
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<Order> resultList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(DelifastTags.ORDERGETALL, document.getId() + " => " + document.getData());
+                                resultList.add(document.toObject(Order.class));
+                            }
+                            orderList.postValue(resultList);
+                        } else {
+                            Log.d(DelifastTags.ORDERGETALL, "Error getting documents: ", task.getException());
+                        }
                     }
-                    orderList.postValue(resultList);
-                } else {
-                    Log.d(DelifastTags.ORDERGETALL, "Error getting documents: ", task.getException());
-                }
-            }
-        });
+                });
     }
+
+    public void getAllByCustomerId(String customerID) {
+        dbCollection
+                .whereEqualTo("customerID", customerID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        ArrayList<Order> resultList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(DelifastTags.ORDERGETALLBYCUSTOMERID, document.getId() + " => " + document.getData());
+                                resultList.add(document.toObject(Order.class));
+                            }
+                            orderList.postValue(resultList);
+                        } else {
+                            Log.d(DelifastTags.ORDERGETALLBYCUSTOMERID, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void getAllBySupplierId(String supplierID) {
+        dbCollection
+                .whereEqualTo("supplierID", supplierID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        ArrayList<Order> resultList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(DelifastTags.ORDERGETALLBYSUPPLIERID, document.getId() + " => " + document.getData());
+                                resultList.add(document.toObject(Order.class));
+                            }
+                            orderList.postValue(resultList);
+                        } else {
+                            Log.d(DelifastTags.ORDERGETALLBYSUPPLIERID, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
 
     /**
      * Returns all Orders in the range for the given latitude, longitude and radiusInM

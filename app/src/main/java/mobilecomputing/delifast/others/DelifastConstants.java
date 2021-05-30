@@ -24,6 +24,7 @@ public class DelifastConstants {
     public static final String USERCOLLECTION = "users";
     public static final String PRODUCTCOLLECTION = "products";
     public static final String ORDERCOLLECTION = "orders";
+    public static final String RATINGCOLLECTION = "ratings";
 
     // Order
     public static final String PRODUCTS = "Produkte";

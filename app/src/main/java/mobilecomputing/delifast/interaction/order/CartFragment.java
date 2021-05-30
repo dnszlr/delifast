@@ -251,7 +251,6 @@ public class CartFragment extends Fragment {
                                     Toast.makeText(getActivity(), "Es konnte keine Addresse gefunden werden", Toast.LENGTH_LONG).show();
                                 }
                             }
-
                             @Override
                             public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
                                 throwable.printStackTrace();

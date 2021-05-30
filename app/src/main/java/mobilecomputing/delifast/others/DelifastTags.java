@@ -16,10 +16,15 @@ public class DelifastTags {
     // Order
     public static final String ORDERSAVE = "OrderSave";
     public static final String ORDERGETALL = "OrderGetAll";
+    public static final String ORDERGETALLBYCUSTOMERID = "OrderGetAllByCustomerID";
+    public static final String ORDERGETALLBYSUPPLIERID = "OrderGetAllBySupplierID";
     // Profile
     public static final String PRODUCTSAVE = "ProductSave";
     public static final String PRODUCTGETALL = "ProductGetAll";
 
     // Notification
+
+    // Rating
+    public static final String RATINGETALLBYUSERID = "RatingGetAllByUserId";
 
 }

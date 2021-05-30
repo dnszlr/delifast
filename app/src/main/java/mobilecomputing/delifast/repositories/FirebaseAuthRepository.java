@@ -32,16 +32,32 @@ public class FirebaseAuthRepository {
         this.firebaseUser = new MutableLiveData<>();
     }
 
+    /**
+     * Gives access to the observable MutableLiveData FirebaseUser Object
+     *
+     * @return MutableLiveData<FirebaseUser> firebaseUser
+     */
     public MutableLiveData<FirebaseUser> getFirebaseUser() {
 
         return this.firebaseUser;
     }
 
+    /**
+     * Returns the currently logged in firebase user object
+     *
+     * @return FirebaseUser firebaseUser
+     */
     public FirebaseUser getCurrentUser() {
 
         return firebaseAuth.getCurrentUser();
     }
 
+    /**
+     * Creates a new account at firebase authentication
+     *
+     * @param email    - the email provided by the user
+     * @param password - the password provided by the user
+     */
     public void createAccount(String email, String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -61,7 +77,12 @@ public class FirebaseAuthRepository {
         });
     }
 
-
+    /**
+     * Login validation for login with email and password
+     *
+     * @param email    - the email provided by the user
+     * @param password - the password provided by the user
+     */
     public void loginWithEmailAndPassword(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -137,7 +158,12 @@ public class FirebaseAuthRepository {
         });
     }
 
-
+    /**
+     * Creates a new paypal customer for
+     *
+     * @param id    - the user id provided by firebase
+     * @param email - the email provided by the user
+     */
     private void createPaypalCustomer(String id, String email) {
         RequestParams requestParams = new RequestParams();
         requestParams.put("id", id);
@@ -145,12 +171,12 @@ public class FirebaseAuthRepository {
         DelifastHttpClient.get("createuser", requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO HANDLE SUCCESS
+                // nothing to handle process done
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO HANDLE FAILURE
+                // TODO maybe error handling in a later state of the project when creating paypal customer failed
             }
         });
     }

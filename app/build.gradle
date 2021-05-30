@@ -63,4 +63,6 @@ dependencies {
     // !------ Braintree dependencies --------!
     implementation 'com.braintreepayments.api:drop-in:4.2.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
+
+    implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
 }

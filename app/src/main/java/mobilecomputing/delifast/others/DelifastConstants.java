@@ -40,6 +40,9 @@ public class DelifastConstants {
     public static final int PAYMENT_REQUEST_CODE = 7171;
     public static final String TOKENIZATION_KEY = "sandbox_jysdqffh_kw5tm45ddfp9f34v";
 
+    // Transitions in the profile view
+    public static final String TRANSATION_DELIVERIES_NAME = "transationDeliveriesInProfile";
+
     public static final CarmenFeature REUTLINGEN = CarmenFeature.builder().text("Reutlingen")
             .geometry(Point.fromLngLat(9.187737058082885, 48.48296039690456))
             .placeName("Fakultät Informatik, 72762 Reutlingen")
@@ -53,4 +56,5 @@ public class DelifastConstants {
             .properties(new JsonObject())
             .build();
     public static final int PERMISSION_REQUEST_CODE = 200;
+
 }

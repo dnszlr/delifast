@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".interaction.profile.ProfileRatingFragment"
     android:background="#D3D2D2">
 
     <LinearLayout
@@ -11,7 +13,7 @@
         android:orientation="vertical"
         >
 
-        <!-- Secound row of cards -->
+        <!-- Fourth row of cards -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,32 +21,32 @@
             >
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProfileOrders"
+                android:id="@+id/cardProfileRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
 
                 <LinearLayout
-                    android:id="@+id/layoutProfileOrdersTransation"
+                    android:id="@+id/layoutProfileRatingTransition"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:transitionName="translationOrdersInProfile">
+                    android:transitionName="transationRatingInProfile">
 
                     <ImageView
-                        android:id="@+id/imgProfileOrders"
+                        android:id="@+id/imgProfileRating"
                         android:layout_margin="12dp"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/outline_shopping_bag_24"
-                        app:tint="#201D1D"
+                        android:src="@drawable/ic_outline_star_rate_24"
                         android:layout_gravity="center"
+                        app:tint="#201D1D"
                         />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Bestellungen"
+                        android:text="Bewertungen"
                         android:layout_marginBottom="10dp"
                         android:gravity="center"
                         style="@style/TextAppearance.AppCompat.Title"
@@ -55,8 +57,6 @@
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
-
 
     </LinearLayout>
 

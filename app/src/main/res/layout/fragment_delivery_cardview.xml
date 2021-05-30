@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:isIndicator="false"
+                    android:isIndicator="true"
                     android:numStars="5"
                     android:progressTint="#F6BA06"
                     android:rating="4"

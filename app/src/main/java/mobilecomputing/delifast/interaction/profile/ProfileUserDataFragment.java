@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.core.view.ViewCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.transition.Transition;
@@ -12,17 +12,16 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import mobilecomputing.delifast.R;
 
-public class ProfileOrdersFragment extends Fragment {
+public class ProfileUserDataFragment extends Fragment {
 
-    private CardView cardProfileOrders;
-    private LinearLayout layoutProfileOrdersTransation;
+    private CardView cardProfileUserData;
+    private ConstraintLayout layoutProfileUserdataTransation;
 
-    public ProfileOrdersFragment() {
+    public ProfileUserDataFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -36,15 +35,16 @@ public class ProfileOrdersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View profileOrdersView = inflater.inflate(R.layout.fragment_profile_orders, container, false);
+        View profileUserDataView = inflater.inflate(R.layout.fragment_profile_user_data, container, false);
 
-        initView(profileOrdersView);
+        initView(profileUserDataView);
 
-        return profileOrdersView;
+        return profileUserDataView;
     }
 
     private void initView(View view) {
-        cardProfileOrders = view.findViewById(R.id.cardProfileOrders);
-        layoutProfileOrdersTransation = view.findViewById(R.id.layoutProfileOrdersTransation);
+        cardProfileUserData = view.findViewById(R.id.cardProfileUserData);
+        layoutProfileUserdataTransation = view.findViewById(R.id.layoutProfileUserdataTransation);
+
     }
 }

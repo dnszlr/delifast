@@ -82,9 +82,11 @@
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutProfileUserdataTransation"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="16dp"
+                    android:transitionName="transationDeliveriesInProfile"
                     >
 
                     <androidx.cardview.widget.CardView
@@ -121,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="5dp"
-                        android:isIndicator="false"
+                        android:isIndicator="true"
                         android:numStars="5"
                         android:progressTint="#F6BA06"
                         android:rating="4"
@@ -203,13 +205,14 @@
                         android:layout_margin="8dp"
                         app:cardCornerRadius="10dp"
                         android:clickable="true"
-
                         >
 
                         <LinearLayout
+                            android:id="@+id/layoutProfileOrdersTransation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:transitionName="translationOrdersInProfile">
 
                             <ImageView
                                 android:id="@+id/imgProfileOrders"
@@ -219,7 +222,6 @@
                                 android:src="@drawable/outline_shopping_bag_24"
                                 app:tint="#201D1D"
                                 android:layout_gravity="center"
-                                android:transitionName="transationOrdersInProfile"
                                 />
 
                             <TextView
@@ -252,15 +254,17 @@
                     android:layout_margin="8dp"
                     app:cardCornerRadius="10dp"
                     android:clickable="true"
-
                     >
 
                     <LinearLayout
+                        android:id="@+id/layoutProfileDeliveriesTransation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:transitionName="transationDeliveriesInProfile">
 
                         <ImageView
+                            android:id="@+id/imgProfiledeliveries"
                             android:layout_margin="12dp"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
@@ -270,6 +274,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tvProfileDeliveries"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Aufträge"
@@ -303,17 +308,21 @@
                     >
 
                     <LinearLayout
+                        android:id="@+id/layoutProfileRatingTransition"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:transitionName="transationRatingInProfile">
 
                         <ImageView
+                            android:id="@+id/imgProfileRating"
                             android:layout_margin="12dp"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:src="@drawable/ic_outline_star_rate_24"
                             app:tint="#201D1D"
                             android:layout_gravity="center"
+
                             />
 
                         <TextView

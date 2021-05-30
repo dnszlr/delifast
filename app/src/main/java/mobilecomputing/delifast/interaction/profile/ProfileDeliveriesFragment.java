@@ -14,15 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import mobilecomputing.delifast.R;
+import mobilecomputing.delifast.others.DelifastConstants;
 
-public class ProfileOrdersFragment extends Fragment {
 
-    private CardView cardProfileOrders;
-    private LinearLayout layoutProfileOrdersTransation;
+public class ProfileDeliveriesFragment extends Fragment {
 
-    public ProfileOrdersFragment() {
+
+    private CardView cardViewDeliveries;
+    private ImageView imgProfiledeliveries;
+
+    private LinearLayout layoutProfileDeliveriesTransation;
+
+    public ProfileDeliveriesFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -36,15 +43,18 @@ public class ProfileOrdersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View profileOrdersView = inflater.inflate(R.layout.fragment_profile_orders, container, false);
+        View profileDeliveriesView = inflater.inflate(R.layout.fragment_profile_deliveries, container, false);
 
-        initView(profileOrdersView);
+        initView(profileDeliveriesView);
 
-        return profileOrdersView;
+        return profileDeliveriesView;
+
     }
 
     private void initView(View view) {
-        cardProfileOrders = view.findViewById(R.id.cardProfileOrders);
-        layoutProfileOrdersTransation = view.findViewById(R.id.layoutProfileOrdersTransation);
+        cardViewDeliveries = view.findViewById(R.id.cardProfileDeliveries);
+        layoutProfileDeliveriesTransation = view.findViewById(R.id.layoutProfileDeliveriesTransation);
+        //ViewCompat.setTransitionName(cardViewDeliveries, DelifastConstants.TRANSATION_DELIVERIES_NAME);
+
     }
 }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".interaction.profile.ProfileDeliveriesFragment"
     android:background="#D3D2D2">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,7 +14,6 @@
         android:orientation="vertical"
         >
 
-        <!-- Secound row of cards -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,32 +21,33 @@
             >
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProfileOrders"
+                android:id="@+id/cardProfileDeliveries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 >
 
                 <LinearLayout
-                    android:id="@+id/layoutProfileOrdersTransation"
+                    android:id="@+id/layoutProfileDeliveriesTransation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:transitionName="translationOrdersInProfile">
+                    android:transitionName="transationDeliveriesInProfile">
 
                     <ImageView
-                        android:id="@+id/imgProfileOrders"
+                        android:id="@+id/imgProfiledeliveries"
                         android:layout_margin="12dp"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/outline_shopping_bag_24"
-                        app:tint="#201D1D"
+                        android:src="@drawable/outline_directions_bike_24"
                         android:layout_gravity="center"
-                        />
+                        app:tint="#201D1D" />
 
                     <TextView
+                        android:id="@+id/tvProfileDeliveries"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Bestellungen"
+                        android:text="Aufträge"
                         android:layout_marginBottom="10dp"
                         android:gravity="center"
                         style="@style/TextAppearance.AppCompat.Title"
@@ -56,9 +59,6 @@
 
         </LinearLayout>
 
-
-
     </LinearLayout>
-
 
 </ScrollView>

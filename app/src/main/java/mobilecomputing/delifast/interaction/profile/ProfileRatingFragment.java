@@ -3,8 +3,6 @@ package mobilecomputing.delifast.interaction.profile;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import android.transition.Transition;
@@ -12,17 +10,17 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import mobilecomputing.delifast.R;
 
-public class ProfileOrdersFragment extends Fragment {
+public class ProfileRatingFragment extends Fragment {
 
-    private CardView cardProfileOrders;
-    private LinearLayout layoutProfileOrdersTransation;
 
-    public ProfileOrdersFragment() {
+    private LinearLayout layoutProfileRatingTransition;
+
+    public ProfileRatingFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -36,15 +34,15 @@ public class ProfileOrdersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View profileOrdersView = inflater.inflate(R.layout.fragment_profile_orders, container, false);
+       View profileRatingView = inflater.inflate(R.layout.fragment_profile_rating, container, false);
 
-        initView(profileOrdersView);
+       initView(profileRatingView);
 
-        return profileOrdersView;
+        return profileRatingView;
     }
 
     private void initView(View view) {
-        cardProfileOrders = view.findViewById(R.id.cardProfileOrders);
-        layoutProfileOrdersTransation = view.findViewById(R.id.layoutProfileOrdersTransation);
+        layoutProfileRatingTransition = view.findViewById(R.id.layoutProfileRatingTransition);
+
     }
 }

@@ -30,6 +30,10 @@ public class DelifastConstants {
     public static final String PRODUCTS = "Produkte";
     public static final String CART = "Warenkorb";
 
+    // ProfileOrder
+    public static final String SENDPAYMENT = "/send";
+    public static final String SENDREFUND = "/refund";
+
     //Google API key
     public static final String APIKEY = "AIzaSyCiFrXdvgEz5REWj3jWC8cptl72kQ59gl0";
     // Mapbox API key

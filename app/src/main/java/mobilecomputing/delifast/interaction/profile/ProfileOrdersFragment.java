@@ -1,5 +1,6 @@
 package mobilecomputing.delifast.interaction.profile;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,22 +15,37 @@ import android.transition.AutoTransition;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.zxing.WriterException;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.R;
+import mobilecomputing.delifast.delifastEnum.OrderStatus;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.entities.OrderPosition;
 import mobilecomputing.delifast.entities.Product;
+import mobilecomputing.delifast.others.CurrencyFormatter;
+import mobilecomputing.delifast.others.DelifastConstants;
+import mobilecomputing.delifast.others.DelifastHttpClient;
+import mobilecomputing.delifast.others.QRCodeGenerator;
 
 public class ProfileOrdersFragment extends Fragment {
 
@@ -39,7 +55,7 @@ public class ProfileOrdersFragment extends Fragment {
     private ConstraintLayout constraintLayoutExpandableView, layoutProfileOrderSupplier;
     private ImageView imgProfileOrderSupplierImage;
     private RatingBar ratingProfileOrderSupplierRating;
-    private Button btnConfirm, btnCancel;
+    private MaterialButton btnConfirm, btnCancel;
     private ListView lvProfileOrderProducts;
 
     private LinearLayout containerProfileOrders;
@@ -64,13 +80,12 @@ public class ProfileOrdersFragment extends Fragment {
         View profileOrdersView = inflater.inflate(R.layout.fragment_profile_orders, container, false);
 
         initView(profileOrdersView);
-
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         viewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
             containerProfileOrders.removeAllViewsInLayout();
-            if (orders != null){
-                for(Order order: orders){
-                    createCardForOrder(order);
+            if (orders != null) {
+                for (Order order : orders) {
+                    createCardForOrder(order, inflater);
                 }
             }
         });
@@ -85,31 +100,28 @@ public class ProfileOrdersFragment extends Fragment {
 
         containerProfileOrders = view.findViewById(R.id.containerProfileOrders);
         /**
-        tvProfileOrderAddress = view.findViewById(R.id.tvProfileOrderAddress);
-        tvProfileOrderDeadline = view.findViewById(R.id.tvProfileOrderDeadline);
-        tvProfileOrderStatus = view.findViewById(R.id.tvProfileOrderStatus);
+         tvProfileOrderAddress = view.findViewById(R.id.tvProfileOrderAddress);
+         tvProfileOrderDeadline = view.findViewById(R.id.tvProfileOrderDeadline);
+         tvProfileOrderStatus = view.findViewById(R.id.tvProfileOrderStatus);
 
-        constraintLayoutExpandableView = view.findViewById(R.id.constraintLayoutExpandableView);
-        layoutProfileOrderSupplier = view.findViewById(R.id.layoutProfileOrderSupplier);
+         constraintLayoutExpandableView = view.findViewById(R.id.constraintLayoutExpandableView);
+         layoutProfileOrderSupplier = view.findViewById(R.id.layoutProfileOrderSupplier);
 
-        imgProfileOrderSupplierImage = view.findViewById(R.id.imgProfileOrderSupplierImage);
+         imgProfileOrderSupplierImage = view.findViewById(R.id.imgProfileOrderSupplierImage);
 
-        ratingProfileOrderSupplierRating = view.findViewById(R.id.ratingProfileOrderSupplierRating);
+         ratingProfileOrderSupplierRating = view.findViewById(R.id.ratingProfileOrderSupplierRating);
 
-        btnConfirm = view.findViewById(R.id.btnProfileOrderConfirm);
-        btnCancel = view.findViewById(R.id.btnProfileOrderCancel);
 
-        tvProfileOrderSum = view.findViewById(R.id.tvProfileOrderSum);
-        tvProfileOrderTime = view.findViewById(R.id.tvProfileOrderTime);
+         tvProfileOrderSum = view.findViewById(R.id.tvProfileOrderSum);
+         tvProfileOrderTime = view.findViewById(R.id.tvProfileOrderTime);
 
-        tvProfileOrderRemarks = view.findViewById(R.id.tvProfileOrderRemarks);
+         tvProfileOrderRemarks = view.findViewById(R.id.tvProfileOrderRemarks);
 
-        lvProfileOrderProducts = view.findViewById(R.id.lvProfileOrderProducts);
+         lvProfileOrderProducts = view.findViewById(R.id.lvProfileOrderProducts);
          **/
-
     }
 
-    private void createCardForOrder(Order order){
+    private void createCardForOrder(Order order, LayoutInflater inflater) {
         final View orderCard = getLayoutInflater().inflate(R.layout.fragment_profile_orders_card, null, false);
 
         CardView cardView = orderCard.findViewById(R.id.cardViewProfileOrder);
@@ -133,7 +145,7 @@ public class ProfileOrdersFragment extends Fragment {
         remarks.setText(order.getDescription());
 
         LinearLayout products = orderCard.findViewById(R.id.lvProfileOrderProducts);
-        for(OrderPosition op: order.getOrderPositions()){
+        for (OrderPosition op : order.getOrderPositions()) {
             final View productInCardView = getLayoutInflater().inflate(R.layout.fragment_delivery_cardview_product, null, false);
 
             TextView productName = productInCardView.findViewById(R.id.tvOrderPositionNameInBacklog);
@@ -149,6 +161,60 @@ public class ProfileOrdersFragment extends Fragment {
         ConstraintLayout expandableView = orderCard.findViewById(R.id.constraintLayoutExpandableView);
         Button arrowDownUp = orderCard.findViewById(R.id.btnProfileOrderArrowDown);
 
+        btnConfirm = cardView.findViewById(R.id.btnProfileOrderConfirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // inflate the layout of the popup window
+                View popupView = inflater.inflate(R.layout.popup_window, null);
+                ImageView qrCode = popupView.findViewById(R.id.imgQRCode);
+                try {
+                    String amount = CurrencyFormatter.doubleToUIRep(order.getCustomerFee());
+                    String supplierId = order.getSupplierID();
+                    String transactionId = order.getTransactionID();
+                    String url = DelifastHttpClient.BASE_URL + DelifastConstants.SENDPAYMENT + "?" + "amount=" + amount + "&" + "transactionId=" + transactionId + "&" + "supplierId=" + supplierId;
+                    Bitmap bitmap = QRCodeGenerator.textToImage(url, 500, 500);
+                    qrCode.setImageBitmap(bitmap);
+                } catch (WriterException e) {
+                    // TODO Implemented Toast response
+                    e.printStackTrace();
+                }
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+                // show the popup window
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            }
+        });
+
+        btnCancel = cardView.findViewById(R.id.btnProfileOrderCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Dialog with "Are you sure would be good"
+                RequestParams requestParams = new RequestParams();
+                requestParams.put("transactionId", order.getTransactionID());
+                requestParams.put("amount", CurrencyFormatter.doubleToUIRep(order.getUserDeposit() + order.getServiceFee() + order.getCustomerFee()));
+                requestParams.put("customerId", order.getCustomerID());
+                DelifastHttpClient.post(DelifastConstants.SENDREFUND, requestParams, new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        order.setOrderStatus(OrderStatus.CANCELED);
+                        viewModel.updateOrder(order);
+                        Toast.makeText(getActivity(), "Ihre Bestellung wurde storniert", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.d("Payment", "failure" + statusCode);
+                        Toast.makeText(getActivity(), "Stornierung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
         arrowDownUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,9 +229,6 @@ public class ProfileOrdersFragment extends Fragment {
                 }
             }
         });
-
         containerProfileOrders.addView(orderCard);
-
-
     }
 }

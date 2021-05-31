@@ -18,7 +18,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
-import mobilecomputing.delifast.interaction.order.DelifastHttpClient;
+import mobilecomputing.delifast.others.DelifastHttpClient;
 import mobilecomputing.delifast.others.DelifastTags;
 
 public class FirebaseAuthRepository {

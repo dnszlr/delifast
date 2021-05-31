@@ -54,5 +54,11 @@ public class ProfileViewModel extends ViewModel {
         return ratingRepository.getAllByUserId(userId);
     }
 
+    public void updateOrder(Order order) {
+        if (order != null) {
+            orderRepository.update(order);
+        }
+    }
+
 
 }

@@ -15,15 +15,19 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Notification;
 import mobilecomputing.delifast.interaction.delivery.DeliveryViewModel;
+import mobilecomputing.delifast.others.DelifastConstants;
 
 public class NotificationFragment extends Fragment {
 
     private NotificationViewModel viewModel;
 
     private LinearLayout llNotificationContainer;
+    private SimpleDateFormat simpleDateFormat;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -35,6 +39,7 @@ public class NotificationFragment extends Fragment {
         View notificationView = inflater.inflate(R.layout.fragment_notification, container, false);
 
         llNotificationContainer = notificationView.findViewById(R.id.llNotificationContainer);
+        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT);
 
         viewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
         viewModel.getAllByUserId(FirebaseAuth.getInstance().getUid()).observe(getViewLifecycleOwner(), notifications -> {
@@ -85,7 +90,7 @@ public class NotificationFragment extends Fragment {
             }
         });
 
-        date.setText(notification.getNotificationTime().toString());
+        date.setText(simpleDateFormat.format(notification.getNotificationTime()));
 
         llNotificationContainer.addView(notificationCard);
     }

@@ -1,7 +1,10 @@
 package mobilecomputing.delifast.interaction.profile;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -50,6 +53,8 @@ public class ProfileDeliveriesFragment extends Fragment {
 
     private LinearLayout containerProfileDeliveries;
 
+    private static final int QR_CODE_RQ_CODE = 85;
+
     public ProfileDeliveriesFragment() {
         // Required empty public constructor
     }
@@ -83,6 +88,19 @@ public class ProfileDeliveriesFragment extends Fragment {
         return profileDeliveriesView;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == QR_CODE_RQ_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                String qrCodeContent = data.getStringExtra("SCAN_RESULT");
+                Log.d("QR-CODE: ", "Inhalt -------> " + qrCodeContent);
+            }
+            else {
+                Toast.makeText(getContext(), "Fehler: " + resultCode, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     private void initView(View view) {
         cardViewDeliveries = view.findViewById(R.id.cardProfileDeliveries);
@@ -156,6 +174,26 @@ public class ProfileDeliveriesFragment extends Fragment {
 
         btnConfirm.setEnabled(order.getOrderStatus().equals(OrderStatus.ACCEPTED));
         btnCancel.setEnabled(order.getOrderStatus().equals(OrderStatus.ACCEPTED));
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+                    startActivityForResult(intent, QR_CODE_RQ_CODE);
+                }
+                catch (Exception e) {
+                    Log.d("QR_CODE: ", "Error --> " + e);
+                    Toast.makeText(getContext(), "Fehler beom Öffnen der Kamera", Toast.LENGTH_SHORT).show();
+
+                    Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+                    startActivity(marketIntent);
+                }
+            }
+        });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override

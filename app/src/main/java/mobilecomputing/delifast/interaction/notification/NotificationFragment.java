@@ -5,11 +5,15 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Notification;
@@ -18,6 +22,8 @@ import mobilecomputing.delifast.interaction.delivery.DeliveryViewModel;
 public class NotificationFragment extends Fragment {
 
     private NotificationViewModel viewModel;
+
+    private LinearLayout llNotificationContainer;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -28,8 +34,18 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View notificationView = inflater.inflate(R.layout.fragment_notification, container, false);
 
-        viewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
+        llNotificationContainer = notificationView.findViewById(R.id.llNotificationContainer);
 
+        viewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
+        viewModel.getAllByUserId(FirebaseAuth.getInstance().getUid()).observe(getViewLifecycleOwner(), notifications -> {
+            if (notifications != null) {
+                llNotificationContainer.removeAllViewsInLayout();
+                Log.d("onCreateView", "Notifications size: " + notifications.size());
+                for (int i = 0; i < notifications.size(); i++) {
+                    createNotificationCard(notifications.get(i));
+                }
+            }
+        });
 
         return notificationView;
     }
@@ -62,11 +78,13 @@ public class NotificationFragment extends Fragment {
                 image.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
+        viewModel.getOrder(notification.getOrderId()).observe(getViewLifecycleOwner(), order -> {
+            notification.setText(order);
+        });
 
+        text.setText(notification.getText());
+        date.setText(notification.getNotificationTime().toString());
 
-
-
-
-
+        llNotificationContainer.addView(notificationCard);
     }
 }

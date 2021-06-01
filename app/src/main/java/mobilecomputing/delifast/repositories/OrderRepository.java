@@ -68,6 +68,23 @@ public class OrderRepository {
         return result;
     }
 
+    public MutableLiveData<Order> getOrderById(String id) {
+        final MutableLiveData<Order> entity = new MutableLiveData<>();
+        dbCollection.document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("TAG", "DocumentSnapshot successfully found!");
+                entity.setValue(documentSnapshot.toObject(Order.class));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("TAG", "Error finding document", e);
+            }
+        });
+        return entity;
+    }
+
     public MutableLiveData<Boolean> update(Order order) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         DocumentReference entityToUpdate = dbCollection.document(order.getId());

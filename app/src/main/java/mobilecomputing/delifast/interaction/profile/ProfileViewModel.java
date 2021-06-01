@@ -6,9 +6,14 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobilecomputing.delifast.authentication.AuthenticationViewModel;
+import mobilecomputing.delifast.delifastEnum.NotificationType;
+import mobilecomputing.delifast.delifastEnum.OrderStatus;
+import mobilecomputing.delifast.entities.Notification;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.entities.Rating;
 import mobilecomputing.delifast.entities.User;
+import mobilecomputing.delifast.repositories.NotificationRepository;
 import mobilecomputing.delifast.repositories.OrderRepository;
 import mobilecomputing.delifast.repositories.RatingRepository;
 import mobilecomputing.delifast.repositories.UserRepository;
@@ -18,6 +23,7 @@ public class ProfileViewModel extends ViewModel {
     private OrderRepository orderRepository;
     private UserRepository userRepository;
     private RatingRepository ratingRepository;
+    private NotificationRepository notificationRepository;
     private MutableLiveData<ArrayList<Order>> deliveries;
     private MutableLiveData<ArrayList<Order>> orders;
     private MutableLiveData<User> currentUser;
@@ -27,6 +33,7 @@ public class ProfileViewModel extends ViewModel {
         this.orderRepository = new OrderRepository();
         this.userRepository = new UserRepository();
         this.ratingRepository = new RatingRepository();
+        this.notificationRepository = new NotificationRepository();
         this.orders = orderRepository.getOrderList();
         this.deliveries = orderRepository.getOrderList();
         this.currentUser = new MutableLiveData<>();
@@ -57,6 +64,16 @@ public class ProfileViewModel extends ViewModel {
     public void updateOrder(Order order) {
         if (order != null) {
             orderRepository.update(order);
+        }
+    }
+
+    public void cancelDelivery(Order order) {
+        if (order != null) {
+            order.setOrderStatus(OrderStatus.OPEN);
+            order.setSupplierID(null);
+            orderRepository.update(order);
+            Notification notification = new Notification(order.getCustomerID(), order.getId(), NotificationType.ORDER_CANCELED_BY_SUPPLIER);
+            notificationRepository.save(notification);
         }
     }
 

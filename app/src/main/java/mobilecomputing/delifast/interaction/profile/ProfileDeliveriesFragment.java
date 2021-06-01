@@ -222,8 +222,8 @@ public class ProfileDeliveriesFragment extends Fragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        order.setOrderStatus(OrderStatus.OPEN);
-                        viewModel.updateOrder(order);
+
+                        viewModel.cancelDelivery(order);
                         Toast.makeText(getActivity(), "Ihre Auftrag wurde abgelehnt.", Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }

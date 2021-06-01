@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mobilecomputing.delifast.interaction.notification.NotificationFragment">
+    tools:context="mobilecomputing.delifast.interaction.notification.NotificationFragment"
+    android:background="#D3D2D2">
 
 
     <LinearLayout
         android:id="@+id/llNotificationContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
     </LinearLayout>
 

@@ -145,6 +145,30 @@ public class ProfileOrdersFragment extends Fragment {
         Button arrowDownUp = orderCard.findViewById(R.id.btnProfileOrderArrowDown);
 
         btnConfirm = cardView.findViewById(R.id.btnProfileOrderConfirm);
+        btnCancel = cardView.findViewById(R.id.btnProfileOrderCancel);
+
+        btnConfirm.setEnabled(order.getOrderStatus().equals(OrderStatus.ACCEPTED));
+        btnCancel.setEnabled(order.getOrderStatus().equals(OrderStatus.OPEN));
+
+        switch (order.getOrderStatus()){
+            case OPEN:
+                btnConfirm.setEnabled(false);
+                btnCancel.setEnabled(true);
+                break;
+            case CANCELED:
+                btnConfirm.setEnabled(false);
+                btnCancel.setEnabled(false);
+                break;
+            case ACCEPTED:
+                btnConfirm.setEnabled(true);
+                btnCancel.setEnabled(false);
+                break;
+            case DONE:
+                btnConfirm.setEnabled(false);
+                btnCancel.setEnabled(true);
+                break;
+        }
+
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,7 +213,6 @@ public class ProfileOrdersFragment extends Fragment {
             }
         });
 
-        btnCancel = cardView.findViewById(R.id.btnProfileOrderCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

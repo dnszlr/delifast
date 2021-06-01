@@ -151,7 +151,12 @@ public class ProfileDeliveriesFragment extends Fragment {
             }
         });
 
+        Button btnConfirm = cardView.findViewById(R.id.btnProfileDeliveryConfirm);
         Button btnCancel = cardView.findViewById(R.id.btnProfileDeliveryCancel);
+
+        btnConfirm.setEnabled(order.getOrderStatus().equals(OrderStatus.ACCEPTED));
+        btnCancel.setEnabled(order.getOrderStatus().equals(OrderStatus.ACCEPTED));
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -59,11 +59,11 @@ public class NotificationFragment extends Fragment {
 
         switch (notification.getType()){
             case ORDER_ACCEPTED_BY_SUPPLIER:
-                image.setImageResource(R.drawable.ic_baseline_done_24);
+                image.setImageResource(R.drawable.outline_shopping_bag_24);
 
                 break;
             case ORDER_CANCELED_BY_SUPPLIER:
-                image.setImageResource(R.drawable.ic_baseline_close_24);
+                image.setImageResource(R.drawable.ic_outline_cancel_24);
                 break;
             case ORDER_DONE_BY_CUSTOMER:
                 image.setImageResource(R.drawable.ic_baseline_qr_code_2_24);
@@ -79,10 +79,12 @@ public class NotificationFragment extends Fragment {
         }
 
         viewModel.getOrder(notification.getOrderId()).observe(getViewLifecycleOwner(), order -> {
-            notification.createText(order);
+            if(notification != null){
+                notification.createText(order);
+                text.setText(notification.getText());
+            }
         });
 
-        text.setText(notification.getText());
         date.setText(notification.getNotificationTime().toString());
 
         llNotificationContainer.addView(notificationCard);

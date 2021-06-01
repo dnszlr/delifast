@@ -15,10 +15,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +65,17 @@ public class NotificationRepository {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException exception) {
-                        if(exception != null) {
+                        if (exception != null) {
                             Log.w("NotificationRepositoryGetAllByUserId", "Listen failed.", exception);
                             return;
                         }
-                        List<Notification> resultList = value.toObjects(Notification.class);
+
+                        List<Notification> resultList = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc != null) {
+                                resultList.add(doc.toObject(Notification.class));
+                            }
+                        }
                         result.setValue(resultList);
                     }
                 });

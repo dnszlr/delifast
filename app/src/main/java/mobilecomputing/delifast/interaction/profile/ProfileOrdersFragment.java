@@ -1,6 +1,7 @@
 package mobilecomputing.delifast.interaction.profile;
 
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

@@ -28,6 +28,7 @@
                 android:layout_marginBottom="5dp"/>
 
             <TextView
+                android:id="@+id/tvNotificationCard"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 app:layout_constrainedWidth="true"
@@ -41,6 +42,7 @@
                 style="@style/TextAppearance.AppCompat.Body1"/>
 
             <TextView
+                android:id="@+id/tvNotificationCardDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"

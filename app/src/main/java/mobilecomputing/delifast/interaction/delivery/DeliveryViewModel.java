@@ -9,10 +9,13 @@ import com.mapbox.geojson.Point;
 
 import java.util.ArrayList;
 
+import mobilecomputing.delifast.delifastEnum.NotificationType;
 import mobilecomputing.delifast.delifastEnum.OrderStatus;
 import mobilecomputing.delifast.entities.LocationHelper;
+import mobilecomputing.delifast.entities.Notification;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.entities.User;
+import mobilecomputing.delifast.repositories.NotificationRepository;
 import mobilecomputing.delifast.repositories.OrderRepository;
 import mobilecomputing.delifast.repositories.UserRepository;
 
@@ -20,6 +23,7 @@ public class DeliveryViewModel extends ViewModel {
 
     private OrderRepository orderRepository;
     private UserRepository userRepository;
+    private NotificationRepository notificationRepository;
     private MutableLiveData<ArrayList<Order>> orderList;
     private MutableLiveData<LocationHelper> locationHelper;
 
@@ -27,6 +31,7 @@ public class DeliveryViewModel extends ViewModel {
 
         this.orderRepository = new OrderRepository();
         this.userRepository = new UserRepository();
+        this.notificationRepository = new NotificationRepository();
         this.orderList = orderRepository.getOrderList();
         init();
     }
@@ -63,6 +68,9 @@ public class DeliveryViewModel extends ViewModel {
         order.setSupplierID(uid);
         order.setOrderStatus(OrderStatus.ACCEPTED);
         orderRepository.update(order);
+
+        Notification notification = new Notification(order.getCustomerID(), order.getId(), NotificationType.ORDER_ACCEPTED_BY_SUPPLIER);
+        notificationRepository.save(notification);
 
         orderList.setValue(updatedOrderList);
     }

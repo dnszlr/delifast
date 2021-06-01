@@ -53,6 +53,8 @@ import java.io.IOException;
 import java.util.List;
 
 import mobilecomputing.delifast.R;
+import mobilecomputing.delifast.delifastEnum.NotificationType;
+import mobilecomputing.delifast.entities.Notification;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.others.CurrencyFormatter;
 import mobilecomputing.delifast.others.DelifastConstants;

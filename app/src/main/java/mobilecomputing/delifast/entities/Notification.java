@@ -24,11 +24,10 @@ public class Notification extends DelifastEntity {
 
     }
 
-    public Notification(String userId, String orderId, NotificationType type, String message, Date notificationTime) {
+    public Notification(String userId, String orderId, NotificationType type) {
         this.userId = userId;
         this.orderId = orderId;
         this.type = type;
-        this.notificationTime = notificationTime;
     }
 
     public String getUserId() {

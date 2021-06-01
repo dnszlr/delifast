@@ -23,6 +23,7 @@ public class DelifastTags {
     public static final String PRODUCTGETALL = "ProductGetAll";
 
     // Notification
+    public static final String NOTIFICATIONGETALLBYUSERID = "NotificationGellAllByUserId";
 
     // Rating
     public static final String RATINGETALLBYUSERID = "RatingGetAllByUserId";

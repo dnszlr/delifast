@@ -6,18 +6,16 @@ import java.util.Date;
 
 import mobilecomputing.delifast.delifastEnum.NotificationType;
 
-public class Notification extends DelifastEntity{
+public class Notification extends DelifastEntity {
 
     private String userId;
     private NotificationType type;
-    private String message;
     @ServerTimestamp
     private Date notificationTime;
 
     public Notification(String userId, NotificationType type, String message, Date notificationTime) {
         this.userId = userId;
         this.type = type;
-        this.message = message;
         this.notificationTime = notificationTime;
     }
 
@@ -35,14 +33,6 @@ public class Notification extends DelifastEntity{
 
     public void setType(NotificationType type) {
         this.type = type;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public Date getNotificationTime() {

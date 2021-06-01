@@ -1,0 +1,77 @@
+package mobilecomputing.delifast.repositories;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import mobilecomputing.delifast.entities.Notification;
+import mobilecomputing.delifast.others.DelifastConstants;
+import mobilecomputing.delifast.others.DelifastTags;
+
+public class NotificationRepository {
+
+    private String collection;
+    private CollectionReference dbCollection;
+
+    public NotificationRepository() {
+        this.collection = DelifastConstants.NOTIFICATIONCOLLECTION;
+        this.dbCollection = FirebaseFirestore.getInstance().collection(collection);
+    }
+
+    public MutableLiveData<Boolean> save(Notification notification) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
+        dbCollection
+                .add(notification)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        result.setValue(true);
+                        Log.d(DelifastTags.ORDERSAVE, "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                result.setValue(false);
+                Log.w(DelifastTags.ORDERSAVE, "Error adding document", e);
+            }
+        });
+        return result;
+    }
+
+    public MutableLiveData<List<Notification>> getAllByUserId(String userId) {
+        MutableLiveData<List<Notification>> result = new MutableLiveData<>();
+        dbCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        List<Notification> resultList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            resultList = task.getResult().toObjects(Notification.class);
+                            result.setValue(resultList);
+                        } else {
+                            Log.d(DelifastTags.NOTIFICATIONGETALLBYUSERID, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return result;
+    }
+
+
+}

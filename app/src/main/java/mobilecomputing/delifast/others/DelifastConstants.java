@@ -25,6 +25,7 @@ public class DelifastConstants {
     public static final String PRODUCTCOLLECTION = "products";
     public static final String ORDERCOLLECTION = "orders";
     public static final String RATINGCOLLECTION = "ratings";
+    public static final String NOTIFICATIONCOLLECTION = "notifications";
 
     // Order
     public static final String PRODUCTS = "Produkte";
@@ -61,5 +62,4 @@ public class DelifastConstants {
             .properties(new JsonObject())
             .build();
     public static final int PERMISSION_REQUEST_CODE = 200;
-
 }

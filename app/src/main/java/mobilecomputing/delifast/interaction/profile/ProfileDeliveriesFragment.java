@@ -32,6 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.delifastEnum.OrderStatus;
@@ -95,6 +98,42 @@ public class ProfileDeliveriesFragment extends Fragment {
             if(resultCode == Activity.RESULT_OK){
                 String qrCodeContent = data.getStringExtra("SCAN_RESULT");
                 Log.d("QR-CODE: ", "Inhalt -------> " + qrCodeContent);
+                try {
+                    JSONObject jsonObject = new JSONObject(qrCodeContent);
+
+                    RequestParams rp = new RequestParams();
+                    rp.put("amount", jsonObject.get("amount"));
+                    rp.put("transactionId", jsonObject.get("transactionId"));
+                    rp.put("supplierId", jsonObject.get("supplierId"));
+
+
+                    DelifastHttpClient.post(DelifastConstants.SENDPAYMENT, rp, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                viewModel.getOrderById(jsonObject.get("orderId").toString()).observe(getViewLifecycleOwner(), order -> {
+                                    if (order != null){
+                                        order.setOrderStatus(OrderStatus.DONE);
+                                        viewModel.createTransactionNotifications(order);
+                                        viewModel.updateOrder(order);
+                                    }
+                                });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                        }
+                    });
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
             else {

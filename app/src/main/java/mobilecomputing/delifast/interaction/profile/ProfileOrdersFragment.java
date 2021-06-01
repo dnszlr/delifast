@@ -155,24 +155,6 @@ public class ProfileOrdersFragment extends Fragment {
         btnConfirm.setEnabled(order.getOrderStatus().equals(OrderStatus.ACCEPTED));
         btnCancel.setEnabled(order.getOrderStatus().equals(OrderStatus.OPEN));
 
-        switch (order.getOrderStatus()){
-            case OPEN:
-                btnConfirm.setEnabled(false);
-                btnCancel.setEnabled(true);
-                break;
-            case CANCELED:
-                btnConfirm.setEnabled(false);
-                btnCancel.setEnabled(false);
-                break;
-            case ACCEPTED:
-                btnConfirm.setEnabled(true);
-                btnCancel.setEnabled(false);
-                break;
-            case DONE:
-                btnConfirm.setEnabled(false);
-                btnCancel.setEnabled(true);
-                break;
-        }
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +171,7 @@ public class ProfileOrdersFragment extends Fragment {
                     jsonObject.put("amount", amount);
                     jsonObject.put("transactionId", transactionId);
                     jsonObject.put("supplierId", supplierId);
+                    jsonObject.put("orderId", order.getId());
 
                     Bitmap bitmap = QRCodeGenerator.textToImage(jsonObject.toString(), 500, 500);
                     //qrCode.setImageBitmap(bitmap);

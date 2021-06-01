@@ -57,6 +57,10 @@ public class ProfileViewModel extends ViewModel {
         return userRepository.getById(userId);
     }
 
+    public MutableLiveData<Order> getOrderById(String orderId) {
+        return orderRepository.getOrderById(orderId);
+    }
+
     public MutableLiveData<List<Rating>> getAllUserRatings(String userId) {
         return ratingRepository.getAllByUserId(userId);
     }
@@ -78,4 +82,6 @@ public class ProfileViewModel extends ViewModel {
     }
 
 
+    public void createTransactionNotifications(Order order) {
+    }
 }

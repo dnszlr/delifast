@@ -33,11 +33,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.braintreepayments.api.Json;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.WriterException;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.R;
@@ -179,14 +183,20 @@ public class ProfileOrdersFragment extends Fragment {
                     String amount = CurrencyFormatter.doubleToUIRep(order.getCustomerFee());
                     String supplierId = order.getSupplierID();
                     String transactionId = order.getTransactionID();
-                    String url = DelifastHttpClient.BASE_URL + DelifastConstants.SENDPAYMENT + "?" + "amount=" + amount + "&" + "transactionId=" + transactionId + "&" + "supplierId=" + supplierId;
-                    Bitmap bitmap = QRCodeGenerator.textToImage(url, 500, 500);
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("amount", amount);
+                    jsonObject.put("transactionId", transactionId);
+                    jsonObject.put("supplierId", supplierId);
+
+                    Bitmap bitmap = QRCodeGenerator.textToImage(jsonObject.toString(), 500, 500);
                     //qrCode.setImageBitmap(bitmap);
 
                     final Dialog dialog= new Dialog(getContext());
                     dialog.setContentView(R.layout.qr_popup_layout);
                     ImageView qrImage = dialog.findViewById(R.id.imgDialogQrCode);
                     qrImage.setImageBitmap(bitmap);
+                    /*
                     Button btnClose = dialog.findViewById(R.id.btnQrCodeClose);
                     btnClose.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -194,10 +204,12 @@ public class ProfileOrdersFragment extends Fragment {
                             dialog.dismiss();
                         }
                     });
+
+                     */
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
-                } catch (WriterException e) {
+                } catch (WriterException | JSONException e) {
                     // TODO Implemented Toast response
                     e.printStackTrace();
                 }

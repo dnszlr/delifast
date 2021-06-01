@@ -95,6 +95,7 @@ public class ProfileDeliveriesFragment extends Fragment {
             if(resultCode == Activity.RESULT_OK){
                 String qrCodeContent = data.getStringExtra("SCAN_RESULT");
                 Log.d("QR-CODE: ", "Inhalt -------> " + qrCodeContent);
+
             }
             else {
                 Toast.makeText(getContext(), "Fehler: " + resultCode, Toast.LENGTH_SHORT).show();

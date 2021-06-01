@@ -110,17 +110,23 @@ public class ProfileDeliveriesFragment extends Fragment {
                     DelifastHttpClient.post(DelifastConstants.SENDPAYMENT, rp, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            try {
-                                viewModel.getOrderById(jsonObject.get("orderId").toString()).observe(getViewLifecycleOwner(), order -> {
-                                    if (order != null){
-                                        order.setOrderStatus(OrderStatus.DONE);
-                                        viewModel.createTransactionNotifications(order);
-                                        viewModel.updateOrder(order);
-                                    }
-                                });
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            if(statusCode == 200){
+                                try {
+                                    viewModel.getOrderById(jsonObject.get("orderId").toString()).observe(getViewLifecycleOwner(), order -> {
+                                        if (order != null){
+                                            order.setOrderStatus(OrderStatus.DONE);
+                                            viewModel.createTransactionNotifications(order);
+                                            viewModel.updateOrder(order);
+                                        }
+                                    });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                            else {
+                                Toast.makeText(getContext(), "Serverfehler" + statusCode, Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
                         @Override

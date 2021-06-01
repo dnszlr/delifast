@@ -123,7 +123,7 @@ public class ProfileOrdersFragment extends Fragment {
         status.setText(order.getOrderStatus().getOrderType());
 
         TextView sum = orderCard.findViewById(R.id.tvProfileOrderSum);
-        sum.setText(String.valueOf(order.getUserDeposit() + order.getServiceFee() + order.getCustomerFee()));
+        sum.setText(CurrencyFormatter.doubleToUIRep((order.getUserDeposit() + order.getServiceFee() + order.getCustomerFee())));
 
         TextView time = orderCard.findViewById(R.id.tvProfileOrderTime);
         time.setText(order.getOrderTime().toString());

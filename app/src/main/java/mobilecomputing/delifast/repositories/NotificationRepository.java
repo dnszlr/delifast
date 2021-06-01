@@ -3,6 +3,7 @@ package mobilecomputing.delifast.repositories;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -11,7 +12,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,17 +60,15 @@ public class NotificationRepository {
         MutableLiveData<List<Notification>> result = new MutableLiveData<>();
         dbCollection
                 .whereEqualTo("userId", userId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                        List<Notification> resultList = new ArrayList<>();
-                        if (task.isSuccessful()) {
-                            resultList = task.getResult().toObjects(Notification.class);
-                            result.setValue(resultList);
-                        } else {
-                            Log.d(DelifastTags.NOTIFICATIONGETALLBYUSERID, "Error getting documents: ", task.getException());
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException exception) {
+                        if(exception != null) {
+                            Log.w("NotificationRepositoryGetAllByUserId", "Listen failed.", exception);
+                            return;
                         }
+                        List<Notification> resultList = value.toObjects(Notification.class);
+                        result.setValue(resultList);
                     }
                 });
         return result;

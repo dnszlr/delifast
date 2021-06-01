@@ -45,7 +45,7 @@ public class Notification extends DelifastEntity {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
-
+    @Exclude
     public String getText() {
         return text;
     }

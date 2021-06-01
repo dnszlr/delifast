@@ -46,6 +46,14 @@ public class Notification extends DelifastEntity {
         this.orderId = orderId;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public NotificationType getType() {
         return type;
     }
@@ -60,10 +68,6 @@ public class Notification extends DelifastEntity {
 
     public void setNotificationTime(Date notificationTime) {
         this.notificationTime = notificationTime;
-    }
-
-    public String getText() {
-        return this.text;
     }
 
     public void setText(Order order) {

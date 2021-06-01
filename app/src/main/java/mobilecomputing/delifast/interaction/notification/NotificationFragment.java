@@ -79,7 +79,7 @@ public class NotificationFragment extends Fragment {
         }
 
         viewModel.getOrder(notification.getOrderId()).observe(getViewLifecycleOwner(), order -> {
-            notification.setText(order);
+            notification.createText(order);
         });
 
         text.setText(notification.getText());

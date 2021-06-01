@@ -70,7 +70,7 @@ public class Notification extends DelifastEntity {
         this.notificationTime = notificationTime;
     }
 
-    public void setText(Order order) {
+    public void createText(Order order) {
         switch (type) {
             case ORDER_ACCEPTED_BY_SUPPLIER:
                 this.text = "Ihre Bestellung vom " + order.getOrderTime() + " wurde akzeptiert und nun auf dem Weg zu Ihnen.";

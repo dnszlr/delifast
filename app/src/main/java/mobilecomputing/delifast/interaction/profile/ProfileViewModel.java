@@ -43,7 +43,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void getAllBySupplierId(String supplierId) {
-        orderRepository.getAllByCustomerId(supplierId);
+        orderRepository.getAllBySupplierId(supplierId);
     }
 
     public MutableLiveData<User> getUserById(String userId) {

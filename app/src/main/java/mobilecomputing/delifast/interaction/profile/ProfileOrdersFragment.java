@@ -1,6 +1,9 @@
 package mobilecomputing.delifast.interaction.profile;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -99,26 +102,6 @@ public class ProfileOrdersFragment extends Fragment {
         layoutProfileOrdersTransation = view.findViewById(R.id.layoutProfileOrdersTransation);
 
         containerProfileOrders = view.findViewById(R.id.containerProfileOrders);
-        /**
-         tvProfileOrderAddress = view.findViewById(R.id.tvProfileOrderAddress);
-         tvProfileOrderDeadline = view.findViewById(R.id.tvProfileOrderDeadline);
-         tvProfileOrderStatus = view.findViewById(R.id.tvProfileOrderStatus);
-
-         constraintLayoutExpandableView = view.findViewById(R.id.constraintLayoutExpandableView);
-         layoutProfileOrderSupplier = view.findViewById(R.id.layoutProfileOrderSupplier);
-
-         imgProfileOrderSupplierImage = view.findViewById(R.id.imgProfileOrderSupplierImage);
-
-         ratingProfileOrderSupplierRating = view.findViewById(R.id.ratingProfileOrderSupplierRating);
-
-
-         tvProfileOrderSum = view.findViewById(R.id.tvProfileOrderSum);
-         tvProfileOrderTime = view.findViewById(R.id.tvProfileOrderTime);
-
-         tvProfileOrderRemarks = view.findViewById(R.id.tvProfileOrderRemarks);
-
-         lvProfileOrderProducts = view.findViewById(R.id.lvProfileOrderProducts);
-         **/
     }
 
     private void createCardForOrder(Order order, LayoutInflater inflater) {
@@ -174,17 +157,35 @@ public class ProfileOrdersFragment extends Fragment {
                     String transactionId = order.getTransactionID();
                     String url = DelifastHttpClient.BASE_URL + DelifastConstants.SENDPAYMENT + "?" + "amount=" + amount + "&" + "transactionId=" + transactionId + "&" + "supplierId=" + supplierId;
                     Bitmap bitmap = QRCodeGenerator.textToImage(url, 500, 500);
-                    qrCode.setImageBitmap(bitmap);
+                    //qrCode.setImageBitmap(bitmap);
+
+                    final Dialog dialog= new Dialog(getContext());
+                    dialog.setContentView(R.layout.qr_popup_layout);
+                    ImageView qrImage = dialog.findViewById(R.id.imgDialogQrCode);
+                    qrImage.setImageBitmap(bitmap);
+                    Button btnClose = dialog.findViewById(R.id.btnQrCodeClose);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+
                 } catch (WriterException e) {
                     // TODO Implemented Toast response
                     e.printStackTrace();
                 }
                 // create the popup window
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                /**
+                int width = LinearLayout.LayoutParams.MATCH_PARENT;
+                int height = LinearLayout.LayoutParams.MATCH_PARENT;
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
                 // show the popup window
+                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                 **/
             }
         });
 

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewProfileDelivery"
+        style="@style/CardView.Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutcardDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvProfileDeliveryAddress"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:drawableLeft="@drawable/ic_baseline_location_on_24"
+                android:drawablePadding="5dp"
+                android:text="Raitweg 4, 72770 Reutlingen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvProfileDeliveryDeadline"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:drawableLeft="@drawable/ic_baseline_access_time_24"
+                android:drawablePadding="5dp"
+                android:text="29.05.2021 14:30"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileDeliveryAddress" />
+
+            <TextView
+                android:id="@+id/tvProfileDeliveryCustomerFee"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:drawableLeft="@drawable/ic_baseline_euro_24"
+                android:drawablePadding="5dp"
+                android:text="7.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileDeliveryDeadline" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="5dp"
+                android:text="Status: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileDeliveryCustomerFee" />
+
+            <TextView
+                android:id="@+id/tvProfileDeliveryStatus"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="5dp"
+                android:text="OPEN"
+                app:layout_constraintStart_toEndOf="@+id/tvStatus"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileDeliveryCustomerFee" />
+
+            <Button
+                android:id="@+id/btnProfileDeliveryArrowDown"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileDeliveryCustomerFee" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutExpandableView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnProfileDeliveryArrowDown">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutProfileDeliveryBuyer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvOrderAcceptedBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bestellt von"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewProfileDeliveryUserImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:elevation="12dp"
+                    app:cardCornerRadius="25dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOrderAcceptedBy">
+
+                    <ImageView
+                        android:id="@+id/imgProfileDeliveryBuyerImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/outline_person_24" />
+
+                </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/tvProfileDeliveryBuyerName"
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:text="UserName"
+                        app:layout_constraintStart_toEndOf="@id/cardViewProfileDeliveryUserImage"
+                        app:layout_constraintTop_toBottomOf="@id/tvOrderAcceptedBy" />
+
+                    <RatingBar
+                        android:id="@+id/ratingProfileDeliveryBuyerRating"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressTint="#F6BA06"
+                        android:rating="4"
+                        android:stepSize="1.0"
+                        app:layout_constraintStart_toEndOf="@id/cardViewProfileDeliveryUserImage"
+                        app:layout_constraintTop_toBottomOf="@+id/tvProfileOrderSupplierName"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/btnProfileDeliveryConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bestätigen"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutProfileDeliveryBuyer"
+                />
+
+            <Button
+                android:id="@+id/btnProfileDeliveryCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stornieren"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnProfileDeliveryConfirm"
+                android:backgroundTint="@color/bt_error_red"
+                />
+
+            <TextView
+                android:id="@+id/tvProfileDeliveryTimeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Auftrag angenommen am"
+                app:layout_constraintTop_toBottomOf="@+id/btnProfileDeliveryCancel"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="8dp"
+                style="@style/TextAppearance.AppCompat.Body1"
+                />
+
+            <TextView
+                android:id="@+id/tvProfileOrderTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnProfileDeliveryCancel"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:text="41.13.3021 14:30"
+                android:drawablePadding="2dp"
+                android:drawableRight="@drawable/ic_baseline_access_time_24"
+                style="@style/TextAppearance.AppCompat.Body1"
+                />
+
+            <TextView
+                android:id="@+id/tvRemarks"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:text="Bemerkungen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileDeliveryTimeText" />
+
+            <EditText
+                android:id="@+id/tvProfileDeliveryRemarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:hint="Keine Bemerkungen"
+                android:editable="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvRemarks"
+                android:clickable="false"
+                android:background="@null"
+                style="@style/TextAppearance.AppCompat.Small"/>
+
+            <TextView
+                android:id="@+id/tvProducts"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:text="Bestellte Produkte"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileDeliveryRemarks" />
+
+            <LinearLayout
+                android:id="@+id/lvProfileDeliveryProducts"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvProducts"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

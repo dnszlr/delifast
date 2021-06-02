@@ -120,9 +120,7 @@ public class DeliveryFragment extends Fragment {
         });
         viewModel.getLocationHelper().observe(getViewLifecycleOwner(), locationHelper -> {
             if (locationHelper != null) {
-                if (locationHelper.getLocation() == null) {
-                    viewModel.getAll();
-                } else {
+                if (locationHelper.getLocation() != null) {
                     double latitude = locationHelper.getLocation().latitude();
                     double longitude = locationHelper.getLocation().longitude();
                     viewModel.getAllOrderByRadius(latitude, longitude, locationHelper.getRadiusInM());
@@ -159,7 +157,9 @@ public class DeliveryFragment extends Fragment {
             public void onClick(View v) {
                 if (linearLayoutLocation.getVisibility() == View.GONE) {
                     linearLayoutLocation.setVisibility(View.VISIBLE);
+                    btnBacklogLocation.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
                 } else {
+                    btnBacklogLocation.setImageResource(R.drawable.ic_baseline_location_on_24);
                     linearLayoutLocation.setVisibility(View.GONE);
                 }
             }
@@ -381,7 +381,6 @@ public class DeliveryFragment extends Fragment {
                 Point point = (Point) feature.geometry();
                 viewModel.setLocationHelperPlace(point);
                 etBacklogAddress.setText(feature.placeName());
-                Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity().getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();

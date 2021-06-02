@@ -51,8 +51,6 @@ public class DelifastActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
 
-
-
             switch (item.getItemId()) {
                 case R.id.page_1:
                     //selectedFragment = new ParentOrderFragment();

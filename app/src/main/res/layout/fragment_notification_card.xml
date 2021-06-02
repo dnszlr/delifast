@@ -50,18 +50,18 @@
             <TextView
                 android:id="@+id/tvNotificationCard"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintStart_toEndOf="@+id/imgNotificationCard"
                 app:layout_constraintTop_toBottomOf="@+id/tvNotificationCardDate"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="You can generate text and add it into this text view, this should not go out of line "
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 style="@style/TextAppearance.AppCompat.Body1"/>
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

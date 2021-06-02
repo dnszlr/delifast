@@ -212,7 +212,12 @@ public class OrderViewModel extends ViewModel {
      */
     public void setUserDeposit(CharSequence userDeposit) {
         double deposit = Double.valueOf(String.valueOf(userDeposit));
-        this.order.getValue().setUserDeposit(deposit);
+        Order updatedOrder = this.order.getValue();
+        if(updatedOrder.getUserDeposit() != deposit){
+            updatedOrder.setUserDeposit(deposit);
+            this.order.setValue(updatedOrder);
+        }
+
     }
 
     /**

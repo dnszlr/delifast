@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -74,7 +75,7 @@ import retrofit2.Response;
 public class CartFragment extends Fragment {
 
     private TextInputEditText etUserDeposit, etSupplyPrice, etServiceFee, etAddress, etDeadline, etDescription;
-    private TextView tvCartSum;
+    private EditText tvCartSum;
     private MaterialButton btnPay;
     private OrderViewModel model;
     private LinearLayout lvContentLayout;
@@ -148,6 +149,7 @@ public class CartFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
 
             }
         });
@@ -320,12 +322,7 @@ public class CartFragment extends Fragment {
         etDeadline.setError(null);
         etDescription.setText(order.getDescription());
         Log.d("Vorkasse: ", "Deposit" + order.getUserDeposit());
-        if (order.getDeadline() != null) {
-            etDeadline.setText(simpleDateFormat.format(order.getDeadline()));
-        }
-        if (order.getCustomerAddress() != null) {
-            etAddress.setText(order.getCustomerAddress().getAddressString());
-        }
+
         etServiceFee.setText(CurrencyFormatter.doubleToUIRep(order.getServiceFee() + order.getCustomerFee()));
         etUserDeposit.setText(CurrencyFormatter.doubleToUIRep(order.getUserDeposit()));
         tvCartSum.setText(CurrencyFormatter.doubleToUIRep(order.getUserDeposit() + order.getServiceFee() + order.getCustomerFee()));

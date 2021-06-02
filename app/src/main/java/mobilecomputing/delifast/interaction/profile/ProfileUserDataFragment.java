@@ -101,6 +101,7 @@ public class ProfileUserDataFragment extends Fragment {
         viewModel.getAllByCustomerId(FirebaseAuth.getInstance().getUid());
 
 
+
         return profileUserDataView;
     }
 
@@ -193,14 +194,5 @@ public class ProfileUserDataFragment extends Fragment {
                         Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        /*
-        if(FirebaseStorage.getInstance().getReference() != null){
-            Glide.with(this).load(pathReference).into(profilePic)
-                    .onLoadFailed(AppCompatResources.getDrawable(getContext(), R.drawable.ic_baseline_location_on_24));
-        }
-        */
-
-
     }
 }

@@ -88,7 +88,7 @@ public class Notification extends DelifastEntity {
                 this.text = "Ihr Auftrag vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Sie erhalten " + CurrencyFormatter.doubleToUIRep(order.getCustomerFee()) + "€ in kürze.";
                 break;
             case RATING_CUSTOMER:
-                this.text = "Ihre Bestellung vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Wenn Sie möchten, können Sie den Lieferanten bewerten.";
+                this.text = "Ihre Bestellung vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Sie können den Lieferanten bewerten.";
                 break;
             case RATING_SUPPLIER:
                 this.text = "Ihr Auftrag vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Wenn Sie möchten, können Sie den Auftraggeber bewerten.";

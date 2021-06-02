@@ -3,8 +3,11 @@ package mobilecomputing.delifast.interaction.profile;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityOptionsCompat;
@@ -18,8 +21,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import mobilecomputing.delifast.MainActivity;
 import mobilecomputing.delifast.R;
@@ -30,12 +38,15 @@ public class ProfileFragment extends Fragment {
 
     private ImageView btnLogout;
     private Button btnLogout2;
-    private ImageView imgProfileOrders, imgProfiledeliveries;
+    private ImageView imgProfileOrders, imgProfiledeliveries, imgProfileUserImage;
     private CardView cardProfileUserData, cardProfileOrders, cardProfileDeliveries, cardProfileRating;
     private TextView userName;
 
     private LinearLayout layoutProfileOrdersTransation, layoutProfileRatingTransition, layoutProfileDeliveriesTransation;
     private ConstraintLayout layoutProfileUserdataTransation;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -46,6 +57,9 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View profileView = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         initView(profileView);
         setOnClickListener();
 
@@ -55,6 +69,9 @@ public class ProfileFragment extends Fragment {
     private void initView(View view) {
         btnLogout = view.findViewById(R.id.btnProfileLogout);
         btnLogout2 = view.findViewById(R.id.btnProfileLogout2);
+
+        imgProfileUserImage = view.findViewById(R.id.imgProfileUserImage);
+        downloadPicture(FirebaseAuth.getInstance().getUid());
 
         cardProfileUserData = view.findViewById(R.id.cardProfileUserData);
         layoutProfileUserdataTransation = view.findViewById(R.id.layoutProfileUserdataTransation);
@@ -172,5 +189,23 @@ public class ProfileFragment extends Fragment {
             }
         });
         dialog.show();
+    }
+
+    private void downloadPicture(String uId) {
+
+        storageReference.child("images/" + uId).getBytes(Long.MAX_VALUE)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imgProfileUserImage.setImageBitmap(bmp);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

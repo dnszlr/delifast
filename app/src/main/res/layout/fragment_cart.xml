@@ -41,66 +41,6 @@
                         android:text="@string/Bestellungsdetails"
                         android:textAppearance="?attr/textAppearanceHeadline6" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ilCartSum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="@string/Vorkasse"
-                        app:boxBackgroundColor="@color/white">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etUserDeposit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/ic_baseline_euro_24"
-                            android:inputType="numberDecimal"
-                            android:maxLines="1"
-                            android:text="0" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ilServiceFee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:clickable="false"
-                        android:hint="@string/Service"
-                        app:boxBackgroundColor="@color/white"
-                        app:boxBackgroundMode="none">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etServiceFee"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:inputType="numberDecimal"
-                            android:clickable="false"
-                            android:editable="false"
-                            android:drawableRight="@drawable/ic_baseline_euro_24"
-                            android:focusable="false"
-                            />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ilDateTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:hint="@string/Gewuenschte_Lieferzeit"
-                        app:boxBackgroundColor="@color/white">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDeadline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/ic_baseline_access_time_24"
-                            android:focusable="false" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -137,6 +77,24 @@
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/Gewuenschte_Lieferzeit"
+                        app:boxBackgroundColor="@color/white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDeadline"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_baseline_access_time_24"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/ilDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,6 +109,79 @@
                             android:drawableRight="@drawable/ic_baseline_post_add_24" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilCartSum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Vorgeschlagene Anzahlung"
+                        app:boxBackgroundColor="@color/white"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etUserDeposit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_baseline_euro_24"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:text="0" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilServiceFee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:clickable="false"
+                        android:hint="Servicekosten"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxBackgroundMode="filled"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etServiceFee"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:inputType="numberDecimal"
+                            android:clickable="false"
+                            android:editable="false"
+                            android:drawableRight="@drawable/ic_baseline_euro_24"
+                            android:focusable="false"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilSum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:clickable="false"
+                        android:hint="Gesamtkosten"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxBackgroundMode="filled"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tvCartSum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:inputType="numberDecimal"
+                            android:clickable="false"
+                            android:editable="false"
+                            android:drawableRight="@drawable/ic_baseline_euro_24"
+                            android:focusable="false"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
                 <!-- Buttons -->
@@ -159,18 +190,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvCartSum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_weight="1"
-                        android:clickable="false"
-                        android:drawableRight="@drawable/ic_baseline_euro_24"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:text="0" />
 
                     <View
                         android:layout_width="0dp"

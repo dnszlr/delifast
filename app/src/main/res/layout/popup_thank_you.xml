@@ -28,9 +28,9 @@
                 app:tint="@color/quantum_googgreen" />
 
             <TextView
-                android:layout_width="205dp"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
-                android:text="Super. Sie bekommen Ihren Gewinn in Kürze."
+                android:text="Super. Du bekommst deine Bezahlung in Kürze."
                 style="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintTop_toBottomOf="@+id/imgDialogQrCode"
                 app:layout_constraintStart_toStartOf="parent"

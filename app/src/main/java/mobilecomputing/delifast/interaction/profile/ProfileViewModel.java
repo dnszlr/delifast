@@ -84,8 +84,10 @@ public class ProfileViewModel extends ViewModel {
 
     public void createTransactionNotifications(Order order) {
         Notification customerNotification = new Notification(order.getCustomerID(), order.getId(), NotificationType.RATING_CUSTOMER);
-        Notification supplierNotification = new Notification(order.getSupplierID(), order.getId(), NotificationType.RATING_CUSTOMER);
+        Notification supplierNotification = new Notification(order.getSupplierID(), order.getId(), NotificationType.RATING_SUPPLIER);
+        Notification supplierNotification2 = new Notification(order.getSupplierID(), order.getId(), NotificationType.ORDER_DONE_BY_CUSTOMER);
         notificationRepository.save(customerNotification);
         notificationRepository.save(supplierNotification);
+        notificationRepository.save(supplierNotification2);
     }
 }

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -41,6 +44,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
@@ -79,6 +84,9 @@ public class DeliveryFragment extends Fragment {
 
     private SimpleDateFormat simpleDateFormat;
 
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
 
     public DeliveryFragment() {
         // Required empty public constructor
@@ -90,6 +98,9 @@ public class DeliveryFragment extends Fragment {
         View deliveryView = inflater.inflate(R.layout.fragment_delivery, container, false);
 
         simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         initView(deliveryView);
         initListeners();
@@ -277,6 +288,9 @@ public class DeliveryFragment extends Fragment {
             }
         });
 
+        ImageView userImage = orderCard.findViewById(R.id.imgCardBacklogUserImage);
+        putUserPic(order.getCustomerID(), userImage);
+
 
         TextView orderDeposit = orderCard.findViewById(R.id.tvCardBacklogUserDeposit);
         orderDeposit.setText(CurrencyFormatter.doubleToUIRep(order.getUserDeposit()));
@@ -379,4 +393,33 @@ public class DeliveryFragment extends Fragment {
         viewModel.setOrderAcceptedinDB(order, FirebaseAuth.getInstance().getUid());
         Toast.makeText(getActivity(), "Sie haben den Auftrag angenommen", Toast.LENGTH_SHORT).show();
     }
+
+
+    /**
+     * put the user image from the data base (if exists) into the
+     * image view in the card
+     *
+     * @param uId:
+     *            the userID ro check if user uploaded an image
+ *           imageView:
+     *               the image view of the card to be filled with
+     *               the image
+     *
+     */
+    private void putUserPic(String uId, ImageView imageView) {
+        storageReference.child("images/" + uId).getBytes(Long.MAX_VALUE)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageView.setImageBitmap(bmp);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+    }
+
 }

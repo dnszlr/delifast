@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment {
     private Button btnLogout2;
     private ImageView imgProfileOrders, imgProfiledeliveries;
     private CardView cardProfileUserData, cardProfileOrders, cardProfileDeliveries, cardProfileRating;
+    private TextView userName;
 
     private LinearLayout layoutProfileOrdersTransation, layoutProfileRatingTransition, layoutProfileDeliveriesTransation;
     private ConstraintLayout layoutProfileUserdataTransation;
@@ -57,6 +58,9 @@ public class ProfileFragment extends Fragment {
 
         cardProfileUserData = view.findViewById(R.id.cardProfileUserData);
         layoutProfileUserdataTransation = view.findViewById(R.id.layoutProfileUserdataTransation);
+
+        userName = view.findViewById(R.id.tvProfileUserName);
+        userName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         cardProfileOrders = view.findViewById(R.id.cardProfileOrders);
         layoutProfileOrdersTransation = view.findViewById(R.id.layoutProfileOrdersTransation);

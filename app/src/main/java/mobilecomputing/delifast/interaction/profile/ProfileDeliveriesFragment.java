@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -184,6 +185,11 @@ public class ProfileDeliveriesFragment extends Fragment {
                 buyerName.setText(user.getName());
             }
         });
+
+        MaterialButton btnRate = orderCard.findViewById(R.id.btnProfileDeliveryRate);
+        if(order.getOrderStatus() == OrderStatus.DONE){
+
+        }
 
         LinearLayout products = orderCard.findViewById(R.id.lvProfileDeliveryProducts);
         for (OrderPosition op : order.getOrderPositions()) {

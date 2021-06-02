@@ -21,9 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.entities.Rating;
-import mobilecomputing.delifast.entities.User;
 import mobilecomputing.delifast.others.DelifastConstants;
 import mobilecomputing.delifast.others.DelifastTags;
 
@@ -109,6 +107,28 @@ public class RatingRepository {
                             Log.d(DelifastTags.RATINGETALLBYUSERID, "Error getting documents: ", task.getException());
                         }
                         entity.setValue(resultList);
+                    }
+                });
+        return entity;
+    }
+
+    public MutableLiveData<List<Rating>> getOneByUserAndOrder(String userId, String orderId) {
+        final MutableLiveData<List<Rating>> entity = new MutableLiveData<>();
+        dbCollection
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("orderId", orderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Rating> resultList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            resultList = task.getResult().toObjects(Rating.class);
+                        } else {
+                            Log.d(DelifastTags.RATINGETALLBYUSERID, "Error getting documents: ", task.getException());
+                        }
+                        entity.setValue(resultList);
+
                     }
                 });
         return entity;

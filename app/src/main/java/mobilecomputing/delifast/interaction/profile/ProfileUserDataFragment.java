@@ -14,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 
@@ -24,7 +25,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,13 +48,18 @@ import java.io.ByteArrayOutputStream;
 
 import io.grpc.Context;
 import mobilecomputing.delifast.R;
+import mobilecomputing.delifast.interaction.order.OrderViewModel;
 
 public class ProfileUserDataFragment extends Fragment {
 
+    private ProfileViewModel viewModel;
+
     private CardView cardProfileUserData;
     private ConstraintLayout layoutProfileUserdataTransation;
-
     private ImageView profilePic;
+    private TextView tvUserName, tvCountOrders, tvCountDeliveries, tvCountRatings;
+    private EditText etUserName;
+    private ImageButton editUserName;
 
     public Uri imageUri;
     private FirebaseStorage storage;
@@ -78,6 +87,20 @@ public class ProfileUserDataFragment extends Fragment {
 
         initView(profileUserDataView);
 
+        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        viewModel.getUserById(FirebaseAuth.getInstance().getUid()).observe(getViewLifecycleOwner(), user -> {
+            tvUserName.setText(user.getName());
+            etUserName.setText(user.getName());
+        });
+
+        viewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
+            if (orders != null){
+                tvCountOrders.setText(String.valueOf(orders.size()));
+            }
+        });
+        viewModel.getAllByCustomerId(FirebaseAuth.getInstance().getUid());
+
+
         return profileUserDataView;
     }
 
@@ -93,6 +116,14 @@ public class ProfileUserDataFragment extends Fragment {
                 choosePicture();
             }
         });
+
+        tvUserName = view.findViewById(R.id.tvProfileUserName);
+        etUserName = view.findViewById(R.id.tvProfileUserDataUserName);
+        editUserName = view.findViewById(R.id.ibEditUserName);
+
+        tvCountOrders = view.findViewById(R.id.tvProfileUserDataCountOrders);
+        tvCountDeliveries = view.findViewById(R.id.tvProfileUserDataCountDeliveries);
+        tvCountRatings = view.findViewById(R.id.tvProfileUserDataCountRatings);
     }
 
     private void choosePicture() {

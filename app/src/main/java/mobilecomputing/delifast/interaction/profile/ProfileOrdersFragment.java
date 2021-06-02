@@ -44,6 +44,9 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.delifastEnum.OrderStatus;
@@ -65,8 +68,9 @@ public class ProfileOrdersFragment extends Fragment {
     private RatingBar ratingProfileOrderSupplierRating;
     private MaterialButton btnConfirm, btnCancel;
     private ListView lvProfileOrderProducts;
-
     private LinearLayout containerProfileOrders;
+
+    private SimpleDateFormat simpleDateFormat;
 
     private ProfileViewModel viewModel;
 
@@ -87,7 +91,10 @@ public class ProfileOrdersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View profileOrdersView = inflater.inflate(R.layout.fragment_profile_orders, container, false);
 
+        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
+
         initView(profileOrdersView);
+
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         viewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
             containerProfileOrders.removeAllViewsInLayout();
@@ -118,7 +125,7 @@ public class ProfileOrdersFragment extends Fragment {
         address.setText(order.getCustomerAddress().getAddressString());
 
         TextView deadline = orderCard.findViewById(R.id.tvProfileOrderDeadline);
-        deadline.setText(order.getDeadline().toString());
+        deadline.setText(simpleDateFormat.format(order.getDeadline()));
 
         TextView status = orderCard.findViewById(R.id.tvProfileOrderStatus);
         status.setText(order.getOrderStatus().getOrderType());
@@ -127,7 +134,7 @@ public class ProfileOrdersFragment extends Fragment {
         sum.setText(CurrencyFormatter.doubleToUIRep((order.getUserDeposit() + order.getServiceFee() + order.getCustomerFee())));
 
         TextView time = orderCard.findViewById(R.id.tvProfileOrderTime);
-        time.setText(order.getOrderTime().toString());
+        time.setText(simpleDateFormat.format(order.getOrderTime()));
 
         TextView remarks = orderCard.findViewById(R.id.tvProfileOrderRemarks);
         remarks.setText(order.getDescription());
@@ -174,22 +181,12 @@ public class ProfileOrdersFragment extends Fragment {
                     jsonObject.put("orderId", order.getId());
 
                     Bitmap bitmap = QRCodeGenerator.textToImage(jsonObject.toString(), 500, 500);
-                    //qrCode.setImageBitmap(bitmap);
 
                     final Dialog dialog= new Dialog(getContext());
                     dialog.setContentView(R.layout.qr_popup_layout);
                     ImageView qrImage = dialog.findViewById(R.id.imgDialogQrCode);
                     qrImage.setImageBitmap(bitmap);
-                    /*
-                    Button btnClose = dialog.findViewById(R.id.btnQrCodeClose);
-                    btnClose.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
 
-                     */
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
@@ -197,15 +194,6 @@ public class ProfileOrdersFragment extends Fragment {
                     // TODO Implemented Toast response
                     e.printStackTrace();
                 }
-                // create the popup window
-                /**
-                int width = LinearLayout.LayoutParams.MATCH_PARENT;
-                int height = LinearLayout.LayoutParams.MATCH_PARENT;
-                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
-                // show the popup window
-                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-                 **/
             }
         });
 

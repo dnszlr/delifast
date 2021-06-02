@@ -50,7 +50,10 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.delifastEnum.NotificationType;
@@ -74,6 +77,8 @@ public class DeliveryFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private MaterialButton btnLocationPicker;
 
+    private SimpleDateFormat simpleDateFormat;
+
 
     public DeliveryFragment() {
         // Required empty public constructor
@@ -83,6 +88,8 @@ public class DeliveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View deliveryView = inflater.inflate(R.layout.fragment_delivery, container, false);
+
+        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
 
         initView(deliveryView);
         initListeners();
@@ -257,7 +264,7 @@ public class DeliveryFragment extends Fragment {
         orderAddress.setText(order.getCustomerAddress().getAddressString());
 
         TextView orderDeadline = orderCard.findViewById(R.id.tvCardBacklogDeadline);
-        orderDeadline.setText(order.getDeadline().toString());
+        orderDeadline.setText(simpleDateFormat.format(order.getDeadline()));
 
         TextView orderSupplyPrice = orderCard.findViewById(R.id.tvCardBacklogSupplyPrice);
         orderSupplyPrice.setText(CurrencyFormatter.doubleToUIRep(order.getCustomerFee()));

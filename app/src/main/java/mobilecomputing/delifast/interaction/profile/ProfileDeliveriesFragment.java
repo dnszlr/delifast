@@ -2,8 +2,11 @@ package mobilecomputing.delifast.interaction.profile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Handler;
 import android.transition.AutoTransition;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -35,6 +39,9 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import cz.msebera.android.httpclient.Header;
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.delifastEnum.OrderStatus;
@@ -51,10 +58,12 @@ public class ProfileDeliveriesFragment extends Fragment {
     private CardView cardViewDeliveries;
     private ImageView imgProfiledeliveries;
     private LinearLayout layoutProfileDeliveriesTransation;
+    private LinearLayout containerProfileDeliveries;
 
     private ProfileViewModel viewModel;
 
-    private LinearLayout containerProfileDeliveries;
+    private SimpleDateFormat simpleDateFormat;
+
 
     private static final int QR_CODE_RQ_CODE = 85;
 
@@ -74,6 +83,8 @@ public class ProfileDeliveriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View profileDeliveriesView = inflater.inflate(R.layout.fragment_profile_deliveries, container, false);
+
+        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
 
         initView(profileDeliveriesView);
 
@@ -97,7 +108,6 @@ public class ProfileDeliveriesFragment extends Fragment {
         if (requestCode == QR_CODE_RQ_CODE){
             if(resultCode == Activity.RESULT_OK){
                 String qrCodeContent = data.getStringExtra("SCAN_RESULT");
-                Log.d("QR-CODE: ", "Inhalt -------> " + qrCodeContent);
                 try {
                     JSONObject jsonObject = new JSONObject(qrCodeContent);
 
@@ -117,36 +127,28 @@ public class ProfileDeliveriesFragment extends Fragment {
                                             order.setOrderStatus(OrderStatus.DONE);
                                             viewModel.createTransactionNotifications(order);
                                             viewModel.updateOrder(order);
+                                            openThankYouDialog();
                                         }
                                     });
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                } catch (JSONException e) { e.printStackTrace(); }
                             }
-                            else {
-                                Toast.makeText(getContext(), "Serverfehler" + statusCode, Toast.LENGTH_SHORT).show();
-                            }
-
+                            else { Toast.makeText(getContext(), "Serverfehler" + statusCode, Toast.LENGTH_SHORT).show(); }
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
                         }
                     });
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
             else {
-                Toast.makeText(getContext(), "Fehler: " + resultCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Abgebrochen", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     private void initView(View view) {
         cardViewDeliveries = view.findViewById(R.id.cardProfileDeliveries);
@@ -165,7 +167,7 @@ public class ProfileDeliveriesFragment extends Fragment {
         address.setText(order.getCustomerAddress().getAddressString());
 
         TextView deadline = orderCard.findViewById(R.id.tvProfileDeliveryDeadline);
-        deadline.setText(order.getDeadline().toString());
+        deadline.setText(simpleDateFormat.format(order.getDeadline()));
 
         TextView customerFee = orderCard.findViewById(R.id.tvProfileDeliveryCustomerFee);
         customerFee.setText(CurrencyFormatter.doubleToUIRep(order.getCustomerFee()));
@@ -174,7 +176,7 @@ public class ProfileDeliveriesFragment extends Fragment {
         status.setText(order.getOrderStatus().getOrderType());
 
         TextView time = orderCard.findViewById(R.id.tvProfileOrderTime);
-        time.setText(order.getOrderTime().toString());
+        time.setText(simpleDateFormat.format(order.getOrderTime()));
 
         TextView buyerName = orderCard.findViewById(R.id.tvProfileDeliveryBuyerName);
         viewModel.getUserById(order.getCustomerID()).observe(getViewLifecycleOwner(), user -> {
@@ -278,5 +280,33 @@ public class ProfileDeliveriesFragment extends Fragment {
         });
 
         dialog.show();
+    }
+
+    private void openThankYouDialog() {
+        final Dialog dialog= new Dialog(getContext());
+        dialog.setContentView(R.layout.popup_thank_you);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        // Hide after some seconds
+        final Handler handler  = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        };
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                handler.removeCallbacks(runnable);
+            }
+        });
+
+        handler.postDelayed(runnable, 8000);
     }
 }

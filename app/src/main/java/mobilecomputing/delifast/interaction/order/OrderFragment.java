@@ -47,12 +47,18 @@ public class OrderFragment extends Fragment {
         model.getOrderPositionList().observe(getViewLifecycleOwner(), orderPositions -> {
             if (orderPositions != null) {
                 Log.d("Observer", "I'm observing this amount of orderPositions: " + orderPositions.size());
-                orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
-                productsList.setAdapter(orderPositionAdapter);
+                if (orderPositionAdapter != null) {
+                    orderPositionAdapter.notifyDataSetChanged();
+                }
+                else {
+                    orderPositionAdapter = new OrderPositionAdapter(getActivity(), R.layout.fragment_order_adapter, orderPositions, this);
+                    productsList.setAdapter(orderPositionAdapter);
+                }
+
             }
         });
         setUpFilter(orderView);
-        // Inflate the layout for this fragment
+
         return orderView;
     }
 

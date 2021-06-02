@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.entities.Notification;
@@ -39,7 +40,7 @@ public class NotificationFragment extends Fragment {
         View notificationView = inflater.inflate(R.layout.fragment_notification, container, false);
 
         llNotificationContainer = notificationView.findViewById(R.id.llNotificationContainer);
-        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT);
+        simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
 
         viewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
         viewModel.getAllByUserId(FirebaseAuth.getInstance().getUid()).observe(getViewLifecycleOwner(), notifications -> {

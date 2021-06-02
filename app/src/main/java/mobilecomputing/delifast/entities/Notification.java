@@ -4,10 +4,13 @@ import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import mobilecomputing.delifast.delifastEnum.NotificationType;
 import mobilecomputing.delifast.others.CurrencyFormatter;
+import mobilecomputing.delifast.others.DelifastConstants;
 
 @IgnoreExtraProperties
 public class Notification extends DelifastEntity {
@@ -20,6 +23,8 @@ public class Notification extends DelifastEntity {
     @ServerTimestamp
     private Date notificationTime;
 
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
+
     public Notification() {
 
     }
@@ -28,6 +33,7 @@ public class Notification extends DelifastEntity {
         this.userId = userId;
         this.orderId = orderId;
         this.type = type;
+
     }
 
     public String getUserId() {
@@ -73,19 +79,19 @@ public class Notification extends DelifastEntity {
     public void createText(Order order) {
         switch (type) {
             case ORDER_ACCEPTED_BY_SUPPLIER:
-                this.text = "Ihre Bestellung vom " + order.getOrderTime() + " wurde akzeptiert und nun auf dem Weg zu Ihnen.";
+                this.text = "Ihre Bestellung vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde akzeptiert und nun auf dem Weg zu Ihnen.";
                 break;
             case ORDER_CANCELED_BY_SUPPLIER:
-                this.text = "Der Lieferant hat Ihre Bestellung vom " + order.getOrderTime() + " leider gecancelt.";
+                this.text = "Der Lieferant hat Ihre Bestellung vom " + simpleDateFormat.format(order.getOrderTime()) + " leider gecancelt.";
                 break;
             case ORDER_DONE_BY_CUSTOMER:
-                this.text = "Ihr Auftrag vom " + order.getOrderTime() + " wurde erfolgreich abgeschlossen. Sie erhalten " + CurrencyFormatter.doubleToUIRep(order.getCustomerFee()) + "€ in kürze.";
+                this.text = "Ihr Auftrag vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Sie erhalten " + CurrencyFormatter.doubleToUIRep(order.getCustomerFee()) + "€ in kürze.";
                 break;
             case RATING_CUSTOMER:
-                this.text = "Ihre Bestellung vom " + order.getOrderTime() + " wurde erfolgreich abgeschlossen. Wenn Sie möchten, können Sie den Lieferanten bewerten.";
+                this.text = "Ihre Bestellung vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Wenn Sie möchten, können Sie den Lieferanten bewerten.";
                 break;
             case RATING_SUPPLIER:
-                this.text = "Ihr Auftrag vom " + order.getOrderTime() + " wurde erfolgreich abgeschlossen. Wenn Sie möchten, können Sie den Auftraggeber bewerten.";
+                this.text = "Ihr Auftrag vom " + simpleDateFormat.format(order.getOrderTime()) + " wurde erfolgreich abgeschlossen. Wenn Sie möchten, können Sie den Auftraggeber bewerten.";
                 break;
             default:
                 this.text = "Notification Fehler, entschuldigen Sie die Störung.";

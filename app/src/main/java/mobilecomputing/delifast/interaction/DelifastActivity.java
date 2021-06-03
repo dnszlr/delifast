@@ -53,7 +53,6 @@ public class DelifastActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.page_1:
-                    //selectedFragment = new ParentOrderFragment();
                     selectedFragment = viewModel.getOrderFragment();
                     break;
 

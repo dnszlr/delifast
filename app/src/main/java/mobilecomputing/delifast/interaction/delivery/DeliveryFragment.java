@@ -62,6 +62,7 @@ import java.util.Locale;
 
 import mobilecomputing.delifast.R;
 import mobilecomputing.delifast.delifastEnum.NotificationType;
+import mobilecomputing.delifast.entities.LocationHelper;
 import mobilecomputing.delifast.entities.Notification;
 import mobilecomputing.delifast.entities.Order;
 import mobilecomputing.delifast.others.CurrencyFormatter;
@@ -101,12 +102,10 @@ public class DeliveryFragment extends Fragment {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
         initView(deliveryView);
         initListeners();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
-        //viewModel.getAllOrderByRadius(48.48166419984722, 9.204247876280458, 20000).observe(getViewLifecycleOwner(), orders -> {
+        viewModel = new ViewModelProvider(requireActivity()).get(DeliveryViewModel.class);
         viewModel.getOrderList().observe(getViewLifecycleOwner(), orders -> {
             Log.d("onCreateView", "iteration test outside");
             if (orders != null) {

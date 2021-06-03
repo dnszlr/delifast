@@ -42,7 +42,7 @@ public class NotificationFragment extends Fragment {
         llNotificationContainer = notificationView.findViewById(R.id.llNotificationContainer);
         simpleDateFormat = new SimpleDateFormat(DelifastConstants.TIMEFORMAT, Locale.GERMANY);
 
-        viewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(NotificationViewModel.class);
         viewModel.getAllByUserId(FirebaseAuth.getInstance().getUid()).observe(getViewLifecycleOwner(), notifications -> {
             if (notifications != null) {
                 llNotificationContainer.removeAllViewsInLayout();

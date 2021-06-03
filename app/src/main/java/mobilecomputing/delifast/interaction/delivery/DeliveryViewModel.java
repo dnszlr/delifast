@@ -90,4 +90,5 @@ public class DeliveryViewModel extends ViewModel {
         lh.setRadiusInM(radiusInM);
         this.locationHelper.setValue(lh);
     }
+
 }

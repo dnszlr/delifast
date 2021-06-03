@@ -123,7 +123,6 @@ public class FirebaseAuthRepository {
                     Log.d(DelifastTags.AUTHLOGINGOOGLE, "signInWithCredential:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                        Log.d("HAHA", "DID SOMETHING");
                         createPaypalCustomer(user.getUid(), user.getEmail());
                     }
                     firebaseUser.postValue(user);

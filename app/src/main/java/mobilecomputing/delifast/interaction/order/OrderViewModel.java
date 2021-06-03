@@ -231,7 +231,9 @@ public class OrderViewModel extends ViewModel {
         double longitude = coordinates.get(0);
         double latitude = coordinates.get(1);
         Address customerAddress = new Address(latitude, longitude, address);
-        this.order.getValue().setCustomerAddress(customerAddress);
+        Order updatedOrder = this.order.getValue();
+        updatedOrder.setCustomerAddress(customerAddress);
+        this.order.setValue(updatedOrder);
     }
 
     /**
@@ -240,7 +242,9 @@ public class OrderViewModel extends ViewModel {
      * @param deadline
      */
     public void setDeadline(Date deadline) {
-        this.order.getValue().setDeadline(deadline);
+        Order updatedOrder = this.order.getValue();
+        updatedOrder.setDeadline(deadline);
+        this.order.setValue(updatedOrder);
     }
 
 

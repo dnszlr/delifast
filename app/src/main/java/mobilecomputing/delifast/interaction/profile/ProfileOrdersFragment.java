@@ -159,6 +159,15 @@ public class ProfileOrdersFragment extends Fragment {
         ConstraintLayout expandableView = orderCard.findViewById(R.id.constraintLayoutExpandableView);
         Button arrowDownUp = orderCard.findViewById(R.id.btnProfileOrderArrowDown);
 
+        ConstraintLayout layoutProfileOrderSupplier = orderCard.findViewById(R.id.layoutProfileOrderSupplier);
+        if(order.getOrderStatus() == OrderStatus.ACCEPTED || order.getOrderStatus() == OrderStatus.DONE){
+            layoutProfileOrderSupplier.setVisibility(View.VISIBLE);
+        }
+        TextView supplierName = orderCard.findViewById(R.id.tvProfileOrderSupplierName);
+        viewModel.getUserById(order.getSupplierID()).observe(getViewLifecycleOwner(), user -> {
+            supplierName.setText(user.getName());
+        });
+
         btnConfirm = cardView.findViewById(R.id.btnProfileOrderConfirm);
         btnCancel = cardView.findViewById(R.id.btnProfileOrderCancel);
 

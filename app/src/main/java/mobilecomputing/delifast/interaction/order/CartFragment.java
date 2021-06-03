@@ -347,8 +347,6 @@ public class CartFragment extends Fragment {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), "Invalid address provided", Toast.LENGTH_SHORT).show();
                 }
-                etAddress.setText(feature.placeName());
-                updateUI(model.getOrder().getValue());
                 Toast.makeText(getActivity(), feature.text(), Toast.LENGTH_LONG).show();
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
@@ -434,8 +432,6 @@ public class CartFragment extends Fragment {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
                         model.setDeadline(calendar.getTime());
-                        etDeadline.setText(simpleDateFormat.format(calendar.getTime()));
-                        updateUI(model.getOrder().getValue());
                     }
                 };
                 new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();

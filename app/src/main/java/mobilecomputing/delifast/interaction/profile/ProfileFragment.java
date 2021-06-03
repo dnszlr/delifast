@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,8 @@ public class ProfileFragment extends Fragment {
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
+    private ProfileViewModel viewModel;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -59,6 +62,8 @@ public class ProfileFragment extends Fragment {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
         initView(profileView);
         setOnClickListener();
@@ -77,7 +82,9 @@ public class ProfileFragment extends Fragment {
         layoutProfileUserdataTransation = view.findViewById(R.id.layoutProfileUserdataTransation);
 
         userName = view.findViewById(R.id.tvProfileUserName);
-        userName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        viewModel.getUserById(FirebaseAuth.getInstance().getUid()).observe(getViewLifecycleOwner(), user -> {
+            userName.setText(user.getName());
+        });
 
         cardProfileOrders = view.findViewById(R.id.cardProfileOrders);
         layoutProfileOrdersTransation = view.findViewById(R.id.layoutProfileOrdersTransation);
@@ -204,7 +211,7 @@ public class ProfileFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

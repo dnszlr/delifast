@@ -51,7 +51,6 @@ public class AuthenticationActivity extends AppCompatActivity {
         model = new ViewModelProvider(this).get(AuthenticationViewModel.class);
         model.getFirebaseUser().observe(this, firebaseUser -> {
             if (firebaseUser != null) {
-                Log.d("FirebaseUser: ", firebaseUser.getDisplayName());
                 User user = new User();
                 user.setName(firebaseUser.getDisplayName());
                 user.setEmail(firebaseUser.getEmail());

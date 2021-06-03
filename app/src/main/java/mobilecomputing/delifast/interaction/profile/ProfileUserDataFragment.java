@@ -191,7 +191,7 @@ public class ProfileUserDataFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Das Bild wurde nicht geladen.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

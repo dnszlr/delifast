@@ -56,9 +56,9 @@ public class AuthenticationViewModel extends ViewModel {
      * @param email    Email give by user
      * @param password Password given by user
      */
-    public void registration(String email, String password) {
+    public void registration(String name, String email, String password) {
         if (email != null && password != null) {
-            firebaseAuthRepository.createAccount(email, password);
+            firebaseAuthRepository.createAccount(name, email, password);
         } else {
             Log.w("Email login registration", "Credentials unreadable");
         }

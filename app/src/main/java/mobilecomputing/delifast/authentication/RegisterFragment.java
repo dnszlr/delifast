@@ -38,8 +38,8 @@ public class RegisterFragment extends Fragment {
             if (firebaseUser != null) {
                 Log.d("FirebaseUser: ", firebaseUser.getDisplayName());
                 User user = new User();
-                user.setName(tfUsername.toString().trim());
-                user.setEmail(tfEmail.toString().trim());
+                user.setName(tfUsername.getText().toString());
+                user.setEmail(tfEmail.getText().toString());
                 model.save(user, firebaseUser.getUid());
                 Intent homepage = new Intent(getActivity(), DelifastActivity.class);
                 startActivity(homepage);
@@ -78,7 +78,7 @@ public class RegisterFragment extends Fragment {
         if (!areCredentailsValid(username, email, password)) {
             return;
         }
-        model.registration(email, password);
+        model.registration(username, email, password);
     }
 
 

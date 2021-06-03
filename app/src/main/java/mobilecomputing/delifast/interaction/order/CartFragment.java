@@ -389,12 +389,12 @@ public class CartFragment extends Fragment {
             } else if (resultCode == AutocompleteActivity.RESULT_CANCELED) {
                 // the user canceled
                 Log.d("Braintree Result", "User canceled transaction");
-                Toast.makeText(getActivity(), "Bezahlung wurde von abgebrochen", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Bezahlung wurde abgebrochen", Toast.LENGTH_LONG).show();
             } else {
                 // handle errors here, an exception may be available in
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
                 Log.d("Braintree Result", "error: " + error.getMessage());
-                Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen sie die Störung", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Bezahlung fehlgeschlagen, entschuldigen Sie die Störung", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -14,6 +14,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -58,7 +59,7 @@ public class FirebaseAuthRepository {
      * @param email    - the email provided by the user
      * @param password - the password provided by the user
      */
-    public void createAccount(String email, String password) {
+    public void createAccount(String name, String email, String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -66,8 +67,14 @@ public class FirebaseAuthRepository {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(DelifastTags.AUTHCREATEACCOUNT, "createUserWithEmail:success");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    firebaseUser.postValue(user);
-                    createPaypalCustomer(user.getUid(), user.getEmail());
+                    user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            firebaseUser.postValue(user);
+                            createPaypalCustomer(user.getUid(), user.getEmail());
+                        }
+                    });
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(DelifastTags.AUTHCREATEACCOUNT, "createUserWithEmail:failure", task.getException());

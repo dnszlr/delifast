@@ -26,9 +26,11 @@ public class ProfileRatingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /**
         Transition transition = TransitionInflater.from(requireContext())
                 .inflateTransition(R.transition.shared_image);
         setSharedElementEnterTransition(transition);
+         */
     }
 
     @Override

@@ -190,7 +190,7 @@ public class ProfileDeliveriesFragment extends Fragment {
 
         MaterialButton btnRate = orderCard.findViewById(R.id.btnProfileDeliveryRate);
         if(order.getOrderStatus() == OrderStatus.DONE){
-
+            btnRate.setVisibility(View.VISIBLE);
         }
 
         LinearLayout products = orderCard.findViewById(R.id.lvProfileDeliveryProducts);
